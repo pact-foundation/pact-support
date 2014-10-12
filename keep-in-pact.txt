@@ -1,2 +1,0 @@
-spec/lib/pact/consumer_contract/request_spec.rb
-spec/lib/pact/consumer_contract/consumer_contract_spec.rb
