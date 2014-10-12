@@ -19,6 +19,8 @@ module Pact
         end
       when Pact::Request::Base
         from_term(term.to_hash)
+      when Pact::QueryString
+        from_term(term.query)
       else
         term
       end

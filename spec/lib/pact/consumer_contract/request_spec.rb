@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'pact/consumer_contract/request'
-require 'support/shared_examples_for_request'
 require 'pact/consumer/request'
+require 'support/shared_examples_for_request'
 
 module Pact
 

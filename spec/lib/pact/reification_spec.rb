@@ -63,5 +63,17 @@ module Pact
 
     end
 
+    context "when Query" do
+
+      let(:query) { QueryString.new(Pact::Term.new(generate: "param=thing", matcher: /param=.*/)) }
+
+      subject { Reification.from_term(query)}
+
+      it "returns the contents of the generate" do
+        expect(subject).to eq("param=thing")
+      end
+
+    end
+
   end
 end

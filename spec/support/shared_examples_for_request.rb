@@ -72,7 +72,7 @@ shared_examples "a request" do
     end
 
     it "extracts the query" do
-      expect(subject.query).to eq 'query'
+      expect(subject.query).to eq Pact::QueryString.new('query')
     end
 
     it "blows up if method is absent" do

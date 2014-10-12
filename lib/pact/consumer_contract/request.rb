@@ -35,15 +35,21 @@ module Pact
       end
 
       def difference(actual_request)
-        request_diff = diff(to_hash_without_body, actual_request.to_hash_without_body)
-        unless body.is_a? NullExpectation
-          request_diff.merge(body_difference(actual_request.body))
-        else
-          request_diff
-        end
+        request_diff = diff(to_hash_without_body_or_query, actual_request.to_hash_without_body_or_query)
+        request_diff.merge!(query_diff(actual_request.query))
+        request_diff.merge!(body_diff(actual_request.body))
       end
 
       protected
+
+      def query_diff actual_query
+        if specified?(:query)
+          query_diff = query.difference(actual_query)
+          query_diff.any? ? {query: query_diff} : {}
+        else
+          {}
+        end
+      end
 
       def self.key_not_found
         Pact::NullExpectation.new
@@ -59,8 +65,12 @@ module Pact
         DEFAULT_OPTIONS.merge(symbolize_keys(options))
       end
 
-      def body_difference(actual_body)
-        body_differ.call({:body => body}, {body: actual_body}, allow_unexpected_keys: runtime_options[:allow_unexpected_keys_in_body])
+      def body_diff(actual_body)
+        if specified?(:body)
+          body_differ.call({:body => body}, {body: actual_body}, allow_unexpected_keys: runtime_options[:allow_unexpected_keys_in_body])
+        else
+          {}
+        end
       end
 
       def body_differ

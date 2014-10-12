@@ -1,6 +1,7 @@
 require 'pact/matchers'
 require 'pact/symbolize_keys'
 require 'pact/consumer_contract/headers'
+require 'pact/consumer_contract/query_string'
 
 module Pact
 
@@ -18,7 +19,7 @@ module Pact
         @path = path.chomp('/')
         @headers = Hash === headers ? Headers.new(headers) : headers # Could be a NullExpectation - TODO make this more elegant
         @body = body
-        @query = query
+        @query = is_unspecified?(query) ? query : Pact::QueryString.new(query)
       end
 
       def to_json(options = {})
@@ -74,11 +75,15 @@ module Pact
       end
 
       def specified? key
-        !(self.send(key).is_a? self.class.key_not_found.class)
+        !is_unspecified?(self.send(key))
       end
 
-      def to_hash_without_body
-        keep_keys = [:method, :path, :headers, :query]
+      def is_unspecified? value
+        value.is_a? self.class.key_not_found.class
+      end
+
+      def to_hash_without_body_or_query
+        keep_keys = [:method, :path, :headers]
         as_json.reject{ |key, value| !keep_keys.include? key }.tap do | hash |
           hash[:method] = method.upcase
         end
