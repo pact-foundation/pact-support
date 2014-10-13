@@ -84,6 +84,11 @@ module Pact
       it "returns the hash in the natural order" do
         expect(subject).to eq("param=hello&extra=world")
       end
+    end
+
+    context "when Hash Query with embeded terms" do
+
+      subject { Reification.from_term(query)}
 
       let(:query) { QueryHash.new( {param: 'hello', extra: Pact::Term.new(generate: "wonderworld", matcher: /\w+world/)})}
 
