@@ -6,11 +6,11 @@ module Pact
     def self.from_term(term)
       case term
       when Pact::Term, Regexp, Pact::SomethingLike
-        term.generate
+      term.generate
       when Hash
         term.inject({}) do |mem, (key,term)|
           mem[key] = from_term(term)
-        mem
+          mem
         end
       when Array
         term.inject([]) do |mem, term|
@@ -21,6 +21,8 @@ module Pact
         from_term(term.to_hash)
       when Pact::QueryString
         from_term(term.query)
+      when Pact::QueryHash
+        term.hash.inject('') { |res, (k, v)| res+k.to_s+'='+from_term(v)+'&' }.chop
       else
         term
       end
