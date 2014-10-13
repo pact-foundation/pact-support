@@ -48,14 +48,14 @@ shared_examples "a request" do
       end
     end
     context "with a path and a query that is a QueryHash" do
-      subject { described_class.from_hash({:path => '/path', :method => 'get', :headers => {}, :query =>  QueryHash.new( {param: 'hello', extra: 'world'})}) }
+      subject { described_class.from_hash({:path => '/path', :method => 'get', :headers => {}, :query =>  Pact::QueryHash.new( {param: 'hello', extra: 'world'})}) }
       it "returns the full path with reified path" do
         expect(subject.full_path).to eq "/path?param=hello&extra=world"
       end
     end
     context "with a path and a query that is a QueryHash with an embeded Term" do
       subject { described_class.from_hash({:path => '/path', :method => 'get', :headers => {},
-                                           :query =>   QueryHash.new( {param: 'hello', extra: Pact::Term.new(generate: "wonderworld", matcher: /\w+world/)})}) }
+                                           :query =>   Pact::QueryHash.new( {param: 'hello', extra: Pact::Term.new(generate: "wonderworld", matcher: /\w+world/)})}) }
       it "returns the full path with reified path" do
         expect(subject.full_path).to eq "/path?param=hello&extra=wonderworld"
       end
@@ -96,7 +96,7 @@ shared_examples "a request" do
 
     it "extracts the hash query" do
       raw_request['query']= {param: 'hello', extra: 'world'}
-      expect(subject.query).to eq QueryHash.new( {param: 'hello', extra: 'world'})
+      expect(subject.query).to eq Pact::QueryHash.new( {param: 'hello', extra: 'world'})
     end
 
     it "blows up if method is absent" do
