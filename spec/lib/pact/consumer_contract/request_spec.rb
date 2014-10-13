@@ -299,6 +299,34 @@ module Pact
         end
       end
 
+      # Why are these 3 test passing with no implementation of QueryHash?
+      context 'when the queries are defined by hashes, order does not matter' do
+        let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
+        let(:actual_query) { { params3: 'small', params2: 'world', params: 'hello' } }
+
+        it "does match" do
+          expect(subject.matches? actual_request).to be true
+        end
+      end
+
+      context 'when the queries are defined by hashes, order does not matter but content does' do
+        let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
+        let(:actual_query) { { params3: 'big', params2: 'world', params: 'hello' } }
+
+        it "does not match" do
+          expect(subject.matches? actual_request).to be false
+        end
+      end
+
+      context 'when the queries are defined by hashes holding Pact Terms, order does not matter but content does' do
+        let(:expected_query) { { params: 'hello', params2: Term.new(generate: 'world', matcher: /w\w+/), params3: 'small' } }
+        let(:actual_query) { { params3: 'small', params2: 'world', params: 'hello' } }
+
+        it "does match" do
+          expect(subject.matches? actual_request).to be true
+        end
+      end
+
       context "when a string is expected, but a number is found" do
         let(:actual_body) { { thing: 123} }
         let(:expected_body) { { thing: "123" } }

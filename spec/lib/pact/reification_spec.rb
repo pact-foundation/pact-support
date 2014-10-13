@@ -75,5 +75,22 @@ module Pact
 
     end
 
+    context "when Hash Query" do
+
+      subject { Reification.from_term(query)}
+
+      let(:query) { QueryHash.new( {param: 'hello', extra: 'world'})}
+
+      it "returns the hash in the natural order" do
+        expect(subject).to eq("param=hello&extra=world")
+      end
+
+      let(:query) { QueryHash.new( {param: 'hello', extra: Pact::Term.new(generate: "wonderworld", matcher: /\w+world/)})}
+
+      it "returns the hash in the natural order, and fills in Terms appropriately" do
+        expect(subject).to eq("param=hello&extra=wonderworld")
+      end
+
+    end
   end
 end
