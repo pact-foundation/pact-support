@@ -22,7 +22,7 @@ module Pact
       when Pact::QueryString
         from_term(term.query)
       when Pact::QueryHash
-        term.hash.inject('') { |res, (k, v)| res+k.to_s+'='+from_term(v)+'&' }.chop
+        term.query.inject('') { |res, (k, v)| res+k.to_s+'='+from_term(v)+'&' }.chop
       else
         term
       end

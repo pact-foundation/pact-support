@@ -55,25 +55,29 @@ module Pact
     end
 =end
 
+    # Don't know if I need this one.
     def eql? other
+      puts "hhhhhhhhhhhhhh"
       self == other
     end
 
+    # Don't know if I need this one.
     def matcher(literal)
+      puts "HHHHHHHHHHHHHHHHHHHHHHHHHHHhhhhhhhhhhhhhh"
       true
     end
 
+    # This one needs to be cuecked?
     def == other
+      puts "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
       QueryHash === other && other.query == query
     end
 
     def difference(other)
-      diff(hash, other.query)
+      puts "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      diff(query, other.query)
     end
 
-    def hash
-      @hash
-    end
     def query
       @hash
     end
