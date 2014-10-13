@@ -1,7 +1,9 @@
 require 'randexp'
-
+require 'rack/utils'
+# reqiore 'active_support/core_ext/object/to_param'
 module Pact
   module Reification
+    include ActiveSupportSupport
 
     def self.from_term(term)
       case term
@@ -22,11 +24,15 @@ module Pact
       when Pact::QueryString
         from_term(term.query)
       when Pact::QueryHash
-        term.query.inject('') { |res, (k, v)| res+k.to_s+'='+from_term(v)+'&' }.chop
+        # Do we need to properly encode stuff? There is a to_params from ActiveSupport in rails, but'd be a big dependency.
+        # term.query.mapinject('') { |res, (k, v)| res+k.to_s+'='+from_term(v)+'&' }.chop
+        # term.query.map { |(k, v)| v.nil? ? Rack::Utils.escape(k) : "#{Rack::Utils.escape(k)}=#{from_term(v)}"}.join('&')
+        # Maybe we shouldn't escape afterall
+        term.query.map { |(k, v)| v.nil? ? k : "#{k}=#{from_term(v)}"}.join('&')
       else
+        # Rack::Utils.escape(term)  #Shouldn't stuff be escaped here as well?
         term
       end
     end
-
   end
 end
