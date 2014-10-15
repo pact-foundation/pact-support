@@ -104,7 +104,7 @@ module Pact
       let(:query) { QueryHash.new( {param: 'hello', double: [Pact::Term.new(generate: "wonder", matcher: /\w+/), 'world'], simple: 'bye'})}
 
       it "returns the hash in the natural order, and fills in Terms appropriately" do
-        expect(subject).to eq("param=hello&extra=wonder&extra=world&simple=bye")
+        expect(subject).to eq("param=hello&double=wonder&double=world&simple=bye")
       end
 
     end
