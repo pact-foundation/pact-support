@@ -356,23 +356,23 @@ module Pact
         let(:actual_query3) {['simple2=bye', 'double_param=hello', 'double_param=world', 'simple_param=hi'].join('&')}
 
         it "does match if the multiple terms are in the correct order" do
-          expect(subject.matches? actual_request1).to be true
-          expect(subject.matches? actual_request2).to be true
-          expect(subject.matches? actual_request3).to be true
+          expect(subject.matches? actual_query1).to be true
+          expect(subject.matches? actual_query2).to be true
+          expect(subject.matches? actual_query3).to be true
         end
 
         let(:actual_query4) {['simple2=bye', 'double_param=world', 'double_param=hello', 'simple_param=hi'].join('&')}
 
         it "does not match if the multiple terms are incorrect order" do
-          expect(subject.matches? actual_request4).to be false
+          expect(subject.matches? actual_query4).to be false
         end
 
         let(:actual_query5) {['simple_param=hi', 'double_param=world', 'simple2=bye', ].join('&')}
         let(:actual_query6) {['simple_param=hi', 'double_param=hello', 'simple2=bye', ].join('&')}
 
         it "does not match if some of the multiple params are missing" do
-          expect(subject.matches? actual_request5).to be false
-          expect(subject.matches? actual_request6).to be false
+          expect(subject.matches? actual_query5).to be false
+          expect(subject.matches? actual_query6).to be false
         end
       end
 
@@ -382,8 +382,8 @@ module Pact
         let(:actual_query2) { 'param1=hi&param2=there&param2=overthere' }
 
         it "does not match" do
-          expect(subject.matches? actual_request1).to be false
-          expect(subject.matches? actual_request2).to be false
+          expect(subject.matches? actual_query1).to be false
+          expect(subject.matches? actual_query2).to be false
         end
       end
 
