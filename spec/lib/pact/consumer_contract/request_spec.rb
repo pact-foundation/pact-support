@@ -344,6 +344,36 @@ module Pact
         end
       end
 
+      context 'when the query is a hash containing arrays, to denote multiple terms' do
+        let(:expected_query) {
+          { simple_param: "hi",
+            double_param: ["hello", "world"],
+            simple2: "bye",
+          }
+        }
+        let(:actual_query1) {['simple_param=hi', 'double_param=hello', 'double_param=world', 'simple2=bye'].join('&')}
+        let(:actual_query2) {['simple_param=hi', 'double_param=hello', 'simple2=bye', 'double_param=world'].join('&')}
+        let(:actual_query3) {['simple2=bye', 'double_param=hello', 'double_param=world', 'simple_param=hi'].join('&')}
+
+        it "does match if the multiple terms are in the correct order" do
+          expect(subject.matches? actual_request1).to be true
+          expect(subject.matches? actual_request2).to be true
+          expect(subject.matches? actual_request3).to be true
+        end
+
+        let(:actual_query4) {['simple2=bye', 'double_param=world', 'double_param=hello', 'simple_param=hi'].join('&')}
+
+        it "does not match if the multiple terms are incorrect order" do
+          expect(subject.matches? actual_request4).to be false
+        end
+
+        let(:actual_query5) {['simple_param=hi', 'simple2=bye', 'double_param=world', 'double_param=hello', 'simple_param=hi'].join('&')}
+
+        it "does not match if the multiple terms are incorrect order" do
+          expect(subject.matches? actual_request5).to be false
+        end
+      end
+
 
       context "when a string is expected, but a number is found" do
         let(:actual_body) { { thing: 123} }

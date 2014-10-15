@@ -97,5 +97,17 @@ module Pact
       end
 
     end
+    context "when Hash Query with Arrays and multiple params with the same name" do
+
+      subject { Reification.from_term(query)}
+
+      let(:query) { QueryHash.new( {param: 'hello', double: [Pact::Term.new(generate: "wonder", matcher: /\w+/), 'world'], simple: 'bye'})}
+
+      it "returns the hash in the natural order, and fills in Terms appropriately" do
+        expect(subject).to eq("param=hello&extra=wonder&extra=world&simple=bye")
+      end
+
+    end
+
   end
 end
