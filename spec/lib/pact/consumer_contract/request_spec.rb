@@ -367,10 +367,23 @@ module Pact
           expect(subject.matches? actual_request4).to be false
         end
 
-        let(:actual_query5) {['simple_param=hi', 'simple2=bye', 'double_param=world', 'double_param=hello', 'simple_param=hi'].join('&')}
+        let(:actual_query5) {['simple_param=hi', 'double_param=world', 'simple2=bye', ].join('&')}
+        let(:actual_query6) {['simple_param=hi', 'double_param=hello', 'simple2=bye', ].join('&')}
 
-        it "does not match if the multiple terms are incorrect order" do
+        it "does not match if some of the multiple params are missing" do
           expect(subject.matches? actual_request5).to be false
+          expect(subject.matches? actual_request6).to be false
+        end
+      end
+
+      context 'when the query does not contain multiple params of the same name, but the request does' do
+        let(:expected_query) { {param1: 'hi', param2: 'there'} }
+        let(:actual_query1) { 'param1=hi&param2=there&param2=there'}
+        let(:actual_query2) { 'param1=hi&param2=there&param2=overthere' }
+
+        it "does not match" do
+          expect(subject.matches? actual_request1).to be false
+          expect(subject.matches? actual_request2).to be false
         end
       end
 
