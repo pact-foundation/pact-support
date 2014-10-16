@@ -25,11 +25,6 @@ module Pact
         #  Pact::Request::Expected   # This is the only one to be unspecified as far as tests are concerned. Is it correct though?
         #  Pact::Request::TestRequest
         # Content of query, seems to be Regex, Strings, Terms, nil, possible in all cases.
-        # Old behaviour:
-        # @query = is_unspecified?(query) ? query : Pact::QueryString.new(query)
-        # Suggestion from Beth, move the QueryString part down to Request::Expected.from_hash
-        # However, this opens a lot of questions I don't know how to answer, mostly what should be the behaviour for the other callers?
-        # Going with the following instead. If not a Hash, then it'll be a queryString.
         # Likely, nicer code would match on the class, and for is_unspecified, would check if the object is a Pact::NullExpectation
         @query=
             if is_unspecified?(query)

@@ -12,18 +12,14 @@ module Pact
     include SymbolizeKeys
 
     def initialize query
+      # Storing input data directly in format #{:param => [value1], :param2 => [value1,value2]}
+      # This is also the format to which actual queries are parsed to. 
       # Note: keys (either as string or sympbol) need to be consistent between here and difference method
-      # Going with symbols because the rest of the code uses symbols, but I'm not sure it's needed.
-      # What's returned in the parsed methods is always string.
+      # Going with symbols because the rest of the code uses symbols, parsed query also has keys converted to symbols
       @hash = query.nil? ? query : symbolize_keys(query).inject({}) {|h,(k,v)|  h[k] = v.is_a?(Array) ? v : [v] ; h }
-      raise "Expecting a Hash" unless @hash.is_a?(Hash)
-      # validate_query recursively
-      #raise "Value to generate \"#{@generate}\" does not match regular expression #{@matcher}" unless @generate =~ @matcher
     end
 
     def as_json opts = {}
-      # No longer necessary, as it's already stored as a Hash of Array when creating the object.
-      # @hash.inject({}) {|h,(k,v)|  h[k] = v.is_a?(Array) ? v : [v] ; h }
       @hash
     end
 
