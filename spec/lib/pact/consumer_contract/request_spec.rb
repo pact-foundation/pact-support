@@ -305,7 +305,6 @@ module Pact
           let(:actual_query) { 'params3=small&params2=world&params=hello'  }
 
           it "does match" do
-            puts "My request actually is #{actual_request.inspect}"
             expect(subject.matches? actual_request).to be true
           end
         end
@@ -315,7 +314,6 @@ module Pact
           let(:actual_query) { 'params3=big&params2=world&params=hello' }
 
           it "does not match" do
-            puts "My request actually is #{actual_request.inspect}"
             expect(subject.matches? actual_request).to be false
           end
         end
@@ -357,8 +355,6 @@ module Pact
           context 'when the multipe terms are in the correct order - order 1' do
             let(:actual_query) {['simple_param=hi', 'double_param=hello', 'double_param=world', 'simple2=bye'].join('&')}
             it "does match" do
-              puts "My request actually is #{actual_request.inspect}"
-              puts "The Subject is #{subject.inspect}"
               expect(subject.matches? actual_request).to be true
             end
           end
