@@ -6,7 +6,8 @@ module Pact
     include ActiveSupportSupport
 
     def self.from_term(term)
-      case term
+      puts "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ!!! #{term}"
+      a= case term
       when Pact::Term, Regexp, Pact::SomethingLike
       term.generate
       when Hash
@@ -15,24 +16,30 @@ module Pact
           mem
         end
       when Array
-        term.inject([]) do |mem, term|
-          mem << from_term(term)
-          mem
-        end
+        term.map{ |t| from_term(t)}
       when Pact::Request::Base
         from_term(term.to_hash)
       when Pact::QueryString
         from_term(term.query)
-      when Pact::QueryHash
-        # Do we need to properly encode stuff? There is a to_params from ActiveSupport in rails, but'd be a big dependency.
-        # term.query.mapinject('') { |res, (k, v)| res+k.to_s+'='+from_term(v)+'&' }.chop
-        # term.query.map { |(k, v)| v.nil? ? Rack::Utils.escape(k) : "#{Rack::Utils.escape(k)}=#{from_term(v)}"}.join('&')
-        # Maybe we shouldn't escape afterall
-        term.query.map { |(k, v)| v.nil? ? k : "#{k}=#{from_term(v)}"}.join('&')
+        when Pact::QueryHash
+#          term.query.map { |(k, v)| v.nil? ? k : "#{k}=#{from_term(v)}"}.join('&')
+        res= term.query.map { |k, v|
+          if v.nil?
+            k
+          elsif v.is_a?(Array) #For cases where there are multiple instance of the same parameter
+            v.map { |x| "#{k}=#{from_term(x)}"}.join('&')
+          else
+            "#{k}=#{from_term(v)}"
+          end
+        }.join('&')
+        puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Reification #{res.inspect}"
+        res
+
       else
-        # Rack::Utils.escape(term)  #Shouldn't stuff be escaped here as well?
         term
-      end
+         end
+      puts "?????????????????????? #{a}"
+      a
     end
   end
 end
