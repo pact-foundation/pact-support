@@ -6,8 +6,7 @@ module Pact
     include ActiveSupportSupport
 
     def self.from_term(term)
-      puts "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ!!! #{term}"
-      a= case term
+      case term
       when Pact::Term, Regexp, Pact::SomethingLike
       term.generate
       when Hash
@@ -22,8 +21,7 @@ module Pact
       when Pact::QueryString
         from_term(term.query)
         when Pact::QueryHash
-#          term.query.map { |(k, v)| v.nil? ? k : "#{k}=#{from_term(v)}"}.join('&')
-        res= term.query.map { |k, v|
+        term.query.map { |k, v|
           if v.nil?
             k
           elsif v.is_a?(Array) #For cases where there are multiple instance of the same parameter
@@ -32,14 +30,9 @@ module Pact
             "#{k}=#{from_term(v)}"
           end
         }.join('&')
-        puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Reification #{res.inspect}"
-        res
-
       else
         term
-         end
-      puts "?????????????????????? #{a}"
-      a
+      end
     end
   end
 end

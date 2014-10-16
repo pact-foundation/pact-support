@@ -299,96 +299,121 @@ module Pact
         end
       end
 
-      context 'when the queries are defined by hashes, order does not matter' do
-        let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
-        let(:actual_query) { 'params3=small&params2=world&params=hello'  }
+      context 'when a query is specified' do
+        context 'when the queries are defined by hashes, order does not matter' do
+          let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
+          let(:actual_query) { 'params3=small&params2=world&params=hello'  }
 
-        it "does match" do
-          expect(subject.matches? actual_request).to be true
+          it "does match" do
+            puts "My request actually is #{actual_request.inspect}"
+            expect(subject.matches? actual_request).to be true
+          end
         end
-      end
 
-      context 'when the queries are defined by hashes, order does not matter but content does' do
-        let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
-        let(:actual_query) { 'params3=big&params2=world&params=hello' }
+        context 'when the queries are defined by hashes, order does not matter but content does' do
+          let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
+          let(:actual_query) { 'params3=big&params2=world&params=hello' }
 
-        it "does not match" do
-          expect(subject.matches? actual_request).to be false
+          it "does not match" do
+            puts "My request actually is #{actual_request.inspect}"
+            expect(subject.matches? actual_request).to be false
+          end
         end
-      end
 
-      context 'when the queries are defined by hashes, with extra unmatched parameters' do
-        let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
-        let(:actual_query) { 'params2=world&params=hello' }
+        context 'when the queries are defined by hashes, with extra unmatched parameters' do
+          let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
+          let(:actual_query) { 'params2=world&params=hello' }
 
-        it "does not match" do
-          expect(subject.matches? actual_request).to be false
+          it "does not match" do
+            expect(subject.matches? actual_request).to be false
+          end
         end
-      end
 
-      context 'when the queries are defined by hashes holding Pact Terms, order does not matter but content does' do
-        let(:expected_query) { { params: 'hello', params2: Term.new(generate: 'world', matcher: /w\w+/), params3: 'small' } }
-        let(:actual_query) { 'params3=small&params=hello&params2=wroom'}
+        context 'when the queries are defined by hashes holding Pact Terms, order does not matter but content does' do
+          let(:expected_query) { { params: 'hello', params2: Term.new(generate: 'world', matcher: /w\w+/), params3: 'small' } }
+          let(:actual_query) { 'params3=small&params=hello&params2=wroom'}
 
-        it "does match" do
-          expect(subject.matches? actual_request).to be true
+          it "does match" do
+            expect(subject.matches? actual_request).to be true
+          end
         end
-      end
 
-      context 'when the queries are defined by hashes holding Pact Terms and the regex does not match' do
-        let(:expected_query) { { params: 'hello', params2: Term.new(generate: 'world', matcher: /w\w+/), params3: 'small' } }
-        let(:actual_query) { 'params3=small&params=hello&params2=bonjour'}
+        context 'when the queries are defined by hashes holding Pact Terms and the regex does not match' do
+          let(:expected_query) { { params: 'hello', params2: Term.new(generate: 'world', matcher: /w\w+/), params3: 'small' } }
+          let(:actual_query) { 'params3=small&params=hello&params2=bonjour'}
 
-        it "does not match" do
-          expect(subject.matches? actual_request).to be false
+          it "does not match" do
+            expect(subject.matches? actual_request).to be false
+          end
         end
-      end
 
-      context 'when the query is a hash containing arrays, to denote multiple terms' do
-        let(:expected_query) {
-          { simple_param: "hi",
-            double_param: ["hello", "world"],
-            simple2: "bye",
+        context 'when the query is a hash containing arrays, to denote multiple parameters with the same name' do
+          let(:expected_query) {
+            { simple_param: "hi",
+              double_param: ["hello", "world"],
+              simple2: "bye",
+            }
           }
-        }
-        let(:actual_query1) {['simple_param=hi', 'double_param=hello', 'double_param=world', 'simple2=bye'].join('&')}
-        let(:actual_query2) {['simple_param=hi', 'double_param=hello', 'simple2=bye', 'double_param=world'].join('&')}
-        let(:actual_query3) {['simple2=bye', 'double_param=hello', 'double_param=world', 'simple_param=hi'].join('&')}
-
-        it "does match if the multiple terms are in the correct order" do
-          expect(subject.matches? actual_query1).to be true
-          expect(subject.matches? actual_query2).to be true
-          expect(subject.matches? actual_query3).to be true
+          context 'when the multipe terms are in the correct order - order 1' do
+            let(:actual_query) {['simple_param=hi', 'double_param=hello', 'double_param=world', 'simple2=bye'].join('&')}
+            it "does match" do
+              puts "My request actually is #{actual_request.inspect}"
+              puts "The Subject is #{subject.inspect}"
+              expect(subject.matches? actual_request).to be true
+            end
+          end
+          context 'when the multipe terms are in the correct order - order 2' do
+            let(:actual_query) {['simple_param=hi', 'double_param=hello', 'simple2=bye', 'double_param=world'].join('&')}
+            it "does match" do
+              expect(subject.matches? actual_request).to be true
+            end
+          end
+          context 'when the multipe terms are in the correct order - order 3' do
+            let(:actual_query) {['simple2=bye', 'double_param=hello', 'double_param=world', 'simple_param=hi'].join('&')}
+            it "does match" do
+              expect(subject.matches? actual_request).to be true
+            end
+          end
+          context 'when the multiple terms are in incorrect order' do
+            let(:actual_query) {['simple2=bye', 'double_param=world', 'double_param=hello', 'simple_param=hi'].join('&')}
+            it "does not match" do
+              expect(subject.matches? actual_request).to be false
+            end
+          end
+          context 'when the first of the multiple terms is missing' do
+            let(:actual_query) {['simple_param=hi', 'double_param=world', 'simple2=bye', ].join('&')}
+            it "does not match" do
+              expect(subject.matches? actual_request).to be false
+            end
+          end
+          context 'when the last of the multiple terms is missing' do
+            let(:actual_query) {['simple_param=hi', 'double_param=hello', 'simple2=bye', ].join('&')}
+            it "does not match" do
+              expect(subject.matches? actual_request).to be false
+            end
+          end
         end
 
-        let(:actual_query4) {['simple2=bye', 'double_param=world', 'double_param=hello', 'simple_param=hi'].join('&')}
-
-        it "does not match if the multiple terms are incorrect order" do
-          expect(subject.matches? actual_query4).to be false
-        end
-
-        let(:actual_query5) {['simple_param=hi', 'double_param=world', 'simple2=bye', ].join('&')}
-        let(:actual_query6) {['simple_param=hi', 'double_param=hello', 'simple2=bye', ].join('&')}
-
-        it "does not match if some of the multiple params are missing" do
-          expect(subject.matches? actual_query5).to be false
-          expect(subject.matches? actual_query6).to be false
+        context 'when the query does not contain multiple params of the same name, but the request does' do
+          let(:expected_query) { {param1: 'hi', param2: 'there'} }
+          context 'when the param is duplicated' do
+            let(:actual_query) { 'param1=hi&param2=there&param2=there'}
+            it "does not match" do
+              expect(subject.matches? actual_request).to be false
+            end
+          end
+          context 'when the duplicated param has different values' do
+            let(:actual_query) { 'param1=hi&param2=there&param2=overthere' }
+            it "does not match" do
+              expect(subject.matches? actual_request).to be false
+            end
+          end
         end
       end
 
-      context 'when the query does not contain multiple params of the same name, but the request does' do
-        let(:expected_query) { {param1: 'hi', param2: 'there'} }
-        let(:actual_query1) { 'param1=hi&param2=there&param2=there'}
-        let(:actual_query2) { 'param1=hi&param2=there&param2=overthere' }
-
-        it "does not match" do
-          expect(subject.matches? actual_query1).to be false
-          expect(subject.matches? actual_query2).to be false
-        end
-      end
 
 
-      context "when a string is expected, but a number is found" do
+      context "when in the body a string is expected, but a number is found" do
         let(:actual_body) { { thing: 123} }
         let(:expected_body) { { thing: "123" } }
 

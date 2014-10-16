@@ -15,14 +15,16 @@ module Pact
       # Note: keys (either as string or sympbol) need to be consistent between here and difference method
       # Going with symbols because the rest of the code uses symbols, but I'm not sure it's needed.
       # What's returned in the parsed methods is always string.
-      @hash = query.nil? ? query : symbolize_keys(query)
+      @hash = query.nil? ? query : symbolize_keys(query).inject({}) {|h,(k,v)|  h[k] = v.is_a?(Array) ? v : [v] ; h }
       raise "Expecting a Hash" unless @hash.is_a?(Hash)
       # validate_query recursively
       #raise "Value to generate \"#{@generate}\" does not match regular expression #{@matcher}" unless @generate =~ @matcher
     end
 
     def as_json opts = {}
-      @hash.inject({}) {|h,(k,v)|  h[k] = v.is_a?(Array) ? v : [v] ; h }
+      # No longer necessary, as it's already stored as a Hash of Array when creating the object.
+      # @hash.inject({}) {|h,(k,v)|  h[k] = v.is_a?(Array) ? v : [v] ; h }
+      @hash
     end
 
     def to_json opts = {}
