@@ -42,6 +42,13 @@ module Pact
           end
         end
 
+        context "with a query that is a hash" do
+          let(:query) { { params: 'hello', params2: Term.new(generate: 'world', matcher: /w\w+/), params3: 'small' }  }
+          it "appends the query" do
+            expect(subject).to eq("/something?params=hello&params2=world&params3=small")
+          end
+        end
+
         context "with an empty query" do
           let(:query) { "" }
           it "does include a query" do

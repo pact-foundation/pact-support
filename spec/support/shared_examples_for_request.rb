@@ -41,6 +41,39 @@ shared_examples "a request" do
         expect(subject.full_path).to eq "/path?a"
       end
     end
+    context "with a path and a query that is a QueryString" do
+      subject { described_class.from_hash({:path => '/path', :method => 'get', :headers => {}, :query => Pact::Term.new(generate: 'a', matcher: /a/)}) }
+      it "returns the full path with reified path" do
+        expect(subject.full_path).to eq "/path?a"
+      end
+    end
+    context "with a path and a query that is a QueryHash" do
+      subject { described_class.from_hash({:path => '/path', :method => 'get', :headers => {}, :query =>  {param: 'hello', extra: 'world'}}) }
+      it "returns the full path with reified path" do
+        expect(subject.full_path).to eq "/path?param=hello&extra=world"
+      end
+    end
+    context "with a path and a query that is a QueryHash with an embeded Term" do
+      subject { described_class.from_hash({:path => '/path', :method => 'get', :headers => {},
+                                           :query =>   {param: 'hello', extra: Pact::Term.new(generate: "wonderworld", matcher: /\w+world/)}}) }
+      it "returns the full path with reified path" do
+        expect(subject.full_path).to eq "/path?param=hello&extra=wonderworld"
+      end
+    end
+    context "with a path and a query that has multiple terms" do
+      subject { described_class.from_hash({:path => '/path', :method => 'get', :headers => {},
+                                           :query =>   {param: 'hello', simple: 'hi', double: [ 'hello', 'world'], last: 'gone'}}) }
+      it "returns the full path with reified path" do
+        expect(subject.full_path).to eq "/path?param=hello&simple=hi&double=hello&double=world&last=gone"
+      end
+    end
+    context "with a path and a query that has multiple terms including terms" do
+      subject { described_class.from_hash({:path => '/path', :method => 'get', :headers => {},
+                                           :query => {param: 'hello', simple: 'hi', double: [ 'hello', Pact::Term.new(generate: "wonderworld", matcher: /\w+world/)], last: 'gone'}}) }
+      it "returns the full path with reified path" do
+        expect(subject.full_path).to eq "/path?param=hello&simple=hi&double=hello&double=wonderworld&last=gone"
+      end
+    end
   end
 
   describe "building from a hash" do
@@ -71,8 +104,13 @@ shared_examples "a request" do
       expect(subject.body).to eq 'hello mallory'
     end
 
-    it "extracts the query" do
+    it "extracts the string query" do
       expect(subject.query).to eq Pact::QueryString.new('query')
+    end
+
+    it "extracts the hash query" do
+      raw_request['query']= {param: 'hello', extra: 'world'}
+      expect(subject.query).to eq Pact::QueryHash.new( {param: 'hello', extra: 'world'})
     end
 
     it "blows up if method is absent" do
