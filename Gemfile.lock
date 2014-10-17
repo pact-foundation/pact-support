@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pact-support (0.0.2)
+    pact-support (0.0.3)
       awesome_print (~> 1.1)
       find_a_port (~> 1.0.1)
       json
@@ -46,7 +46,7 @@ GEM
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
       rspec-mocks (~> 3.1.0)
-    rspec-core (3.1.6)
+    rspec-core (3.1.7)
       rspec-support (~> 3.1.0)
     rspec-expectations (3.1.2)
       diff-lcs (>= 1.2.0, < 2.0)
