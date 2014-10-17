@@ -1,8 +1,7 @@
 require 'pact/matchers'
 require 'pact/symbolize_keys'
 require 'pact/consumer_contract/headers'
-require 'pact/consumer_contract/query_string'
-require 'pact/consumer_contract/query_hash'
+require 'pact/consumer_contract/query'
 
 module Pact
 
@@ -20,20 +19,7 @@ module Pact
         @path = path.chomp('/')
         @headers = Hash === headers ? Headers.new(headers) : headers # Could be a NullExpectation - TODO make this more elegant
         @body = body
-        # Callers are:
-        #  Pact::Consumer::Request::Actual
-        #  Pact::Request::Expected   # This is the only one to be unspecified as far as tests are concerned. Is it correct though?
-        #  Pact::Request::TestRequest
-        # Content of query, seems to be Regex, Strings, Terms, nil, possible in all cases.
-        # Likely, nicer code would match on the class, and for is_unspecified, would check if the object is a Pact::NullExpectation
-        @query=
-            if is_unspecified?(query)
-              query
-            elsif query.is_a? Hash
-              Pact::QueryHash.new(query)
-            else
-              Pact::QueryString.new(query)
-            end
+        @query = is_unspecified?(query) ? query : Pact::Query.create(query)
       end
 
       def to_json(options = {})
