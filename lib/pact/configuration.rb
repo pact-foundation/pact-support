@@ -95,6 +95,15 @@ module Pact
       log_dir + "/pact.log"
     end
 
+    def color_enabled
+      # Can't use ||= when the variable might be false, it will execute the expression if it's false
+      defined?(@color_enabled) ? @color_enabled : true
+    end
+
+    def color_enabled= color_enabled
+      @color_enabled = color_enabled
+    end
+
     private
 
     def diff_formatter_for input
