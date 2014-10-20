@@ -3,6 +3,7 @@ require 'pact/matchers/unix_diff_formatter'
 require 'pact/matchers/list_diff_formatter'
 require 'pact/shared/json_differ'
 require 'pact/shared/text_differ'
+require 'pact/shared/form_differ'
 
 
 module Pact
@@ -29,6 +30,7 @@ module Pact
 
     DIFFERS = [
       [/json/, Pact::JsonDiffer],
+      [/application\/x\-www\-form\-urlencoded/, Pact::FormDiffer],
       [NilMatcher, Pact::TextDiffer],
       [/.*/, Pact::TextDiffer]
     ]

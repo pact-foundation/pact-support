@@ -67,10 +67,10 @@ module Pact
 
       def body_diff(actual_body)
         if specified?(:body)
-          body_differ.call({:body => body}, {body: actual_body}, allow_unexpected_keys: runtime_options[:allow_unexpected_keys_in_body])
-        else
-          {}
+          body_difference = body_differ.call(body, actual_body, allow_unexpected_keys: runtime_options[:allow_unexpected_keys_in_body])
+          return { body: body_difference } if body_difference.any?
         end
+        {}
       end
 
       def body_differ
