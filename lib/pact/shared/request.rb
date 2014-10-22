@@ -43,7 +43,7 @@ module Pact
       end
 
       def content_type
-        return nil if headers.is_a? self.class.key_not_found.class
+        return nil unless specified?(:headers)
         headers['Content-Type']
       end
 
