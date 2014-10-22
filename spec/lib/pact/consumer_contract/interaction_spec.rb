@@ -53,56 +53,6 @@ module Pact
         end
       end
 
-      describe "to JSON" do
-        let(:request) do
-          {
-            method: 'post',
-            path: '/foo',
-            body: Term.new(generate: 'waffle', matcher: /ffl/),
-            headers: { 'Content-Type' => 'application/json' },
-            query: '',
-          }
-        end
-
-        let(:response) do
-          { baz: /qux/, wiffle: Term.new(generate: 'wiffle', matcher: /iff/) }
-        end
-
-        let(:parsed_result) do
-          JSON.load(subject.to_json)
-        end
-
-        subject { Interaction.from_hash('response' => response, 'request' => request) }
-
-        it "contains the request" do
-          expect(parsed_result['request']).to eq({
-              'method' => 'post',
-              'path' => '/foo',
-              'headers' => {
-                'Content-Type' => 'application/json'
-              },
-              'body' => Term.new(generate: 'waffle', matcher: /ffl/),
-              'query' => ''
-            })
-        end
-
-        describe "response" do
-
-          it "serialises regexes" do
-            expect(parsed_result['response']['baz']).to eql /qux/
-          end
-
-          it "serialises terms" do
-            term = Term.new(generate:'wiffle', matcher: /iff/)
-            parsed_term = parsed_result['response']['wiffle']
-            expect(term.matcher).to eql parsed_term.matcher
-            expect(term.generate).to eql parsed_term.generate
-          end
-
-        end
-
-      end
-
       describe "request_modifies_resource_without_checking_response_body?" do
 
         let(:interaction) { Interaction.new(request: request, response: response)}

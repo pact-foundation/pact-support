@@ -23,6 +23,10 @@ module Pact
       self[:body]
     end
 
+    def specified? key
+      self.key?(key.to_sym)
+    end
+
     def body_allows_any_value?
       body_not_specified? || body_is_empty_hash?
     end
@@ -43,7 +47,7 @@ module Pact
     end
 
     def body_not_specified?
-      !self.key?(:body)
+      !specified?(:body)
     end
 
   end

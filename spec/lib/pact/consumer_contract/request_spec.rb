@@ -26,15 +26,6 @@ module Pact
       end
     end
 
-    describe "as_json" do
-      subject { Request::Expected.new(:get, '/path', {:header => 'value'}, {:body => 'yeah'}, "query", {some: 'options'}) }
-      context "with options" do
-        it "does not include the options because they are a temporary hack and should leave no trace of themselves in the pact file" do
-          expect(subject.as_json.key?(:options)).to be false
-        end
-      end
-    end
-
     describe "matching to actual requests" do
 
       subject { Request::Expected.new(expected_method, expected_path, expected_headers, expected_body, expected_query, options) }

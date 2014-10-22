@@ -3,28 +3,6 @@ require 'pact/consumer_contract'
 
 module Pact
   describe ConsumerContract do
-    describe "as_json" do
-
-      class MockInteraction
-        def as_json(options ={})
-          {:mock => "interaction"}
-        end
-      end
-
-      before do
-        allow(DateTime).to receive(:now).and_return(DateTime.strptime("2013-08-15T13:27:13+10:00"))
-      end
-
-      let(:service_consumer) { double('ServiceConsumer', :as_json => {:a => 'consumer'}) }
-      let(:service_provider) { double('ServiceProvider', :as_json => {:a => 'provider'}) }
-      let(:pact) { ConsumerContract.new({:interactions => [MockInteraction.new], :consumer => service_consumer, :provider => service_provider }) }
-      let(:expected_as_json) { {:provider=>{:a=>"provider"}, :consumer=>{:a=>"consumer"}, :interactions=>[{:mock=>"interaction"}], :metadata=>{:pactSpecificationVersion=> "1.0.0" }} }
-
-      it "should return a hash representation of the Pact" do
-        expect(pact.as_json).to eq expected_as_json
-      end
-
-    end
 
     describe ".from_json" do
       let(:loaded_pact) { ConsumerContract.from_json(string) }

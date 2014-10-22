@@ -9,11 +9,7 @@ require 'open-uri'
 require_relative 'service_consumer'
 require_relative 'service_provider'
 require_relative 'interaction'
-require_relative 'request'
 require_relative 'pact_file'
-require_relative 'file_name'
-
-
 
 module Pact
 
@@ -21,8 +17,7 @@ module Pact
 
     include SymbolizeKeys
     include Logging
-    include FileName
-    include ActiveSupportSupport
+    include PactFile
 
     attr_accessor :interactions
     attr_accessor :consumer
@@ -34,32 +29,13 @@ module Pact
       @provider = attributes[:provider]
     end
 
-    def to_hash
-      {
-        provider: @provider.as_json,
-        consumer: @consumer.as_json,
-        interactions: @interactions.collect(&:as_json),
-        metadata: {
-          pactSpecificationVersion: "1.0.0"
-        }
-      }
-    end
-
-    def as_json(options = {})
-      fix_all_the_things to_hash
-    end
-
-    def to_json(options = {})
-      as_json.to_json(options)
-    end
-
     def self.from_hash(hash)
       hash = symbolize_keys(hash)
-      new({
-        :interactions => hash[:interactions].collect { |hash| Interaction.from_hash(hash)},
+      new(
         :consumer => ServiceConsumer.from_hash(hash[:consumer]),
-        :provider => ServiceProvider.from_hash(hash[:provider])
-      })
+        :provider => ServiceProvider.from_hash(hash[:provider]),
+        :interactions => hash[:interactions].collect { |hash| Interaction.from_hash(hash)}
+      )
     end
 
     def self.from_json string
@@ -95,20 +71,5 @@ module Pact
       end
     end
 
-    def pact_file_name
-      file_name consumer.name, provider.name
-    end
-
-    def pactfile_path
-      raise 'You must first specify a consumer and service name' unless (consumer && consumer.name && provider && provider.name)
-      @pactfile_path ||= file_path consumer.name, provider.name
-    end
-
-    def update_pactfile
-      logger.debug "Updating pact file for #{provider.name} at #{pactfile_path}"
-      File.open(pactfile_path, 'w') do |f|
-        f.write fix_json_formatting(JSON.pretty_generate(self))
-      end
-    end
   end
 end

@@ -18,12 +18,6 @@ module Pact
 
       subject { TestRequest.new("get", "/", {some: "things"}, {some: "things"} , "some=things") }
 
-      describe "#to_json" do
-        it "renders the keys in a sensible order" do
-          expect(subject.to_json).to match(/method.*path.*query.*headers.*body/)
-        end
-      end
-
       describe "#full_path" do
 
         subject { TestRequest.new("get", "/something", {}, {some: "things"} , query).full_path }

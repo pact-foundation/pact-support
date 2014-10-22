@@ -22,14 +22,6 @@ module Pact
         @query = is_unspecified?(query) ? query : Pact::Query.create(query)
       end
 
-      def to_json(options = {})
-        as_json.to_json(options)
-      end
-
-      def as_json options = {}
-        to_hash
-      end
-
       def to_hash
         hash = {
           method: method,
@@ -59,6 +51,10 @@ module Pact
         http_method_modifies_resource? && body_specified?
       end
 
+      def specified? key
+        !is_unspecified?(self.send(key))
+      end
+
       protected
 
       # Not including DELETE, as we don't care about the resources updated state.
@@ -74,17 +70,13 @@ module Pact
         specified?(:body)
       end
 
-      def specified? key
-        !is_unspecified?(self.send(key))
-      end
-
       def is_unspecified? value
         value.is_a? self.class.key_not_found.class
       end
 
       def to_hash_without_body_or_query
         keep_keys = [:method, :path, :headers]
-        as_json.reject{ |key, value| !keep_keys.include? key }.tap do | hash |
+        to_hash.reject{ |key, value| !keep_keys.include? key }.tap do | hash |
           hash[:method] = method.upcase
         end
       end

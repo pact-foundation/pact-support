@@ -36,10 +36,10 @@ module Pact
     # reparse the generated JSON into a hash and pretty_generate that... sigh...
     # Oh ActiveSupport, why....
     def fix_json_formatting json
-      if json.include?("\n")
-        json
-      else
+      if json =~ /\{".*?":"/
         JSON.pretty_generate(JSON.parse(json, create_additions: false))
+      else
+        json
       end
     end
 

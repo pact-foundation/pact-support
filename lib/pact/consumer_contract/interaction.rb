@@ -24,17 +24,12 @@ module Pact
       end
 
       def to_hash
-        hash = { :description => @description }
-        hash[:provider_state] = @provider_state if @provider_state #Easier to read when provider state at top
-        hash.merge(:request => @request.as_json, :response => @response)
-      end
-
-      def as_json options = {}
-        fix_all_the_things to_hash
-      end
-
-      def to_json(options = {})
-        as_json.to_json(options)
+        {
+          description: description,
+          provider_state: provider_state,
+          request: request.to_hash,
+          response: response.to_hash
+        }
       end
 
       def matches_criteria? criteria
@@ -51,7 +46,7 @@ module Pact
       end
 
       def == other
-        other.is_a?(Interaction) && as_json == other.as_json
+        other.is_a?(Interaction) && to_hash == other.to_hash
       end
 
       def eq? other
@@ -67,7 +62,7 @@ module Pact
       end
 
       def to_s
-        JSON.pretty_generate(self)
+        to_hash.to_s
       end
    end
 end
