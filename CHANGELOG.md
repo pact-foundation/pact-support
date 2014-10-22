@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.1.1 (22 October 2014)
+
+* ff6a01d - Disallowing unexpected params in the query (bethesque, Wed Oct 22 14:42:41 2014 +1100)
+
 ### 0.1.0 (22 October 2014)
 
 * fa7e03f - Removed JSON serialisation code from models. It has been moved to decorators in pact_mock-service. (bethesque, Wed Oct 22 12:53:21 2014 +1100)
