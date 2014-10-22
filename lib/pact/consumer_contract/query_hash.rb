@@ -14,7 +14,7 @@ module Pact
     end
 
     def convert_to_hash_of_arrays query
-      symbolize_keys(query).inject({}) {|h,(k,v)|  h[k] = v.is_a?(Array) ? v : [v] ; h }
+      symbolize_keys(query).each_with_object({}) {|(k,v), hash| hash[k] = [*v] }
     end
 
     def as_json opts = {}
