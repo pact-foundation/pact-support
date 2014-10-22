@@ -47,6 +47,10 @@ module Pact
         headers['Content-Type']
       end
 
+      def content_type? content_type
+        self.content_type == content_type
+      end
+
       def modifies_resource?
         http_method_modifies_resource? && body_specified?
       end

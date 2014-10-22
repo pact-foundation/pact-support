@@ -87,6 +87,7 @@ module Pact
       describe "#content_type" do
 
         subject { TestRequest.new("get", "/something", headers, {} , "") }
+
         context "when there are no expected headers" do
           let(:headers) { Pact::KeyNotFound.new }
           it "returns nil" do
@@ -105,6 +106,23 @@ module Pact
             expect(subject.send(:content_type)).to eq 'blah'
           end
         end
+      end
+
+      describe "content_type?" do
+        subject { TestRequest.new("get", "/something", headers, {} , "") }
+        let(:headers) { {'content-type' => 'blah'} }
+
+        context "when the content type is the same" do
+          it "returns true" do
+            expect(subject.content_type?('blah')).to be true
+          end
+        end
+        context "when the content type is not the same" do
+          it "returns false" do
+            expect(subject.content_type?('apple')).to be false
+          end
+        end
+
       end
 
       describe "modifies_resource?" do
