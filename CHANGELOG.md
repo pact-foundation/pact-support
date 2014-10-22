@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.1.2 (22 October 2014)
+
+* 00280ac - Added logic to match form data when specified as a Hash (bethesque, Wed Oct 22 15:21:39 2014 +1100)
+
 ### 0.1.1 (22 October 2014)
 
 * ff6a01d - Disallowing unexpected params in the query (bethesque, Wed Oct 22 14:42:41 2014 +1100)
