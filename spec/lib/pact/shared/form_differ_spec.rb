@@ -13,8 +13,8 @@ module Pact
 
       let(:difference) do
         {
-          "param1" => [Pact::Matchers::Difference.new("foo", "wiffle")],
-          "param2" => [Pact::Matchers::Difference.new("bar", "foobar"), Pact::Matchers::Difference.new("foobar", "bar")]
+          'param1' => [Pact::Matchers::Difference.new("foo", "wiffle")],
+          'param2' => [Pact::Matchers::Difference.new("bar", "foobar"), Pact::Matchers::Difference.new("foobar", "bar")]
         }
       end
 
@@ -23,6 +23,45 @@ module Pact
       context "when there is a diff" do
         it "returns the diff" do
           expect(subject).to eq difference
+        end
+      end
+
+      context "when the expected is a matching Hash" do
+        let(:expected) do
+          {
+            param1: "wiffle",
+            param2: ["foobar", "bar"]
+          }
+        end
+
+        it "returns an empty diff" do
+          expect(subject).to be_empty
+        end
+      end
+
+      context "when the expected is a matching Hash with a Pact::Term" do
+        let(:expected) do
+          {
+            param1: "wiffle",
+            param2: [Pact::Term.new(generate: 'foobar', matcher: /bar/), "bar"]
+          }
+        end
+
+        it "returns an empty diff" do
+          expect(subject).to be_empty
+        end
+      end
+
+      context "when the expected is a Hash that doesn't match the actual" do
+        let(:expected) do
+          {
+            param1: "woffle",
+            param2: ["foobar", "bar"]
+          }
+        end
+
+        it "returns the diff" do
+          expect(subject).to_not be_empty
         end
       end
 
