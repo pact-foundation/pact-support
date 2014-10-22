@@ -36,7 +36,7 @@ module Pact
     # other will always be a QueryString, not a QueryHash, as it will have ben created
     # from the actual query string.
     def difference(other)
-      diff(query, symbolize_keys(CGI::parse(other.query)))
+      diff(query, symbolize_keys(CGI::parse(other.query)), allow_unexpected_keys: false)
     end
 
     def query

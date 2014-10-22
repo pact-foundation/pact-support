@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'pact/consumer_contract/query_hash'
 require 'pact/consumer_contract/query_string'
 
 module Pact
@@ -8,6 +8,33 @@ module Pact
 
     let(:query) { { param: 'thing' } }
     let(:query_with_array) { { param: ['thing'] } }
+
+    describe "difference" do
+      context "when the other is the same" do
+
+        let(:other) { QueryString.new('param=thing') }
+
+        it 'returns an empty diff' do
+          expect(subject.difference(other)).to be_empty
+        end
+      end
+
+      context "when the other is different" do
+        let(:other) { QueryString.new('param=thing1') }
+
+        it 'returns the diff' do
+          expect(subject.difference(other)).to_not be_empty
+        end
+      end
+
+      context "when the other has an extra param" do
+        let(:other) { QueryString.new('param=thing&param2=blah') }
+
+        it 'returns the diff' do
+          expect(subject.difference(other)).to_not be_empty
+        end
+      end
+    end
 
     describe "#as_json" do
       it "returns the query as a Hash" do
