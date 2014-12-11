@@ -3,7 +3,7 @@ module Pact
     class NoDiffIndicator
 
       def to_json options = {}
-        to_s
+        to_s.inspect
       end
 
       def to_s
