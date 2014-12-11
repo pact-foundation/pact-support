@@ -73,7 +73,7 @@ EOF
           end
 
           it "doesn't display the no difference indicator as a change" do
-            expect(subject).to match(/^\s+no difference here!,$/)
+            expect(subject).to match(/^\s+"no difference here!",$/)
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
