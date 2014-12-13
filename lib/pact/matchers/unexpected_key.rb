@@ -4,7 +4,7 @@ module Pact
   class UnexpectedKey < Pact::DifferenceIndicator
 
     def to_s
-      '<key not to exist>'
+      'KEY NOT TO EXIST'
     end
 
   end

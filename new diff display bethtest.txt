@@ -1,0 +1,174 @@
+{
+  "interactions": [
+    [1] {
+      "description": {
+        "NEW": "a request for another alligator",
+        "OLD: "a request for an alligator"
+      }
+    }
+  ]
+}
+
+{
+  "interactions": [
+    [2] {
+      "description":
+        expected: "a request for another alligator"
+        actual: "a request for an alligator"
+    }
+  ]
+}
+
+{
+  "interactions": [
+    [2] {
+      Expected
+        "description": "a request for another alligator"
+      Actual
+        "description": "a request for an alligator"
+    }
+  ]
+}
+
+
+
+{
+  "interactions": [
+    [2] {
+      Missing
+        "description": "a request for another alligator"
+    }
+  ]
+}
+
+{
+  "interactions": [
+    [2] {
+        "description": "a request for another alligator" <- Missing
+    }
+  ]
+}
+
+{
+  "interactions": [
+    [2] {
+        "description": "a request for another alligator" <- Expected number
+    }
+  ]
+}
+
+
+{
+  "interactions": [
+    [2] {
+        "description": "a request for another alligator" <- Expected number
+    }
+  ]
+}
+
+{
+  "interactions": [
+    [2] {
+        "description": "a request for another alligator" <- Expected to match /abc/
+    }
+  ]
+}
+
+{
+  "interactions": [
+    [2] {
+      Unexpected
+        "description": "a request for another alligator"
+    }
+  ]
+}
+
+{
+  "interactions": [
+    [2] {
+      "description": "a request for another alligator" -> Unexpected,
+    }
+  ]
+}
+
+{
+  "interactions": {
+      "description": "a request for another alligator", <- Expected
+      "description": "blah",                            <- Actual
+  }
+}
+
+{
+  "interactions": {
+      "description":
+        "a request for another alligator", <- Expected
+        "blah",                            <- Actual
+  }
+}
+
+{
+  "interactions": [
+    [2] {
+      "description": "a request for another alligator", <- Unexpected
+      "age": "blah",                                    <- Unexpected
+      "name": "Fred"                                    <- Unexpected
+    }
+  ]
+}
+
+
+{
+  "interactions": [
+    [2] {
+      Unexpected -> "description": "a request for another alligator",
+      Unexpected -> "age": "blah",
+      Unexpected -> "name": "Fred"
+    }
+  ]
+}
+
+{
+  "interactions": [
+    ... ,
+    ... ,
+    ... ,
+    {
+      "name": "Fred", <- Unexpected item in array
+      "age" : 7
+    }
+  ]
+}
+
+
+{
+  "interactions": [
+    [2]
+      Unexpected index
+        {
+          "name": "Fred"
+        }
+    [3]
+      Unexpected index
+        2
+  ]
+}
+
+{
+  "name": {
+    "EXPECTED" : "Fred",
+    "ACTUAL": "Mary"
+  }
+  "description": {
+    "EXPECTED": "7",
+    "ACTUAL": "VALUE MISSING"
+  }
+  "age": {
+    "UNEXPECTED" : "KEY NOT TO BE PRESENT"
+  }
+}
+
+{
+  "MISSING": {
+    "description": "abc"
+  }
+}

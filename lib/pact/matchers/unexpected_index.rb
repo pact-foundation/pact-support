@@ -4,7 +4,7 @@ module Pact
   class UnexpectedIndex < Pact::DifferenceIndicator
 
     def to_s
-      '<index not to exist>'
+      'INDEX NOT TO EXIST'
     end
 
   end

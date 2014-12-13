@@ -4,7 +4,7 @@ module Pact
   class IndexNotFound < Pact::DifferenceIndicator
 
     def to_s
-      "<index not found>"
+      "INDEX NOT FOUND"
     end
 
     def empty?
