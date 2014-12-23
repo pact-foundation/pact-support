@@ -51,6 +51,20 @@ module Pact
             expect(subject.provider_state).to eq 'some state'
           end
         end
+
+        context "when there are matching rules" do
+          let(:hash) { load_json_fixture 'interaction-with-matching-rules.json' }
+
+          subject { Interaction.from_hash hash }
+
+          it "merges the rules with the example for the request" do
+            expect(subject.request.body['name']).to be_instance_of(Pact::Term)
+          end
+
+          it "merges the rules with the example for the response" do
+            expect(subject.response.body['_links']['self']['href']).to be_instance_of(Pact::Term)
+          end
+        end
       end
 
       describe "request_modifies_resource_without_checking_response_body?" do

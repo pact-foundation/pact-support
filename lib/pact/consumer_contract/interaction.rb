@@ -2,6 +2,7 @@ require 'pact/consumer_contract/request'
 require 'pact/consumer_contract/response'
 require 'pact/symbolize_keys'
 require 'pact/shared/active_support_support'
+require 'pact/consumer_contract/merge_matching_rules_with_example'
 
 module Pact
    class Interaction
@@ -18,8 +19,10 @@ module Pact
       end
 
       def self.from_hash hash
-        request = Pact::Request::Expected.from_hash(hash['request'])
-        response = Pact::Response.from_hash(hash['response'])
+        request_hash = Pact::MergeMatchingRulesWithExample.(hash['request'], '$', hash['request']['requestMatchingRules'])
+        request = Pact::Request::Expected.from_hash(request_hash)
+        response_hash = Pact::MergeMatchingRulesWithExample.(hash['response'], '$', hash['response']['responseMatchingRules'])
+        response = Pact::Response.from_hash(response_hash)
         new(symbolize_keys(hash).merge({request: request, response: response}))
       end
 
