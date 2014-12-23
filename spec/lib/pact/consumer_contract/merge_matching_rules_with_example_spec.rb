@@ -31,6 +31,25 @@ module Pact
 
     end
 
+    describe "with nil rules" do
+      let(:expected_body) do
+        {
+          "_links" => {
+            "self" => {
+              "href" => "http://localhost:1234/thing"
+            }
+          }
+        }
+      end
+
+      let(:matching_rules) { nil }
+
+      it "returns the object at that path unaltered" do
+        expect(subject["_links"]["self"]["href"]).to eq "http://localhost:1234/thing"
+      end
+
+    end
+
 
     describe "regular expressions" do
 

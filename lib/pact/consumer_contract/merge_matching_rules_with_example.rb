@@ -13,6 +13,7 @@ module Pact
     end
 
     def call
+      return @expected if @matching_rules.nil? || @matching_rules.empty?
       recurse @expected, @root_path
     end
 
