@@ -11,12 +11,12 @@ require 'pact/matchers/regexp_difference'
 require 'pact/matchers/type_difference'
 require 'pact/matchers/expected_type'
 require 'pact/matchers/actual_type'
-require 'pact/matchers/no_diff_indicator'
+require 'pact/matchers/no_diff_at_index'
 
 module Pact
   module Matchers
 
-    NO_DIFF_INDICATOR = NoDiffIndicator.new
+    NO_DIFF_AT_INDEX = NoDiffAtIndex.new
     DEFAULT_OPTIONS = {allow_unexpected_keys: true, type: false}.freeze
     NO_DIFF = {}.freeze
 
@@ -70,7 +70,7 @@ module Pact
           diff_found = true
           difference << item_diff
         else
-          difference << NO_DIFF_INDICATOR
+          difference << NO_DIFF_AT_INDEX
         end
       end
       diff_found ? difference : NO_DIFF

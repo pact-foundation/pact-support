@@ -143,10 +143,11 @@ module Pact::Matchers
         let(:expected) { [{name: 'Fred'}, {name: 'Mary'}] }
         context "when an item with differing class values is found" do
           let(:actual) { [{name: 'Fred'}, {name: 1}] }
-          let(:difference) { [
-            Pact::Matchers::NO_DIFF_INDICATOR,
-             {:name =>
-                  TypeDifference.new(Pact::ExpectedType.new("Mary"), Pact::ActualType.new(1))
+          let(:difference) {
+            [
+              NoDiffAtIndex.new,
+              {
+                :name => TypeDifference.new(Pact::ExpectedType.new("Mary"), Pact::ActualType.new(1))
               }
             ]
           }
@@ -214,7 +215,7 @@ module Pact::Matchers
       context "when expected is longer than the actual" do
         subject { [1,2,3] }
         let(:actual) { [1,2]}
-        let(:difference) { [Pact::Matchers::NO_DIFF_INDICATOR, Pact::Matchers::NO_DIFF_INDICATOR, Difference.new(3, Pact::IndexNotFound.new)] }
+        let(:difference) { [NoDiffAtIndex.new, NoDiffAtIndex.new, Difference.new(3, Pact::IndexNotFound.new)] }
         it 'returns the diff' do
           expect(diff(subject, actual)).to eq(difference)
         end
@@ -223,7 +224,7 @@ module Pact::Matchers
       context "when the different index is in the middle of an array" do
         subject { [1,2,3] }
         let(:actual) { [1,7,3]}
-        let(:difference) { [Pact::Matchers::NO_DIFF_INDICATOR, Difference.new(2, 7), Pact::Matchers::NO_DIFF_INDICATOR] }
+        let(:difference) { [NoDiffAtIndex.new, Difference.new(2, 7), NoDiffAtIndex.new] }
         it 'returns the diff' do
           expect(diff(subject, actual)).to eq(difference)
         end
@@ -232,7 +233,7 @@ module Pact::Matchers
       context "when actual array is longer than the expected" do
         subject { [1] }
         let(:actual) { [1,2]}
-        let(:difference) { [Pact::Matchers::NO_DIFF_INDICATOR, Difference.new(Pact::UnexpectedIndex.new, 2)] }
+        let(:difference) { [NoDiffAtIndex.new, Difference.new(Pact::UnexpectedIndex.new, 2)] }
         it 'returns the diff' do
           expect(diff(subject, actual)).to eq(difference)
         end
@@ -478,7 +479,7 @@ module Pact::Matchers
       context "when two different arrays are found" do
         subject { [4,5,6] }
         let(:actual) { [4,6,7] }
-        let(:difference) { [Pact::Matchers::NO_DIFF_INDICATOR, Difference.new(5, 6), Difference.new(6, 7)] }
+        let(:difference) { [NoDiffAtIndex.new, Difference.new(5, 6), Difference.new(6, 7)] }
 
         it 'includes this in the diff' do
           expect(diff(subject, actual)).to eq(difference)

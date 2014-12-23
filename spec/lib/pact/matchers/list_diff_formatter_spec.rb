@@ -80,7 +80,7 @@ EOS
         end
 
         context "when there is a missing index" do
-          let(:diff) { [NoDiffIndicator.new, Difference.new(1, IndexNotFound.new )]}
+          let(:diff) { [NoDiffAtIndex.new, Difference.new(1, IndexNotFound.new )]}
           it "includes the expected value" do
             expect(subject).to match(/Missing.*1/m)
           end
@@ -91,7 +91,7 @@ EOS
         end
 
         context "when there is an unexpected index" do
-          let(:diff) { [NoDiffIndicator.new, Difference.new(UnexpectedIndex.new, 2), Difference.new(UnexpectedIndex.new, "b")]}
+          let(:diff) { [NoDiffAtIndex.new, Difference.new(UnexpectedIndex.new, 2), Difference.new(UnexpectedIndex.new, "b")]}
           it "includes the unexpected value" do
             expect(subject).to include("Array contained unexpected item:")
           end

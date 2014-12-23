@@ -1,6 +1,6 @@
 module Pact
   module Matchers
-    class NoDiffIndicator
+    class NoDiffAtIndex
 
       def to_json options = {}
         to_s.inspect
@@ -11,7 +11,7 @@ module Pact
       end
 
       def == other
-        other.is_a? NoDiffIndicator
+        other.is_a? NoDiffAtIndex
       end
     end
   end
