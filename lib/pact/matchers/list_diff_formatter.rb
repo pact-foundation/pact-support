@@ -31,9 +31,9 @@ module Pact
         when Difference then handle_difference obj, path, descriptions
         when TypeDifference then handle_mismatched_type obj, path, descriptions
         when RegexpDifference then handle_mismatched_regexp obj, path, descriptions
-        when NoDiffIndicator then nil
+        when NoDiffAtIndex then nil
         else
-          raise "Invalid diff, expected Hash, Array, NoDiffIndicator or Difference, found #{obj.class}"
+          raise "Invalid diff, expected Hash, Array, NoDiffAtIndex or Difference, found #{obj.class}"
         end
         descriptions
       end

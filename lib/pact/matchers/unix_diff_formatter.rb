@@ -39,7 +39,7 @@ module Pact
         when Difference then copy_diff(thing, target)
         when TypeDifference then copy_diff(thing, target)
         when RegexpDifference then copy_diff(thing, target)
-        when NoDiffIndicator then copy_no_diff(thing, target)
+        when NoDiffAtIndex then copy_no_diff(thing, target)
         else copy_object(thing, target)
         end
       end

@@ -61,7 +61,7 @@ EOF
         end
 
         context "with an incorrect value in an array" do
-          let(:diff) { [NoDiffIndicator.new, Difference.new({name: 'Mary'}, "Joe"), NoDiffIndicator.new] }
+          let(:diff) { [NoDiffAtIndex.new, Difference.new({name: 'Mary'}, "Joe"), NoDiffAtIndex.new] }
 
           it "displays '+' next to the incorrect values and '-' next to the missing ones" do
             expect(subject).to match /no difference here!/
@@ -147,7 +147,7 @@ EOF
         end
 
         context "with a missing index" do
-          let(:diff) { [NoDiffIndicator.new, Difference.new({name: 'Mary'}, IndexNotFound.new)] }
+          let(:diff) { [NoDiffAtIndex.new, Difference.new({name: 'Mary'}, IndexNotFound.new)] }
 
           it "displays '-' next to the missing items" do
             expect(subject).to match /\-.*Mary/
@@ -166,7 +166,7 @@ EOF
         end
 
         context "with an unexpected index" do
-          let(:diff) { [NoDiffIndicator.new, Difference.new(UnexpectedIndex.new, {name: 'Mary'})] }
+          let(:diff) { [NoDiffAtIndex.new, Difference.new(UnexpectedIndex.new, {name: 'Mary'})] }
 
           it "displays '+' next to the unexpected item" do
             expect(subject).to match /\+.*{/
@@ -176,9 +176,9 @@ EOF
           end
 
           xit "doesn't mark the 'no difference' as a change" do
-            expect(subject).to match /#{NoDiffIndicator.new.to_s},/
-            expect(subject).to_not match /\-.*#{NoDiffIndicator.new.to_s}/
-            expect(subject).to_not match /\+.*#{NoDiffIndicator.new.to_s}/
+            expect(subject).to match /#{NoDiffAtIndex.new.to_s},/
+            expect(subject).to_not match /\-.*#{NoDiffAtIndex.new.to_s}/
+            expect(subject).to_not match /\+.*#{NoDiffAtIndex.new.to_s}/
           end
 
           it "does not display the UnexpectedIndex" do
@@ -192,7 +192,7 @@ EOF
         end
 
         context "with 2 unexpected indexes" do
-          let(:diff) { [NoDiffIndicator.new, Difference.new(UnexpectedIndex.new, {name: 'Mary'}), Difference.new(UnexpectedIndex.new, {name: 'Joe'})] }
+          let(:diff) { [NoDiffAtIndex.new, Difference.new(UnexpectedIndex.new, {name: 'Mary'}), Difference.new(UnexpectedIndex.new, {name: 'Joe'})] }
 
           it "displays '+' next to the unexpected item" do
             expect(subject).to match /\+.*Mary/
