@@ -45,8 +45,24 @@ module Pact
     def wrap object, path
       rules = @matching_rules[path]
       return object unless rules
-      return object unless rules['regex']
-      Pact::Term.new(generate: object, matcher: Regexp.new(rules['regex']))
+      if rules['match'] == 'type'
+          log_ignored_rules(path, rules, 'match', 'type')
+          Pact::SomethingLike.new(object)
+      elsif rules['regex']
+        log_ignored_rules(path, rules, 'regex', rules['regex'])
+        Pact::Term.new(generate: object, matcher: Regexp.new(rules['regex']))
+      else
+        log_ignored_rules(path, rules, nil, nil)
+        object
+      end
+    end
+
+    def log_ignored_rules path, rules, used_key, used_value
+      dup_rules = rules.dup
+      dup_rules.delete(used_key) if used_key && dup_rules[used_key] == used_value
+      if dup_rules.any?
+        $stderr.puts "WARN: Ignoring unsupported matching rules #{dup_rules} for path #{path}"
+      end
     end
   end
 
