@@ -1,0 +1,27 @@
+{
+  "description": "a request to make something",
+  "providerState" : null,
+  "request" : {
+    "method" : "POST",
+    "path" : "/something",
+    "body": {
+      "name": "Mary"
+    },
+    "requestMatchingRules": {
+      "$.body.name" : {"regex" : ".+"}
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "body" : {
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:1234/things/1"
+        }
+      }
+    },
+    "responseMatchingRules" : {
+      "$.body._links.self.href": {"regex": "http:\\/\\/.*\\/\\d+"}
+    }
+  }
+}

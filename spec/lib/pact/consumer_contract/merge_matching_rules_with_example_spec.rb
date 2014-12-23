@@ -4,7 +4,7 @@ module Pact
 
   describe MergeMatchingRulesWithExample do
 
-    subject { MergeMatchingRulesWithExample.call expected_body, "$body", matching_rules }
+    subject { MergeMatchingRulesWithExample.call expected_body, "$.body", matching_rules }
 
     describe "no recognised rules" do
       let(:expected_body) do
@@ -19,7 +19,7 @@ module Pact
 
       let(:matching_rules) do
         {
-          "$body._links.self.href" => { }
+          "$.body._links.self.href" => { }
         }
       end
 
@@ -66,7 +66,7 @@ module Pact
 
         let(:matching_rules) do
           {
-            "$body._links.self.href" => { "regex" => "http:\\/\\/.*\\/thing" }
+            "$.body._links.self.href" => { "regex" => "http:\\/\\/.*\\/thing" }
           }
         end
         it "creates a Pact::Term at the appropriate path" do
@@ -90,7 +90,7 @@ module Pact
 
         let(:matching_rules) do
           {
-            "$body._links.self[0].href" => { "regex" => "http:\\/\\/.*\\/thing" }
+            "$.body._links.self[0].href" => { "regex" => "http:\\/\\/.*\\/thing" }
           }
         end
         it "creates a Pact::Term at the appropriate path" do
@@ -100,8 +100,5 @@ module Pact
         end
       end
     end
-
-
   end
-
 end
