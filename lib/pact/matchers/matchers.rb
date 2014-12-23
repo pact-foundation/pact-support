@@ -18,6 +18,7 @@ module Pact
 
     NO_DIFF_INDICATOR = NoDiffIndicator.new
     DEFAULT_OPTIONS = {allow_unexpected_keys: true, type: false}.freeze
+    NO_DIFF = {}.freeze
 
     def diff expected, actual, opts = {}
       calculate_diff(Pact::Term.unpack_regexps(expected), actual, DEFAULT_OPTIONS.merge(opts))
@@ -44,7 +45,7 @@ module Pact
 
     def regexp_diff regexp, actual, options
       if actual.is_a?(String) && regexp.match(actual)
-        {}
+        NO_DIFF
       else
         RegexpDifference.new regexp, actual
       end
@@ -72,28 +73,7 @@ module Pact
           difference << NO_DIFF_INDICATOR
         end
       end
-      diff_found ? difference : {}
-    end
-
-    def actual_hash_diff expected, actual, options
-      difference = expected.keys.inject({}) do |calculate_diff, key|
-        if (diff_at_key = calculate_diff(expected[key], actual.fetch(key, Pact::KeyNotFound.new), options)).any?
-          calculate_diff[key] = diff_at_key
-        end
-        calculate_diff
-      end
-      difference.merge(check_for_unexpected_keys(expected, actual, options))
-    end
-
-    def check_for_unexpected_keys expected, actual, options
-      if options[:allow_unexpected_keys]
-        {}
-      else
-        (actual.keys - expected.keys).inject({}) do | calculate_diff, key |
-          calculate_diff[key] = Difference.new(UnexpectedKey.new, actual[key])
-          calculate_diff
-        end
-      end
+      diff_found ? difference : NO_DIFF
     end
 
     def hash_diff expected, actual, options
@@ -104,36 +84,64 @@ module Pact
       end
     end
 
-    def type_difference expected, actual
-      if types_match? expected, actual
-        {}
+    def actual_hash_diff expected, actual, options
+      hash_diff = expected.each_with_object({}) do |(key, value), difference|
+        diff_at_key = calculate_diff(value, actual.fetch(key, Pact::KeyNotFound.new), options)
+        difference[key] = diff_at_key if diff_at_key.any?
+      end
+      hash_diff.merge(check_for_unexpected_keys(expected, actual, options))
+    end
+
+    def check_for_unexpected_keys expected, actual, options
+      if options[:allow_unexpected_keys]
+        NO_DIFF
       else
-        TypeDifference.new type_diff_expected_display(expected), type_diff_actual_display(actual)
+        (actual.keys - expected.keys).each_with_object({}) do | key, running_diff |
+          running_diff[key] = Difference.new(UnexpectedKey.new, actual[key])
+        end
       end
     end
 
-    def type_diff_actual_display actual
-      actual.is_a?(KeyNotFound) ?  actual : ActualType.new(actual)
+    def object_diff expected, actual, options
+      if options[:type]
+        type_difference expected, actual
+      else
+        exact_value_diff expected, actual, options
+      end
+    end
+
+    def exact_value_diff expected, actual, options
+      if expected != actual
+        Difference.new expected, actual
+      else
+        NO_DIFF
+      end
+    end
+
+    def type_difference expected, actual
+      if types_match? expected, actual
+        NO_DIFF
+      else
+        TypeDifference.new type_diff_expected_display(expected), type_diff_actual_display(actual)
+      end
     end
 
     def type_diff_expected_display expected
       ExpectedType.new(expected)
     end
 
-    def types_match? expected, actual
-      #There must be a more elegant way to do this
-      expected.class == actual.class ||
-        (expected.is_a?(TrueClass) && actual.is_a?(FalseClass)) ||
-          (expected.is_a?(FalseClass) && actual.is_a?(TrueClass))
+    def type_diff_actual_display actual
+      actual.is_a?(KeyNotFound) ?  actual : ActualType.new(actual)
     end
 
-    def object_diff expected, actual, options
-      return type_difference(expected, actual) if options[:type]
-      if expected != actual
-        Difference.new expected, actual
-      else
-        {}
-      end
+    def types_match? expected, actual
+      expected.class == actual.class || (is_boolean(expected) && is_boolean(actual))
     end
+
+    def is_boolean object
+      object == true || object == false
+    end
+
+
   end
 end
