@@ -46,8 +46,8 @@ module Pact
       rules = @matching_rules[path]
       return object unless rules
       if rules['match'] == 'type'
-          log_ignored_rules(path, rules, 'match', 'type')
-          Pact::SomethingLike.new(object)
+        log_ignored_rules(path, rules, 'match', 'type')
+        Pact::SomethingLike.new(object)
       elsif rules['regex']
         log_ignored_rules(path, rules, 'regex', rules['regex'])
         Pact::Term.new(generate: object, matcher: Regexp.new(rules['regex']))
