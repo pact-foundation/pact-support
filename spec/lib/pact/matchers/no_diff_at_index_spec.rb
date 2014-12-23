@@ -6,7 +6,7 @@ module Pact
 
       describe "#to_json" do
         it "returns a json string" do
-          expect(NoDiffAtIndex.new.to_json).to eq '"no difference here!"'
+          expect(NoDiffAtIndex.new.to_json).to eq '"<no difference at this index>"'
         end
       end
 

@@ -7,7 +7,7 @@ module Pact
       end
 
       def to_s
-        'no difference here!'
+        '<no difference at this index>'
       end
 
       def == other
