@@ -4,10 +4,14 @@ module Pact
 
   describe MergeMatchingRulesWithExample do
 
-    subject { MergeMatchingRulesWithExample.call expected_body, "$.body", matching_rules }
+    subject { MergeMatchingRulesWithExample.call expected, "$.body", matching_rules }
+
+    before do
+      allow($stderr).to receive(:puts)
+    end
 
     describe "no recognised rules" do
-      let(:expected_body) do
+      let(:expected) do
         {
           "_links" => {
             "self" => {
@@ -19,7 +23,7 @@ module Pact
 
       let(:matching_rules) do
         {
-          "$.body._links.self.href" => { }
+          "$.body._links.self.href" => {"type" => "unknown" }
         }
       end
 
@@ -27,12 +31,20 @@ module Pact
         expect(subject["_links"]["self"]["href"]).to eq "http://localhost:1234/thing"
       end
 
-      it "it logs the rules it has ignored"
+      it "it logs the rules it has ignored" do
+        expect($stderr).to receive(:puts) do | message |
+          expect(message).to include("WARN")
+          expect(message).to include("type")
+          expect(message).to include("unknown")
+          expect(message).to include("$.body._links.self.href")
+        end
+        subject
+      end
 
     end
 
     describe "with nil rules" do
-      let(:expected_body) do
+      let(:expected) do
         {
           "_links" => {
             "self" => {
@@ -44,17 +56,40 @@ module Pact
 
       let(:matching_rules) { nil }
 
-      it "returns the object at that path unaltered" do
+      it "returns the example unaltered" do
         expect(subject["_links"]["self"]["href"]).to eq "http://localhost:1234/thing"
       end
 
     end
 
+    describe "type based matching" do
+      let(:expected) do
+        {
+          "name" => "Mary"
+        }
+      end
+
+      let(:matching_rules) do
+        {
+          "$.body.name" => { "match" => "type", "ignored" => "matchingrule" }
+        }
+      end
+
+      it "creates a SomethingLike at the appropriate path" do
+        expect(subject['name']).to be_instance_of(Pact::SomethingLike)
+      end
+
+      it "it logs the rules it has ignored" do
+        expect($stderr).to receive(:puts).with(/ignored.*matchingrule/)
+        subject
+      end
+
+    end
 
     describe "regular expressions" do
 
       describe "in a hash" do
-        let(:expected_body) do
+        let(:expected) do
           {
             "_links" => {
               "self" => {
@@ -66,7 +101,7 @@ module Pact
 
         let(:matching_rules) do
           {
-            "$.body._links.self.href" => { "regex" => "http:\\/\\/.*\\/thing" }
+            "$.body._links.self.href" => { "regex" => "http:\\/\\/.*\\/thing", "ignored" => "matchingrule" }
           }
         end
         it "creates a Pact::Term at the appropriate path" do
@@ -74,11 +109,18 @@ module Pact
           expect(subject["_links"]["self"]["href"].generate).to eq "http://localhost:1234/thing"
           expect(subject["_links"]["self"]["href"].matcher.inspect).to eq "/http:\\/\\/.*\\/thing/"
         end
+        it "it logs the rules it has ignored" do
+          expect($stderr).to receive(:puts) do | message |
+            expect(message).to match /ignored.*matchingrule/
+            expect(message).to_not match /regex/
+          end
+          subject
+        end
       end
 
       describe "with an array" do
 
-        let(:expected_body) do
+        let(:expected) do
           {
             "_links" => {
               "self" => [{
