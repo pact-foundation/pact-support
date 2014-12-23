@@ -64,7 +64,7 @@ EOF
           let(:diff) { [NoDiffAtIndex.new, Difference.new({name: 'Mary'}, "Joe"), NoDiffAtIndex.new] }
 
           it "displays '+' next to the incorrect values and '-' next to the missing ones" do
-            expect(subject).to match /no difference here!/
+            expect(subject).to match /no difference at this index/
             expect(subject).to match /\-.*{/
             expect(subject).to match /\-.*}/
             expect(subject).to match /\-.*Mary/
@@ -73,7 +73,7 @@ EOF
           end
 
           it "doesn't display the no difference indicator as a change" do
-            expect(subject).to match(/^\s+"no difference here!",$/)
+            expect(subject).to match(/^\s+"<no difference at this index>",$/)
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
