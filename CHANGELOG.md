@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.1.4 (20 January 2015)
+
+A naughty release because bumping the minor version to 0.2.0 means I have to upgrade all the gems.
+
 ### 0.2.0 (20 January 2015)
 
 * bb5d893 - Added option to UnixDiffFormatter to not show the explanation (Beth, Tue Jan 20 08:39:42 2015 +1100)
