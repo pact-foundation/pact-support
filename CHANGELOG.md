@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.2.0 (20 January 2015)
+
+* bb5d893 - Added option to UnixDiffFormatter to not show the explanation (Beth, Tue Jan 20 08:39:42 2015 +1100)
+
 ### 0.1.3 (12 December 2014)
 
 * 27f3625 - Fixed bug rendering no diff indicator as JSON (Beth, Fri Dec 12 10:42:50 2014 +1100)
