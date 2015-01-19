@@ -11,6 +11,7 @@ module Pact
       def initialize diff, options = {}
         @diff = diff
         @colour = options.fetch(:colour, false)
+        @include_explanation = options.fetch(:include_explanation, true)
         @differ = Pact::Matchers::Differ.new(@colour)
       end
 
@@ -25,7 +26,8 @@ module Pact
       def to_s
         expected = generate_string(diff, :expected)
         actual = generate_string(diff, :actual)
-        @differ.diff_as_string(actual, expected).lstrip + "\n" + key
+        suffix = @include_explanation ?  "\n" + key : ''
+        @differ.diff_as_string(actual, expected).lstrip + suffix
       end
 
       private

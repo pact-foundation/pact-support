@@ -209,8 +209,24 @@ EOF
 
         end
 
-      end
+        context "when the explanation should be included (default)" do
+          let(:diff) { {thing: {alligator: Difference.new({name: 'Mary'}, "Joe" )}} }
+          subject { UnixDiffFormatter.call(diff, {colour: colour}) }
 
+          it "appends the explanation" do
+            expect(subject).to include ("Key:")
+          end
+        end
+
+        context "when the explanation should not be included" do
+          let(:diff) { {thing: {alligator: Difference.new({name: 'Mary'}, "Joe" )}} }
+          subject { UnixDiffFormatter.call(diff, {colour: colour, include_explanation: false}) }
+
+          it "does not append the explanation" do
+            expect(subject).to_not include ("Key:")
+          end
+        end
+      end
     end
   end
 end
