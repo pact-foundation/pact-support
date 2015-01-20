@@ -31,7 +31,9 @@ module Pact
       end
 
       def matches_route? actual_request
-        diff({:method => method, :path => path}, {:method => actual_request.method, :path => actual_request.path}).empty?
+        route = {:method => method.upcase, :path => path}
+        other_route = {:method => actual_request.method.upcase, :path => actual_request.path}
+        diff(route, other_route).empty?
       end
 
       def difference(actual_request)

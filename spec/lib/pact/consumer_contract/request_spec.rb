@@ -26,6 +26,17 @@ module Pact
       end
     end
 
+    describe "matches_route?" do
+      context "when the case of the method is different but the path is the same" do
+        subject { Request::Expected.from_hash(method: 'get', path: '/') }
+        let(:other) { Consumer::Request::Actual.from_hash(method: 'get', path: '/', query: nil, headers: {}) }
+
+        it "returns true" do
+          expect(subject.matches_route?(other)).to be true
+        end
+      end
+    end
+
     describe "matching to actual requests" do
 
       subject { Request::Expected.new(expected_method, expected_path, expected_headers, expected_body, expected_query, options) }
@@ -397,8 +408,6 @@ module Pact
           end
         end
       end
-
-
 
       context "when in the body a string is expected, but a number is found" do
         let(:actual_body) { { thing: 123} }

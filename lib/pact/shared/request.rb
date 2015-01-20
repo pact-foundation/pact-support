@@ -27,10 +27,9 @@ module Pact
           method: method,
           path: path,
         }
-
-        hash.merge!(query: query) if specified?(:query)
-        hash.merge!(headers: headers) if specified?(:headers)
-        hash.merge!(body: body) if specified?(:body)
+        hash[:query] = query if specified?(:query)
+        hash[:headers] = headers if specified?(:headers)
+        hash[:body] = body if specified?(:body)
         hash
       end
 
@@ -79,10 +78,12 @@ module Pact
       end
 
       def to_hash_without_body_or_query
-        keep_keys = [:method, :path, :headers]
-        to_hash.reject{ |key, value| !keep_keys.include? key }.tap do | hash |
-          hash[:method] = method.upcase
-        end
+        hash = {
+          method: method.upcase,
+          path: path
+        }
+        hash[:headers] = headers if specified?(:headers)
+        hash
       end
 
       def display_path
