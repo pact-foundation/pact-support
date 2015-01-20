@@ -2,6 +2,11 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.2.1 (21 January 2015)
+
+* 4e26c75 - Ignore HTTP method case when determining if routes match. https://github.com/bethesque/pact-support/issues/3 (Beth, Tue Jan 20 20:15:20 2015 +1100)
+* af96eba - Allow request path to be a Pact::Term (Beth, Tue Jan 20 19:37:23 2015 +1100)
+
 ### 0.1.4 (20 January 2015)
 
 A naughty release because bumping the minor version to 0.2.0 means I have to upgrade all the gems.
