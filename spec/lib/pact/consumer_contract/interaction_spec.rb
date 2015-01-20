@@ -24,6 +24,16 @@ module Pact
             expect(subject == other).to be false
           end
         end
+        context "with a SomethingLike" do
+          let(:response)       { {body: {age: SomethingLike.new(20)}  } }
+          let(:other_response) { {body: {age: SomethingLike.new(20)}  } }
+          let(:other)          { InteractionFactory.create(response: other_response) }
+          subject              { InteractionFactory.create response: response }
+
+          it "returns true" do
+            expect(subject == other).to be true
+          end
+         end
       end
 
       describe "matches_criteria?" do
