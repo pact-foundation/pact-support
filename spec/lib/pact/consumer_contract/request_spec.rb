@@ -35,6 +35,15 @@ module Pact
           expect(subject.matches_route?(other)).to be true
         end
       end
+
+      context "when the path is a Pact::Term" do
+        subject { Request::Expected.from_hash(method: 'get', path: Pact::Term.new(matcher: %r{/alligators/.*}, generate: '/alligators/Mary')) }
+        let(:other) { Consumer::Request::Actual.from_hash(method: 'get', path: '/alligators/John', query: nil, headers: {}) }
+
+        it "returns true" do
+          expect(subject.matches_route?(other)).to be true
+        end
+      end
     end
 
     describe "matching to actual requests" do
