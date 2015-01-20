@@ -67,6 +67,14 @@ module Pact
           end
         end
 
+        context "with a Pact::Term for the path" do
+          subject { TestRequest.new("get", Pact::Term.new(matcher: /a/, generate: '/apple'), {}, {} , "").method_and_path }
+
+          it "uses the generate value" do
+            expect(subject).to eq("GET /apple")
+          end
+        end
+
         context "with a path" do
           subject { TestRequest.new("get", "/something", {}, {} , "").method_and_path }
 
