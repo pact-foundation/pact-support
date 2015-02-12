@@ -71,7 +71,7 @@ module Pact
       end
 
       def copy_no_diff(thing, target)
-        thing
+        NoDifferenceDecorator.new
       end
 
       def copy_diff difference, target
@@ -104,13 +104,21 @@ module Pact
         string.gsub(/,(\n\s*\])/, '\1')
       end
 
+      class NoDifferenceDecorator
+
+        def to_json options = {}
+          "... "
+        end
+
+      end
+
       class RegexpDecorator
 
         def initialize regexp
           @regexp = regexp
         end
 
-        def to_json options={}
+        def to_json options = {}
           @regexp.inspect
         end
 

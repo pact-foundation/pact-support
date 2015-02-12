@@ -64,16 +64,16 @@ EOF
           let(:diff) { [NoDiffIndicator.new, Difference.new({name: 'Mary'}, "Joe"), NoDiffIndicator.new] }
 
           it "displays '+' next to the incorrect values and '-' next to the missing ones" do
-            expect(subject).to match /no difference here!/
+            expect(subject).to include "... ,"
             expect(subject).to match /\-.*{/
             expect(subject).to match /\-.*}/
             expect(subject).to match /\-.*Mary/
             expect(subject).to match /\+.*Joe/
-            expect(subject).to match /no.*Mary.*Joe.*no/m
+            expect(subject).to match /\.\.\..*Mary.*Joe.*\.\.\./m
           end
 
           it "doesn't display the no difference indicator as a change" do
-            expect(subject).to match(/^\s+"no difference here!",$/)
+            expect(subject).to match(/^\s+... ,$/)
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
@@ -176,9 +176,9 @@ EOF
           end
 
           it "doesn't mark the 'no difference' as a change" do
-            expect(subject).to match /"#{NoDiffIndicator.new.to_s}",/
-            expect(subject).to_not match /\-.*#{NoDiffIndicator.new.to_s}/
-            expect(subject).to_not match /\+.*#{NoDiffIndicator.new.to_s}/
+            expect(subject).to include "... ,"
+            expect(subject).to_not match /\-.*\.\.\./
+            expect(subject).to_not match /\+.*\.\.\./
           end
 
           it "does not display the UnexpectedIndex" do
