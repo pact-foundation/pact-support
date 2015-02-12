@@ -27,7 +27,8 @@ module Pact
         expected = generate_string(diff, :expected)
         actual = generate_string(diff, :actual)
         suffix = @include_explanation ?  "\n" + key : ''
-        @differ.diff_as_string(actual, expected).lstrip + suffix
+        string_diff = remove_comma_from_end_of_arrays(@differ.diff_as_string(actual, expected).lstrip)
+        string_diff + suffix
       end
 
       private
@@ -48,7 +49,8 @@ module Pact
         comparable = handle(diff, target)
         begin
           # Can't think of an elegant way to check if we can pretty generate other than to try it and maybe fail
-          fix_blank_lines_in_empty_hashes JSON.pretty_generate(comparable)
+          json = fix_blank_lines_in_empty_hashes JSON.pretty_generate(comparable)
+          add_comma_to_end_of_arrays json
         rescue JSON::GeneratorError
           comparable.to_s
         end
@@ -69,7 +71,7 @@ module Pact
       end
 
       def copy_no_diff(thing, target)
-        thing
+        NoDifferenceDecorator.new
       end
 
       def copy_diff difference, target
@@ -94,13 +96,29 @@ module Pact
         "     Values where the expected matches the actual are not shown.\n"
       end
 
+      def add_comma_to_end_of_arrays string
+        string.gsub(/(\n\s*\])/, ',\1')
+      end
+
+      def remove_comma_from_end_of_arrays string
+        string.gsub(/,(\n\s*\])/, '\1')
+      end
+
+      class NoDifferenceDecorator
+
+        def to_json options = {}
+          "... "
+        end
+
+      end
+
       class RegexpDecorator
 
         def initialize regexp
           @regexp = regexp
         end
 
-        def to_json options={}
+        def to_json options = {}
           @regexp.inspect
         end
 

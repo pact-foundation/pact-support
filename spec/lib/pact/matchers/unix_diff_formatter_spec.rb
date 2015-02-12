@@ -64,16 +64,16 @@ EOF
           let(:diff) { [NoDiffAtIndex.new, Difference.new({name: 'Mary'}, "Joe"), NoDiffAtIndex.new] }
 
           it "displays '+' next to the incorrect values and '-' next to the missing ones" do
-            expect(subject).to match /no difference at this index/
+            expect(subject).to include "... ,"
             expect(subject).to match /\-.*{/
             expect(subject).to match /\-.*}/
             expect(subject).to match /\-.*Mary/
             expect(subject).to match /\+.*Joe/
-            expect(subject).to match /no.*Mary.*Joe.*no/m
+            expect(subject).to match /\.\.\..*Mary.*Joe.*\.\.\./m
           end
 
           it "doesn't display the no difference indicator as a change" do
-            expect(subject).to match(/^\s+"<no difference at this index>",$/)
+            expect(subject).to match(/^\s+... ,$/)
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
@@ -160,13 +160,14 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 8 + key_lines_count
+            expect(line_count).to eq 7 + key_lines_count
           end
 
         end
 
         context "with an unexpected index" do
           let(:diff) { [NoDiffAtIndex.new, Difference.new(UnexpectedIndex.new, {name: 'Mary'})] }
+          let(:diff) { { some_array: [NoDiffAtIndex.new, Difference.new(UnexpectedIndex.new, {name: 'Mary'})]} }
 
           it "displays '+' next to the unexpected item" do
             expect(subject).to match /\+.*{/
@@ -175,10 +176,10 @@ EOF
             expect(subject).to match /\+.*Mary/
           end
 
-          xit "doesn't mark the 'no difference' as a change" do
-            expect(subject).to match /#{NoDiffAtIndex.new.to_s},/
-            expect(subject).to_not match /\-.*#{NoDiffAtIndex.new.to_s}/
-            expect(subject).to_not match /\+.*#{NoDiffAtIndex.new.to_s}/
+          it "doesn't mark the 'no difference' as a change" do
+            expect(subject).to include "... ,"
+            expect(subject).to_not match /\-.*\.\.\./
+            expect(subject).to_not match /\+.*\.\.\./
           end
 
           it "does not display the UnexpectedIndex" do
@@ -186,7 +187,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 8 + key_lines_count
+            expect(line_count).to eq 9 + key_lines_count
           end
 
         end
@@ -204,7 +205,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 11 + key_lines_count
+            expect(line_count).to eq 10 + key_lines_count
           end
 
         end
