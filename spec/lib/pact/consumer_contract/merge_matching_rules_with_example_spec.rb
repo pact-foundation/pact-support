@@ -4,7 +4,7 @@ module Pact
 
   describe MergeMatchingRulesWithExample do
 
-    subject { MergeMatchingRulesWithExample.call expected, "$.body", matching_rules }
+    subject { MergeMatchingRulesWithExample.call expected, matching_rules, "$.body" }
 
     before do
       allow($stderr).to receive(:puts)

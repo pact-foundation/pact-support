@@ -2,14 +2,14 @@ module Pact
 
   class MergeMatchingRulesWithExample
 
-    def self.call expected, root_path, matching_rules
-      new(expected, root_path, matching_rules).call
+    def self.call expected, matching_rules, root_path = '$'
+      new(expected, matching_rules, root_path).call
     end
 
-    def initialize expected, root_path, matching_rules
+    def initialize expected, matching_rules, root_path
       @expected = expected
-      @root_path = root_path
       @matching_rules = matching_rules
+      @root_path = root_path
     end
 
     def call

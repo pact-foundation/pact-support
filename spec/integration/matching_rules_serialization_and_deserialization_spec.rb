@@ -8,7 +8,7 @@ describe "converting Pact::Term and Pact::SomethingLike to matching rules and ba
 
   let(:example) { Pact::Reification.from_term expected }
   let(:matching_rules) { Pact::CreateMatchingRules.(expected) }
-  let(:recreated_expected) { Pact::MergeMatchingRulesWithExample.(example, "$", matching_rules)}
+  let(:recreated_expected) { Pact::MergeMatchingRulesWithExample.(example, matching_rules)}
 
   context "with a Pact::Term" do
     let(:expected) do

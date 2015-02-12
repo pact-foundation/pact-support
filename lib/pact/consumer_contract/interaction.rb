@@ -19,9 +19,9 @@ module Pact
       end
 
       def self.from_hash hash
-        request_hash = Pact::MergeMatchingRulesWithExample.(hash['request'], '$', hash['request']['requestMatchingRules'])
+        request_hash = Pact::MergeMatchingRulesWithExample.(hash['request'], hash['request']['requestMatchingRules'])
         request = Pact::Request::Expected.from_hash(request_hash)
-        response_hash = Pact::MergeMatchingRulesWithExample.(hash['response'], '$', hash['response']['responseMatchingRules'])
+        response_hash = Pact::MergeMatchingRulesWithExample.(hash['response'], hash['response']['responseMatchingRules'])
         response = Pact::Response.from_hash(response_hash)
         new(symbolize_keys(hash).merge({request: request, response: response}))
       end
