@@ -160,13 +160,13 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 8 + key_lines_count
+            expect(line_count).to eq 7 + key_lines_count
           end
 
         end
 
         context "with an unexpected index" do
-          let(:diff) { [NoDiffIndicator.new, Difference.new(UnexpectedIndex.new, {name: 'Mary'})] }
+          let(:diff) { { some_array: [NoDiffIndicator.new, Difference.new(UnexpectedIndex.new, {name: 'Mary'})]} }
 
           it "displays '+' next to the unexpected item" do
             expect(subject).to match /\+.*{/
@@ -175,8 +175,8 @@ EOF
             expect(subject).to match /\+.*Mary/
           end
 
-          xit "doesn't mark the 'no difference' as a change" do
-            expect(subject).to match /#{NoDiffIndicator.new.to_s},/
+          it "doesn't mark the 'no difference' as a change" do
+            expect(subject).to match /"#{NoDiffIndicator.new.to_s}",/
             expect(subject).to_not match /\-.*#{NoDiffIndicator.new.to_s}/
             expect(subject).to_not match /\+.*#{NoDiffIndicator.new.to_s}/
           end
@@ -186,7 +186,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 8 + key_lines_count
+            expect(line_count).to eq 9 + key_lines_count
           end
 
         end
@@ -204,7 +204,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 11 + key_lines_count
+            expect(line_count).to eq 10 + key_lines_count
           end
 
         end
