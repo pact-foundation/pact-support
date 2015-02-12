@@ -45,21 +45,32 @@ module Pact
     def wrap object, path
       rules = @matching_rules[path]
       return object unless rules
+
       if rules['match'] == 'type'
-        log_ignored_rules(path, rules, 'match', 'type')
-        Pact::SomethingLike.new(object)
+        handle_match_type(object, path, rules)
       elsif rules['regex']
-        log_ignored_rules(path, rules, 'regex', rules['regex'])
-        Pact::Term.new(generate: object, matcher: Regexp.new(rules['regex']))
+        handle_regex(object, path, rules)
       else
-        log_ignored_rules(path, rules, nil, nil)
+        log_ignored_rules(path, rules, {})
         object
       end
     end
 
-    def log_ignored_rules path, rules, used_key, used_value
+    def handle_match_type object, path, rules
+      log_ignored_rules(path, rules, {'match' => 'type'})
+      Pact::SomethingLike.new(object)
+    end
+
+    def handle_regex object, path, rules
+      log_ignored_rules(path, rules, {'match' => 'regex', 'regex' => rules['regex']})
+      Pact::Term.new(generate: object, matcher: Regexp.new(rules['regex']))
+    end
+
+    def log_ignored_rules path, rules, used_rules
       dup_rules = rules.dup
-      dup_rules.delete(used_key) if used_key && dup_rules[used_key] == used_value
+      used_rules.each_pair do | used_key, used_value |
+        dup_rules.delete(used_key) if dup_rules[used_key] == used_value
+      end
       if dup_rules.any?
         $stderr.puts "WARN: Ignoring unsupported matching rules #{dup_rules} for path #{path}"
       end

@@ -101,7 +101,7 @@ module Pact
 
         let(:matching_rules) do
           {
-            "$.body._links.self.href" => { "regex" => "http:\\/\\/.*\\/thing", "ignored" => "matchingrule" }
+            "$.body._links.self.href" => { "regex" => "http:\\/\\/.*\\/thing", "match" => "regex", "ignored" => "somerule" }
           }
         end
         it "creates a Pact::Term at the appropriate path" do
@@ -111,8 +111,9 @@ module Pact
         end
         it "it logs the rules it has ignored" do
           expect($stderr).to receive(:puts) do | message |
-            expect(message).to match /ignored.*matchingrule/
+            expect(message).to match /ignored.*"somerule"/
             expect(message).to_not match /regex/
+            expect(message).to_not match /"match"/
           end
           subject
         end
