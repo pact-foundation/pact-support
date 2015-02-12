@@ -27,7 +27,7 @@ module Pact
       @matcher = attributes[:matcher]
       raise "Please specify a matcher for the Term" unless @matcher != nil
       raise "Please specify a value to generate for the Term" unless @generate != nil
-      raise "Value to generate \"#{@generate}\" does not match regular expression #{@matcher}" unless @generate =~ @matcher
+      raise "Value to generate \"#{@generate}\" does not match regular expression #{@matcher.inspect}" unless @generate =~ @matcher
     end
 
     def to_hash
