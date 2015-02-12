@@ -43,7 +43,7 @@ module Pact
 
         let(:rules) do
           {
-            "$.body.alligator.name" => {"match" => "regex", "regex" => "/.*a/"}
+            "$.body.alligator.name" => {"match" => "regex", "regex" => ".*a"}
           }
         end
 
@@ -66,7 +66,7 @@ module Pact
         let(:rules) do
           {
             "$.body.foo" => {"match" => "type"},
-            "$.body.alligator.name" => {"match" => "regex", "regex"=>"/.*a/"},
+            "$.body.alligator.name" => {"match" => "regex", "regex"=>".*a"},
           }
         end
 

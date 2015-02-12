@@ -52,7 +52,7 @@ module Pact
     def record_regex_rule term, path
       rules[path] ||= {}
       rules[path]['match'] = 'regex'
-      rules[path]['regex'] = term.matcher.inspect
+      rules[path]['regex'] = term.matcher.inspect[1..-2]
     end
 
     def record_rule object, path, match_type
