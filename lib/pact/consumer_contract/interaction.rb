@@ -23,7 +23,7 @@ module Pact
         request = Pact::Request::Expected.from_hash(request_hash)
         response_hash = Pact::MergeMatchingRulesWithExample.(hash['response'], hash['response']['responseMatchingRules'])
         response = Pact::Response.from_hash(response_hash)
-        new(symbolize_keys(hash).merge({request: request, response: response}))
+        new(symbolize_keys(hash).merge(request: request, response: response))
       end
 
       def to_hash
