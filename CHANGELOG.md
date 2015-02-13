@@ -2,6 +2,18 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.3.0 (13 Februrary 2015)
+
+* 4e29277 - Create a public API for extracting matching rules for pact-mock_service to use. (Beth Skurrie, Fri Feb 13 15:35:14 2015 +1100)
+* 17ffb7e - Improve Pact::Term error message when value does not match regexp. (Beth Skurrie, Thu Feb 12 15:35:28 2015 +1100)
+* ad0b37b - Added logic to convert Term and SomethingLike to v2 matching rules (Beth Skurrie, Thu Feb 12 14:55:34 2015 +1100)
+* cc15c4d - Renamed <index not found> to <item not found>, and <index not to exist> to <item not to exist> (Beth Skurrie, Thu Feb 12 11:47:53 2015 +1100)
+* 1b65c46 - Change "no difference here" to ... in unix diff output (Beth Skurrie, Thu Feb 12 11:43:58 2015 +1100)
+* 3cb5b30 - Fix duplicate "no difference here!" in diff when actual array has more items than the expected (Beth Skurrie, Thu Feb 12 11:30:58 2015 +1100)
+* a9da567 - Changed display of NoDiffAtIndex (Beth Skurrie, Tue Dec 23 15:16:49 2014 +1100)
+* f9619e6 - Log warning message when unsupported rules are detected (Beth Skurrie, Tue Dec 23 14:42:22 2014 +1100)
+* 9875bef - Added support for v2 regular expression matching in provider (Beth Skurrie, Tue Dec 23 14:15:00 2014 +1100)
+
 ### 0.2.1 (21 January 2015)
 
 * 4e26c75 - Ignore HTTP method case when determining if routes match. https://github.com/bethesque/pact-support/issues/3 (Beth, Tue Jan 20 20:15:20 2015 +1100)
