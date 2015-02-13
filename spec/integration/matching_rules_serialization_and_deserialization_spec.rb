@@ -1,14 +1,14 @@
 require 'pact/term'
 require 'pact/something_like'
-require 'pact/consumer_contract/create_matching_rules'
-require 'pact/consumer_contract/merge_matching_rules_with_example'
+require 'pact/matching_rules/create'
+require 'pact/matching_rules/merge_with_example'
 require 'pact/reification'
 
 describe "converting Pact::Term and Pact::SomethingLike to matching rules and back again" do
 
   let(:example) { Pact::Reification.from_term expected }
-  let(:matching_rules) { Pact::CreateMatchingRules.(expected) }
-  let(:recreated_expected) { Pact::MergeMatchingRulesWithExample.(example, matching_rules)}
+  let(:matching_rules) { Pact::MatchingRules::Create.(expected) }
+  let(:recreated_expected) { Pact::MatchingRules::MergeWithExample.(example, matching_rules)}
 
   context "with a Pact::Term" do
     let(:expected) do
