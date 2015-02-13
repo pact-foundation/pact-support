@@ -1,14 +1,14 @@
-require 'pact/matching_rules/create'
+require 'pact/matching_rules/extract'
 require 'pact/something_like'
 require 'pact/term'
 
 module Pact
   module MatchingRules
-    describe Create do
+    describe Extract do
 
       describe ".call" do
 
-        subject { Create.call(matchable) }
+        subject { Extract.call(matchable) }
 
         context "with a Pact::SomethingLike" do
           let(:matchable) do

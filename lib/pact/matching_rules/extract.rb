@@ -1,6 +1,6 @@
 module Pact
   module MatchingRules
-    class Create
+    class Extract
 
       def self.call matchable
         new(matchable).call

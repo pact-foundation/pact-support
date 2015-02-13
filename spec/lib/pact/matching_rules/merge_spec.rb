@@ -1,10 +1,10 @@
-require 'pact/matching_rules/merge_with_example'
+require 'pact/matching_rules/merge'
 
 module Pact
   module MatchingRules
-    describe MergeWithExample do
+    describe Merge do
 
-      subject { MergeWithExample.(expected, matching_rules, "$.body") }
+      subject { Merge.(expected, matching_rules, "$.body") }
 
       before do
         allow($stderr).to receive(:puts)

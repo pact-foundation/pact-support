@@ -1,6 +1,6 @@
 module Pact
   module MatchingRules
-    class MergeWithExample
+    class Merge
 
       def self.call expected, matching_rules, root_path = '$'
         new(expected, matching_rules, root_path).call
