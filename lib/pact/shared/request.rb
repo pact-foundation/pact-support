@@ -42,8 +42,8 @@ module Pact
       end
 
       def content_type
-        return nil unless specified?(:headers)
-        headers['Content-Type']
+        return nil unless specified?(:headers) && headers['Content-Type']
+        Pact::Reification.from_term(headers['Content-Type'])
       end
 
       def content_type? content_type

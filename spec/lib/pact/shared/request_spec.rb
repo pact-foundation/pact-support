@@ -104,14 +104,26 @@ module Pact
         end
         context "when there is no Content-Type header" do
           let(:headers) { {} }
-          it "returns the content-type" do
+          it "returns nil" do
             expect(subject.send(:content_type)).to be nil
           end
         end
-        context "when there is a content-type header (" do
+        context "when there is a Content-Type header" do
+          let(:headers) { {'Content-Type' => 'blah'} }
+          it "returns the Content-Type" do
+            expect(subject.send(:content_type)).to eq 'blah'
+          end
+        end
+        context "when there is a content-type header" do
           let(:headers) { {'content-type' => 'blah'} }
           it "returns the content-type" do
             expect(subject.send(:content_type)).to eq 'blah'
+          end
+        end
+        context "when the Content-Type header is a Pact::Term" do
+          let(:headers) { {'Content-Type' => Pact::Term.new(generate: 'application/json', matcher: /json/)} }
+          it "returns the reified Content-Type" do
+            expect(subject.send(:content_type)).to eq 'application/json'
           end
         end
       end

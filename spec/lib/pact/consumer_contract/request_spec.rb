@@ -69,6 +69,17 @@ module Pact
         expect(subject.matches? actual_request).to be true
       end
 
+      context "when the Content-Type header is a Pact::Term" do
+        let(:expected_headers) { {'Content-Type' => Pact::Term.new(generate: 'application/json', matcher: /json/) } }
+        let(:expected_body) { {'foo' => 'bar'} }
+        let(:actual_headers) { {'Content-Type' => 'foo/json'} }
+        let(:actual_body) { {'foo' => 'bar'} }
+
+        it "reifies the term before matching" do
+          expect(subject.matches? actual_request).to be true
+        end
+      end
+
       context "when the methods are the same but one is symbolized" do
         let(:expected_method) { :get }
         let(:actual_method) { 'get' }
