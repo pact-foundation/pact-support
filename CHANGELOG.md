@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.3.1 (24 Februrary 2015)
+
+* e3d6d6d - Fixed bug when Content-Type is a Pact::Term. (Beth Skurrie, Tue Feb 24 17:25:10 2015 +1100)
+
 ### 0.3.0 (13 Februrary 2015)
 
 * 4e29277 - Create a public API for extracting matching rules for pact-mock_service to use. (Beth Skurrie, Fri Feb 13 15:35:14 2015 +1100)
