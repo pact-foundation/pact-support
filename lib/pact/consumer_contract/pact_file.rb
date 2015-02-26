@@ -5,7 +5,8 @@ module Pact
     extend self
 
     def read uri, options = {}
-      pact = open(uri.to_s) { | file | file.read }
+      open_options = options[:username] ? {} : {http_basic_authentication:[options[:username],options[:password]]}
+      pact = open(uri.to_s, open_options) { | file | file.read }
       if options[:save_pactfile_to_tmp]
         save_pactfile_to_tmp pact, ::File.basename(uri.to_s)
       end
