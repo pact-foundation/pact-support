@@ -2,6 +2,11 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.4.0 (20 March 2015)
+
+* 409bde5 - support url including basic authentication info, e.g.: http://username:password@packtbroker.com (lifei zhou, Wed Mar 18 21:49:29 2015 +1100)
+* d0d42bb - added http basic authentication options when open uri (lifei zhou, Thu Feb 26 22:03:21 2015 +1100)
+
 ### 0.3.1 (24 Februrary 2015)
 
 * e3d6d6d - Fixed bug when Content-Type is a Pact::Term. (Beth Skurrie, Tue Feb 24 17:25:10 2015 +1100)
