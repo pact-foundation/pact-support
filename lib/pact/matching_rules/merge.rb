@@ -1,3 +1,5 @@
+require 'pact/array_like'
+
 module Pact
   module MatchingRules
     class Merge
@@ -34,6 +36,16 @@ module Pact
       end
 
       def recurse_array array, path
+
+        array_like_path = "#{path}[*].*"
+
+        # if @matching_rules[array_like]['match'] == 'type'
+        #   # handle more than one example
+        #   Pact::ArrayLike.new(object)
+
+        # else
+        # end
+
         new_array = []
         array.each_with_index do | item, index |
           new_path = path + "[#{index}]"
@@ -42,14 +54,19 @@ module Pact
         new_array
       end
 
+      # def handle_array_like
+
       def wrap object, path
         rules = @matching_rules[path]
-        return object unless rules
+        array_rules = @matching_rules["#{path}[*].*"]
+        return object unless rules || array_rules
 
         if rules['match'] == 'type'
           handle_match_type(object, path, rules)
         elsif rules['regex']
           handle_regex(object, path, rules)
+        # elsif array_rules['match'] == 'type'
+        #   handle_array_like(object, path, rules)
         else
           log_ignored_rules(path, rules, {})
           object

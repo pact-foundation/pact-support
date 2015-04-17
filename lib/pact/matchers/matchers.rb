@@ -37,6 +37,7 @@ module Pact
       when Array then array_diff(expected, actual, options)
       when Regexp then regexp_diff(expected, actual, options)
       when Pact::SomethingLike then calculate_diff(expected.contents, actual, options.merge(:type => true))
+      when Pact::ArrayLike then array_like_diff(expected, actual, options)
       else object_diff(expected, actual, options)
       end
     end
@@ -74,6 +75,16 @@ module Pact
         end
       end
       diff_found ? difference : NO_DIFF
+    end
+
+    def array_like_diff array_like, actual, options
+      if actual.is_a? Array
+        expected_size = [array_like.min, actual.size].max
+        expected_array = expected_size.times.collect{ Pact::Term.unpack_regexps(array_like.contents) }
+        actual_array_diff expected_array, actual, options.merge(:type => true)
+      else
+        Difference.new array_like.generate, actual
+      end
     end
 
     def hash_diff expected, actual, options
