@@ -43,7 +43,7 @@ module Pact
           warn_when_not_one_example_item(array, path)
           min = @matching_rules[path]['min']
           # log_ignored_rules(path, @matching_rules[path], {'min' => min})
-          Pact::ArrayLike.new(array.first, min: min)
+          Pact::ArrayLike.new(recurse(array.first, "#{path}[*]"), min: min)
         else
           new_array = []
           array.each_with_index do | item, index |

@@ -167,6 +167,37 @@ module Pact
           end
         end
 
+        describe "with an array where all elements should match by type nested inside another array where all elements should match by type" do
+          let(:expected) do
+            {
+
+              'alligators' => [
+                {
+                  'name' => 'Mary',
+                  'children' => [
+                    'age' => 9
+                  ]
+                }
+              ]
+
+            }
+          end
+
+          let(:matching_rules) do
+            {
+              "$.body.alligators" => { 'min' => 2 },
+              "$.body.alligators[*].*" => { 'match' => 'type'},
+              "$.body.alligators[*].children" => { 'min' => 1 },
+              "$.body.alligators[*].children[*].*" => { 'match' => 'type'}
+            }
+          end
+          it "creates a Pact::ArrayLike at the appropriate path" do
+            expect(subject["alligators"].contents['children']).to be_instance_of(Pact::ArrayLike)
+            expect(subject["alligators"].contents['children'].contents).to eq 'age' => 9
+            expect(subject["alligators"].contents['children'].min).to eq 1
+          end
+        end
+
         describe "with an example array with more than one item" do
           let(:expected) do
             {
