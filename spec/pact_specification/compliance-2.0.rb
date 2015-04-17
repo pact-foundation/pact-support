@@ -36,7 +36,7 @@ describe "Pact gem complicance with Pact Specification 1.0.0" do
                 test_content = JSON.parse(file_content)
                 default = {'query' => '', 'headers' => {}}
 
-                request_hash = Pact::MatchingRules.merge(test_content["expected"], test_content["expected"]['requestMatchingRules'])
+                request_hash = Pact::MatchingRules.merge(test_content["expected"], test_content["expected"]['matchingRules'])
                 expected = Pact::Request::Expected.from_hash(default.merge(request_hash))
 
                 # expected = Pact::Request::Expected.from_hash(default.merge(test_content["expected"]))

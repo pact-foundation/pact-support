@@ -7,7 +7,7 @@
     "body": {
       "name": "Mary"
     },
-    "requestMatchingRules": {
+    "matchingRules": {
       "$.body.name" : {"regex" : ".+"}
     }
   },
@@ -20,7 +20,7 @@
         }
       }
     },
-    "responseMatchingRules" : {
+    "matchingRules" : {
       "$.body._links.self.href": {"regex": "http:\\/\\/.*\\/\\d+"}
     }
   }
