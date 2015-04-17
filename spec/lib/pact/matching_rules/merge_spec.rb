@@ -142,6 +142,30 @@ module Pact
             expect(subject["_links"]["self"][0]["href"].matcher.inspect).to eq "/http:\\/\\/.*\\/thing/"
           end
         end
+
+        describe "with an array where all elements should match by type" do
+          let(:expected) do
+            {
+              'body' => {
+                'alligators' => [
+                  {'name' => 'Mary'}
+                ]
+              }
+            }
+          end
+
+          let(:matching_rules) do
+            {
+              "$.body.alligators" => { 'min' => 2 },
+              "$.body.alligators[*].*" => { 'match' => 'type'}
+            }
+          end
+          xit "creates a Pact::ArrayLike at the appropriate path" do
+            expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
+            expect(subject["alligators"].contents).to eq 'name' => 'Mary'
+            expect(subject["alligators"].min).to eq 2
+          end
+        end
       end
     end
   end

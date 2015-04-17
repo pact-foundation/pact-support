@@ -21,16 +21,15 @@ module Pact
       attr_reader :matchable, :rules
 
       def recurse object, path, match_type
-
         case object
         when Hash then recurse_hash(object, path, match_type)
         when Array then recurse_array(object, path, match_type)
-        when Pact::SomethingLike then recurse_something_like(object, path, match_type)
+        when Pact::SomethingLike then handle_something_like(object, path, match_type)
+        when Pact::ArrayLike then handle_array_like(object, path, match_type)
         when Pact::Term then record_regex_rule object, path
         else
-          record_rule object, path, match_type
+          record_match_type_rule path, match_type
         end
-
       end
 
       def recurse_hash hash, path, match_type
@@ -45,8 +44,19 @@ module Pact
         end
       end
 
-      def recurse_something_like something_like, path, match_type
+      def handle_something_like something_like, path, match_type
         recurse something_like.contents, path, "type"
+      end
+
+      def handle_array_like array_like, path, match_type
+        record_rule "#{path}", 'min' => array_like.min
+        record_match_type_rule "#{path}[*].*", 'type'
+        recurse array_like.contents, "#{path}[*]", :array_like
+      end
+
+      def record_rule path, rule
+        rules[path] ||= {}
+        rules[path] = rules[path].merge(rule)
       end
 
       def record_regex_rule term, path
@@ -55,9 +65,11 @@ module Pact
         rules[path]['regex'] = term.matcher.inspect[1..-2]
       end
 
-      def record_rule object, path, match_type
-        rules[path] ||= {}
-        rules[path]['match'] = 'type'
+      def record_match_type_rule path, match_type
+        unless match_type == :array_like
+          rules[path] ||= {}
+          rules[path]['match'] = match_type
+        end
       end
     end
   end

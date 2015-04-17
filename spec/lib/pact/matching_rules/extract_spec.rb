@@ -1,5 +1,6 @@
 require 'pact/matching_rules/extract'
 require 'pact/something_like'
+require 'pact/array_like'
 require 'pact/term'
 
 module Pact
@@ -96,6 +97,54 @@ module Pact
           end
 
           it "lists a rule for each item" do
+            expect(subject).to eq rules
+          end
+        end
+
+        context "with an ArrayLike" do
+          let(:matchable) do
+            {
+              body: {
+                alligators: Pact::ArrayLike.new(
+                  name: 'Fred'
+                )
+              }
+            }
+          end
+
+          let(:rules) do
+            {
+              "$.body.alligators" => {"min" => 1},
+              "$.body.alligators[*].*" => {"match" => "type"}
+            }
+          end
+
+          it "lists a rule for all items" do
+            expect(subject).to eq rules
+          end
+        end
+
+        context "with an ArrayLike with a Pact::Term inside" do
+          let(:matchable) do
+            {
+              body: {
+                alligators: Pact::ArrayLike.new(
+                  name: 'Fred',
+                  phoneNumber: Pact::Term.new(generate: '1234567', matcher: /\d+/)
+                )
+              }
+            }
+          end
+
+          let(:rules) do
+            {
+              "$.body.alligators" => {"min" => 1},
+              "$.body.alligators[*].*" => {"match" => "type"},
+              "$.body.alligators[*].phoneNumber" => {"match" => "regex", "regex" => "\\d+"}
+            }
+          end
+
+          it "lists a rule that specifies that the regular expression must match" do
             expect(subject).to eq rules
           end
         end
