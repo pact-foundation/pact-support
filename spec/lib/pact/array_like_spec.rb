@@ -4,14 +4,25 @@ module Pact
   describe ArrayLike do
 
     describe "#eq" do
+      subject { ArrayLike.new({name: 'Fred'}, {min: 3}) }
       context "when the contents and min are the same" do
-        it "returns true"
+        let(:other) { ArrayLike.new({name: 'Fred'}, {min: 3}) }
+        it "returns true" do
+          expect(subject).to eq other
+        end
+
       end
       context "when the contents are different" do
-        it "returns false"
+        let(:other) { ArrayLike.new({name: 'John'}, {min: 3}) }
+        it "returns false" do
+          expect(subject).to_not eq other
+        end
       end
       context "when the min is different" do
-        it "returns false"
+        let(:other) { ArrayLike.new({name: 'Fred'}, {min: 1}) }
+        it "returns false" do
+          expect(subject).to_not eq other
+        end
       end
     end
 

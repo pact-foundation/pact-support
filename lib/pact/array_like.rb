@@ -14,7 +14,8 @@ module Pact
     def to_hash
       {
         :json_class => self.class.name,
-        :contents => contents
+        :contents => contents,
+        :min => min
       }
     end
 
@@ -27,7 +28,8 @@ module Pact
     end
 
     def self.json_create hash
-      new(symbolize_keys(hash)[:contents])
+      symbolized_hash = symbolize_keys(hash)
+      new(symbolized_hash[:contents], {min: symbolized_hash[:min]})
     end
 
     def eq other
@@ -35,7 +37,7 @@ module Pact
     end
 
     def == other
-      other.is_a?(ArrayLike) && other.contents == self.contents
+      other.is_a?(ArrayLike) && other.contents == self.contents && other.min == self.min
     end
 
     def generate

@@ -36,22 +36,28 @@ module Pact
       end
 
       def recurse_array array, path
-
         array_like_path = "#{path}[*].*"
+        array_match_type = @matching_rules[array_like_path] && @matching_rules[array_like_path]['match']
 
-        # if @matching_rules[array_like]['match'] == 'type'
-        #   # handle more than one example
-        #   Pact::ArrayLike.new(object)
-
-        # else
-        # end
-
-        new_array = []
-        array.each_with_index do | item, index |
-          new_path = path + "[#{index}]"
-          new_array << recurse(wrap(item, new_path), new_path)
+        if array_match_type == 'type'
+          warn_when_not_one_example_item(array, path)
+          min = @matching_rules[path]['min']
+          # log_ignored_rules(path, @matching_rules[path], {'min' => min})
+          Pact::ArrayLike.new(array.first, min: min)
+        else
+          new_array = []
+          array.each_with_index do | item, index |
+            new_path = path + "[#{index}]"
+            new_array << recurse(wrap(item, new_path), new_path)
+          end
+          new_array
         end
-        new_array
+      end
+
+      def warn_when_not_one_example_item array, path
+        unless array.size == 1
+          Pact.configuration.error_stream.puts "WARN: Only the first item will be used to match the items in the array at #{path}"
+        end
       end
 
       # def handle_array_like

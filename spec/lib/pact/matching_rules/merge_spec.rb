@@ -146,11 +146,11 @@ module Pact
         describe "with an array where all elements should match by type" do
           let(:expected) do
             {
-              'body' => {
-                'alligators' => [
-                  {'name' => 'Mary'}
-                ]
-              }
+
+              'alligators' => [
+                {'name' => 'Mary'}
+              ]
+
             }
           end
 
@@ -160,10 +160,41 @@ module Pact
               "$.body.alligators[*].*" => { 'match' => 'type'}
             }
           end
-          xit "creates a Pact::ArrayLike at the appropriate path" do
+          it "creates a Pact::ArrayLike at the appropriate path" do
             expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
             expect(subject["alligators"].contents).to eq 'name' => 'Mary'
             expect(subject["alligators"].min).to eq 2
+          end
+        end
+
+        describe "with an example array with more than one item" do
+          let(:expected) do
+            {
+
+              'alligators' => [
+                {'name' => 'Mary'},
+                {'name' => 'Joe'}
+              ]
+
+            }
+          end
+
+          let(:matching_rules) do
+            {
+              "$.body.alligators" => { 'min' => 2 },
+              "$.body.alligators[*].*" => { 'match' => 'type'}
+            }
+          end
+
+          xit "doesn't warn about the min size being ignored" do
+            expect(Pact.configuration.error_stream).to receive(:puts).once
+            subject
+          end
+
+          it "warns that the other items will be ignored" do
+            allow(Pact.configuration.error_stream).to receive(:puts)
+            expect(Pact.configuration.error_stream).to receive(:puts).with(/WARN: Only the first item/)
+            subject
           end
         end
       end
