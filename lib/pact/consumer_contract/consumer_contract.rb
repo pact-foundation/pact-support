@@ -6,10 +6,10 @@ require 'pact/shared/active_support_support'
 require 'date'
 require 'json/add/regexp'
 require 'open-uri'
-require_relative 'service_consumer'
-require_relative 'service_provider'
-require_relative 'interaction'
-require_relative 'pact_file'
+require 'pact/consumer_contract/service_consumer'
+require 'pact/consumer_contract/service_provider'
+require 'pact/consumer_contract/interaction'
+require 'pact/consumer_contract/pact_file'
 
 module Pact
 

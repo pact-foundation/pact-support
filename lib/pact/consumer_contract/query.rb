@@ -1,5 +1,5 @@
-require_relative 'query_hash'
-require_relative 'query_string'
+require 'pact/consumer_contract/query_hash'
+require 'pact/consumer_contract/query_string'
 
 module Pact
   class Query

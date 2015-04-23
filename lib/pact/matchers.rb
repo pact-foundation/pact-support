@@ -1,1 +1,1 @@
-require_relative 'matchers/matchers'
+require 'pact/matchers/matchers'
