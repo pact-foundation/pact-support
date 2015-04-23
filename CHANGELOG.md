@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.4.1 (23 April 2015)
+
+* 7da52f3 - Switch from require_relative to require to avoid double-loading when symlinks are involved (John Meredith, Thu Apr 23 14:46:03 2015 +1000)
+
 ### 0.4.0 (20 March 2015)
 
 * 409bde5 - support url including basic authentication info, e.g.: http://username:password@packtbroker.com (lifei zhou, Wed Mar 18 21:49:29 2015 +1100)
