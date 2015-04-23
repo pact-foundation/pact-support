@@ -1,5 +1,5 @@
 require 'logger'
-require_relative 'configuration'
+require 'pact/configuration'
 
 module Pact
   module Logging
