@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.4.2 (9 May 2015)
+
+* 75f98d7 - Added missing requires (Beth Skurrie, Sat May 9 16:20:07 2015 +1000)
+
 ### 0.4.1 (23 April 2015)
 
 * 7da52f3 - Switch from require_relative to require to avoid double-loading when symlinks are involved (John Meredith, Thu Apr 23 14:46:03 2015 +1000)
