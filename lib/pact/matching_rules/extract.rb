@@ -1,3 +1,7 @@
+require 'pact/something_like'
+require 'pact/array_like'
+require 'pact/term'
+
 module Pact
   module MatchingRules
     class Extract

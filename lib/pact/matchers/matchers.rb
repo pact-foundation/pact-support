@@ -12,6 +12,7 @@ require 'pact/matchers/type_difference'
 require 'pact/matchers/expected_type'
 require 'pact/matchers/actual_type'
 require 'pact/matchers/no_diff_at_index'
+require 'pact/array_like'
 
 module Pact
   module Matchers
