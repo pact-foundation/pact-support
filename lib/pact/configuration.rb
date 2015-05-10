@@ -90,7 +90,14 @@ module Pact
     end
 
     def body_differ_for_content_type content_type
-      differ_registrations.find{ | registration | registration.first =~ content_type }.last
+      differ_registrations
+        .find{ | registration | registration.first =~ content_type }
+        .tap do |it|
+          if content_type.nil? && it.last == Pact::TextDiffer
+            error_stream.puts "WARN: No content type found, performing text diff on body"
+            logger.warn "No content type found, performing text diff on body"
+          end
+        end.last
     end
 
     def log_path
