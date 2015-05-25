@@ -23,15 +23,19 @@ module Pact
     end
 
     def render_pact uri_string, options
-      uri_obj = URI(uri_string)
-      uri_user_info = uri_obj.userinfo
-      if(uri_user_info)
-        options[:username] = uri_obj.user unless options[:username]
-        options[:password] = uri_obj.password unless options[:password]
-        uri_string = uri_string.sub("#{uri_user_info}@", '')
+      if File.file?(uri_string)
+        open(uri_string) { | file | file.read }
+      else
+        uri_obj = URI(uri_string)
+        uri_user_info = uri_obj.userinfo
+        if(uri_user_info)
+          options[:username] = uri_obj.user unless options[:username]
+          options[:password] = uri_obj.password unless options[:password]
+          uri_string = uri_string.sub("#{uri_user_info}@", '')
+        end
+        open_options = options[:username] ? {http_basic_authentication:[options[:username],options[:password]]} : {}
+        open(uri_string, open_options) { | file | file.read }
       end
-      open_options = options[:username] ? {http_basic_authentication:[options[:username],options[:password]]} : {}
-      open(uri_string, open_options) { | file | file.read }
     end
   end
 end
