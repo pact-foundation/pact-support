@@ -6,6 +6,7 @@ module Pact
     end
 
     def symbolize_keys hash
+      return nil if hash.nil?
       hash.inject({}) { |memo, (k,v)| memo[k.to_sym] = v; memo }
     end
   end
