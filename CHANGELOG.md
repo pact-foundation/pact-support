@@ -2,6 +2,11 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.4.3 (7 July 2015)
+
+* cf99e97 - Handle nils when symbolizing keys in a hash (Beth Skurrie, Tue Jul 7 11:52:50 2015 +1000)
+* b100ccd - Log warning when no content type is found that text diff will be performed on body (Beth Skurrie, Sun May 10 21:57:07 2015 +1000)
+
 ### 0.4.2 (9 May 2015)
 
 * 75f98d7 - Added missing requires (Beth Skurrie, Sat May 9 16:20:07 2015 +1000)
