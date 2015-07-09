@@ -21,10 +21,9 @@ module Pact
           let(:rules) do
             {
               "$.body.foo" => {"match" => "type"},
-              "$.body.alligator.name" => {"match" => "type"},
+              "$.body.alligator.name" => {"match" => "type"}
             }
           end
-
 
           it "creates a rule that matches by type" do
             expect(subject).to eq rules
@@ -48,7 +47,6 @@ module Pact
             }
           end
 
-
           it "creates a rule that matches by regex" do
             expect(subject).to eq rules
           end
@@ -70,7 +68,6 @@ module Pact
               "$.body.alligator.name" => {"match" => "regex", "regex"=>".*a"},
             }
           end
-
 
           it "the match:regex overrides the match:type" do
             expect(subject).to eq rules
