@@ -70,7 +70,7 @@ module Pact
       end
 
       def record_match_type_rule path, match_type
-        unless match_type == :array_like
+        unless match_type == :array_like || match_type.nil?
           rules[path] ||= {}
           rules[path]['match'] = match_type
         end

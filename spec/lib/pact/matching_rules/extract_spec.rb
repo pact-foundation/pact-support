@@ -148,6 +148,23 @@ module Pact
             expect(subject).to eq rules
           end
         end
+
+        context "with no special matching" do
+          let(:matchable) do
+            {
+              body: { alligator: { name: 'Mary' } }
+            }
+          end
+
+          let(:rules) do
+            {}
+          end
+
+
+          it "does not create any rules" do
+            expect(subject).to eq rules
+          end
+        end
       end
     end
   end
