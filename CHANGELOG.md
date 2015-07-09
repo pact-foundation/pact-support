@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.4.4 (9 July 2015)
+
+* 6d9be6e - Create no rules for exact matching (Beth Skurrie, Thu Jul 9 14:28:56 2015 +1000)
+
 ### 0.4.3 (7 July 2015)
 
 * cf99e97 - Handle nils when symbolizing keys in a hash (Beth Skurrie, Tue Jul 7 11:52:50 2015 +1000)
