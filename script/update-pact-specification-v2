@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# git remote add pact-specification git@github.com:bethesque/pact-specification.git
+# git fetch pact-specification
+# git subtree add --prefix spec/support/pact-specification-v2 pact-specification/version-2 --squash
+
+git remote add pact-specification git@github.com:bethesque/pact-specification.git
+git fetch pact-specification
+git subtree pull --prefix spec/support/pact-specification-v2 pact-specification/version-2 --squash

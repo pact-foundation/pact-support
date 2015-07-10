@@ -4,7 +4,7 @@ require 'pact/consumer_contract/request'
 require 'pact/matchers/embedded_diff_formatter'
 
 
-PACT_SPEC_DIR = "../pact-specification/testcases"
+PACT_SPEC_DIR = "spec/support/pact-specification-v2/testcases"
 REQUEST_TEST_CASE_FOLDERS = Dir.glob("#{PACT_SPEC_DIR}/request/**")
 REQUEST_TEST_CASE_FILES = Dir.glob("#{PACT_SPEC_DIR}/request/**/*.json")
 
