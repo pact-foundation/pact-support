@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.5.0 (10 July 2015)
+
+* 9451bf4 - Created helper methods for Pact::Term, SomethingLike and ArrayLike (Beth Skurrie, Fri Jul 10 11:44:45 2015 +1000)
+
 ### 0.4.4 (9 July 2015)
 
 * 6d9be6e - Create no rules for exact matching (Beth Skurrie, Thu Jul 9 14:28:56 2015 +1000)
