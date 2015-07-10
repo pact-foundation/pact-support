@@ -1,4 +1,5 @@
 require 'pact/array_like'
+require 'pact/matching_rules/jsonpath'
 
 module Pact
   module MatchingRules
@@ -10,13 +11,22 @@ module Pact
 
       def initialize expected, matching_rules, root_path
         @expected = expected
-        @matching_rules = matching_rules
-        @root_path = root_path
+        @matching_rules = standardise_paths(matching_rules)
+        @root_path = JsonPath.new(root_path).to_s
       end
 
       def call
         return @expected if @matching_rules.nil? || @matching_rules.empty?
         recurse @expected, @root_path
+      end
+
+      private
+
+      def standardise_paths matching_rules
+        return matching_rules if matching_rules.nil? || matching_rules.empty?
+        matching_rules.each_with_object({}) do | (path, rule), new_matching_rules |
+          new_matching_rules[JsonPath.new(path).to_s] = rule
+        end
       end
 
       def recurse expected, path
@@ -30,13 +40,13 @@ module Pact
 
       def recurse_hash hash, path
         hash.each_with_object({}) do | (k, v), new_hash |
-          new_path = path + ".#{k.to_s}"
+          new_path = path + "['#{k.to_s}']"
           new_hash[k] = recurse(wrap(v, new_path), new_path)
         end
       end
 
       def recurse_array array, path
-        array_like_path = "#{path}[*].*"
+        array_like_path = "#{path}[*]*"
         array_match_type = @matching_rules[array_like_path] && @matching_rules[array_like_path]['match']
 
         if array_match_type == 'type'
@@ -60,19 +70,15 @@ module Pact
         end
       end
 
-      # def handle_array_like
-
       def wrap object, path
         rules = @matching_rules[path]
-        array_rules = @matching_rules["#{path}[*].*"]
+        array_rules = @matching_rules["#{path}[*]*"]
         return object unless rules || array_rules
 
         if rules['match'] == 'type'
           handle_match_type(object, path, rules)
         elsif rules['regex']
           handle_regex(object, path, rules)
-        # elsif array_rules['match'] == 'type'
-        #   handle_array_like(object, path, rules)
         else
           log_ignored_rules(path, rules, {})
           object

@@ -36,7 +36,7 @@ module Pact
             expect(message).to include("WARN")
             expect(message).to include("type")
             expect(message).to include("unknown")
-            expect(message).to include("$.body._links.self.href")
+            expect(message).to include("$['body']")
           end
           subject
         end
@@ -227,6 +227,24 @@ module Pact
             expect(Pact.configuration.error_stream).to receive(:puts).with(/WARN: Only the first item/)
             subject
           end
+        end
+      end
+
+      describe "using bracket notation for a Hash" do
+        let(:expected) do
+          {
+            "name" => "Mary"
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body['name']" => { "match" => "type" }
+          }
+        end
+
+        it "applies the rule" do
+          expect(subject['name']).to be_instance_of(Pact::SomethingLike)
         end
       end
     end
