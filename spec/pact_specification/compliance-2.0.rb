@@ -11,7 +11,7 @@ REQUEST_TEST_CASE_FILES = Dir.glob("#{PACT_SPEC_DIR}/request/**/*.json")
 TEST_DESCRIPTIONS = {true => "matches", false => "does not match"}
 TESTCASES = "**/*.json"
 # TESTCASES = "array with nested array that matches.json"
-describe "Pact gem complicance with Pact Specification 1.0.0" do
+describe "Pact gem complicance with Pact Specification 2.0.0" do
 
   directories = Dir.glob("#{PACT_SPEC_DIR}/request") # make this a *
 
