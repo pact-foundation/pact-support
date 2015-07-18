@@ -2,6 +2,11 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.5.1 (19 July 2015)
+
+* bd24aff - Remove rspec require from pact/support.rb to stop rspec's let method overriding minitest's let method (Beth Skurrie, Sun Jul 19 07:49:15 2015 +1000)
+* bbe9553 - Support bracket notation in matching rule jsonpaths. (Beth Skurrie, Fri Jul 10 15:16:55 2015 +1000)
+
 ### 0.5.0 (10 July 2015)
 
 * 9451bf4 - Created helper methods for Pact::Term, SomethingLike and ArrayLike (Beth Skurrie, Fri Jul 10 11:44:45 2015 +1000)
