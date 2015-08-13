@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.5.2 (13 August 2015)
+
+* cb88842 - Add shortcuts like_uuid, like_datetime, like_date (Alex Malkov, Thu Aug 13 09:34:23 2015 +0100)
+
 ### 0.5.1 (19 July 2015)
 
 * bd24aff - Remove rspec require from pact/support.rb to stop rspec's let method overriding minitest's let method (Beth Skurrie, Sun Jul 19 07:49:15 2015 +1000)
