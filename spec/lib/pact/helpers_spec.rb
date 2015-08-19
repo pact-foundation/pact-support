@@ -51,7 +51,7 @@ module Pact
       it "creates a Pact::Term with UUID matcher" do
         expect(like_uuid(uuid)).to eq Pact::Term.new(
           generate: uuid,
-          matcher: /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/
+          matcher: /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/
         )
       end
     end
@@ -62,7 +62,7 @@ module Pact
       it "creates a Pact::Term with UUID matcher" do
         expect(like_datetime(datetime)).to eq Pact::Term.new(
           generate: datetime,
-          matcher: /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/
+          matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)$/
         )
       end
     end
@@ -73,7 +73,7 @@ module Pact
       it "creates a Pact::Term with UUID matcher" do
         expect(like_date(date)).to eq Pact::Term.new(
           generate: date,
-          matcher: /\d{4}-[01]\d-[0-3]\d/
+          matcher: /^\d{4}-[01]\d-[0-3]\d$/
         )
       end
     end
