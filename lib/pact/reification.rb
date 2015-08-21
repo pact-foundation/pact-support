@@ -7,8 +7,8 @@ module Pact
 
     def self.from_term(term)
       case term
-      when Pact::Term, Regexp, Pact::SomethingLike
-      term.generate
+      when Pact::Term, Regexp, Pact::SomethingLike, Pact::ArrayLike
+        term.generate
       when Hash
         term.inject({}) do |mem, (key,term)|
           mem[key] = from_term(term)
