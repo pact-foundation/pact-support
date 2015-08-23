@@ -29,5 +29,17 @@ module Pact
       Pact::ArrayLike.new(content, options)
     end
 
+    def like_uuid uuid
+      Pact::Term.new(generate: uuid, matcher: /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/)
+    end
+
+    def like_datetime datetime
+      Pact::Term.new(generate: datetime, matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)$/)
+    end
+
+    def like_date date
+      Pact::Term.new(generate: date, matcher: /^\d{4}-[01]\d-[0-3]\d$/)
+    end
+
   end
 end
