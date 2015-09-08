@@ -63,6 +63,18 @@ module Pact
 
     end
 
+    context "when ArrayLike" do
+
+      let(:request) { Pact::ArrayLike.new({a: 'String'}, {min: 3})}
+
+      subject { Reification.from_term(request)}
+
+      it "returns the contents of the ArrayLike" do
+        expect(subject).to eq([{a: 'String'}, {a: 'String'}, {a: 'String'}])
+      end
+
+    end
+
     context "when Query" do
 
       let(:query) { QueryString.new(Pact::Term.new(generate: "param=thing", matcher: /param=.*/)) }
