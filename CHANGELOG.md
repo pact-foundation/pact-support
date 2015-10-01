@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.5.3 (8 September 2015)
+
+* c7b1454 - Apply reification to ArrayLike flexible matcher. (Matt Fellows, Tue Sep 8 11:35:32 2015 +1000)
+
 ### 0.5.2 (13 August 2015)
 
 * cb88842 - Add shortcuts like_uuid, like_datetime, like_date (Alex Malkov, Thu Aug 13 09:34:23 2015 +0100)
