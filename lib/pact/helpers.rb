@@ -34,7 +34,11 @@ module Pact
     end
 
     def like_datetime datetime
-      Pact::Term.new(generate: datetime, matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d{3})?([+-][0-2]\d:[0-5]\d|Z)$/)
+      Pact::Term.new(generate: datetime, matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)$/)
+    end
+
+    def like_datetime_with_miliseconds datetime
+      Pact::Term.new(generate: datetime, matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d{3}([+-][0-2]\d:[0-5]\d|Z)$/)
     end
 
     def like_date date
