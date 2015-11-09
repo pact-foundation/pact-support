@@ -2,6 +2,11 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 0.5.4 (4 November 2015)
+
+* 2791b72 - [+AM] Add like_datetime_with_milisecods helper method (David Sevcik, Wed Nov 4 17:40:53 2015 +0100)
+* 74158ed - Update like_datetime helper to match DateTime objects with microseconds (optional) (Alex Malkov, Thu Oct 1 15:39:32 2015 +0100)
+
 ### 0.5.3 (8 September 2015)
 
 * c7b1454 - Apply reification to ArrayLike flexible matcher. (Matt Fellows, Tue Sep 8 11:35:32 2015 +1000)
