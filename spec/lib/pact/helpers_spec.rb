@@ -67,6 +67,17 @@ module Pact
       end
     end
 
+    describe "#like_datetime_with_miliseconds" do
+      let(:datetime) { '2015-08-06T16:53:10.123+01:00' }
+
+      it "creates a Pact::Term with UUID matcher" do
+        expect(like_datetime_with_miliseconds(datetime)).to eq Pact::Term.new(
+          generate: datetime,
+          matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d{3}([+-][0-2]\d:[0-5]\d|Z)$/
+        )
+      end
+    end
+
     describe "#like_date" do
       let(:date) { '2015-08-06' }
 
