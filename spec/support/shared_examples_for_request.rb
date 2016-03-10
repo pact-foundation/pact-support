@@ -115,12 +115,12 @@ shared_examples "a request" do
 
     it "blows up if method is absent" do
       raw_request.delete 'method'
-      expect { described_class.from_hash(raw_request) }.to raise_error
+      expect { described_class.from_hash(raw_request) }.to raise_error(KeyError)
     end
 
     it "blows up if path is absent" do
       raw_request.delete 'path'
-      expect { described_class.from_hash(raw_request) }.to raise_error
+      expect { described_class.from_hash(raw_request) }.to raise_error(KeyError)
     end
 
     it "does not blow up if body is missing" do
