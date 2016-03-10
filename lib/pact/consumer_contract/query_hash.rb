@@ -9,23 +9,23 @@ module Pact
     include Pact::Matchers
     include SymbolizeKeys
 
-    def initialize query
+    def initialize(query)
       @hash = query.nil? ? query : convert_to_hash_of_arrays(query)
     end
 
-    def as_json opts = {}
+    def as_json(opts = {})
       @hash
     end
 
-    def to_json opts = {}
+    def to_json(opts = {})
       as_json(opts).to_json(opts)
     end
 
-    def eql? other
+    def eql?(other)
       self == other
     end
 
-    def == other
+    def ==(other)
       QueryHash === other && other.query == query
     end
 
