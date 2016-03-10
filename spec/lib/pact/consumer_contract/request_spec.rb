@@ -331,6 +331,15 @@ module Pact
           end
         end
 
+        context 'when the queries are defined by nested hashes' do
+          let(:expected_query) { { params: 'hello', nested: { a: { aa: '11', bb: '22' }, b: '2' }, params3: 'small' } }
+          let(:actual_query) { 'params3=small&nested[a][aa]=11&nested[a][bb]=22&nested[b]=2&params=hello'  }
+
+          it "does match" do
+            expect(subject.matches? actual_request).to be true
+          end
+        end
+
         context 'when the queries are defined by hashes, order does not matter but content does' do
           let(:expected_query) { { params: 'hello', params2: 'world', params3: 'small' } }
           let(:actual_query) { 'params3=big&params2=world&params=hello' }
@@ -358,11 +367,29 @@ module Pact
           end
         end
 
+        context 'when the queries are defined by nested hashes holding Pact Terms, order does not matter but content does' do
+          let(:expected_query) { { params: { a: 'hello', b: Term.new(generate: 'world', matcher: /w\w+/) } } }
+          let(:actual_query) { 'params[a]=hello&params[b]=wroom'}
+
+          it "does match" do
+            expect(subject.matches? actual_request).to be true
+          end
+        end
+
         context 'when the queries are defined by hashes holding Pact Terms and the regex does not match' do
           let(:expected_query) { { params: 'hello', params2: Term.new(generate: 'world', matcher: /w\w+/), params3: 'small' } }
           let(:actual_query) { 'params3=small&params=hello&params2=bonjour'}
 
           it "does not match" do
+            expect(subject.matches? actual_request).to be false
+          end
+        end
+
+        context 'when the queries are defined by nested hashes holding Pact Terms and the regex does not match' do
+          let(:expected_query) { { params: { a: 'hello', b: Term.new(generate: 'world', matcher: /w\w+/) } } }
+          let(:actual_query) { 'params[a]=hello&params[b]=bonjour'}
+
+          it "does match" do
             expect(subject.matches? actual_request).to be false
           end
         end

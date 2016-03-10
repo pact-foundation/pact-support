@@ -9,27 +9,23 @@ module Pact
     include Pact::Matchers
     include SymbolizeKeys
 
-    def initialize query
+    def initialize(query)
       @hash = query.nil? ? query : convert_to_hash_of_arrays(query)
     end
 
-    def convert_to_hash_of_arrays query
-      symbolize_keys(query).each_with_object({}) {|(k,v), hash| hash[k] = [*v] }
-    end
-
-    def as_json opts = {}
+    def as_json(opts = {})
       @hash
     end
 
-    def to_json opts = {}
+    def to_json(opts = {})
       as_json(opts).to_json(opts)
     end
 
-    def eql? other
+    def eql?(other)
       self == other
     end
 
-    def == other
+    def ==(other)
       QueryHash === other && other.query == query
     end
 
@@ -51,5 +47,18 @@ module Pact
       @hash && @hash.empty?
     end
 
+    private
+
+    def convert_to_hash_of_arrays(query)
+      query.each_with_object({}) {|(k, v), hash| insert(hash, k, v) }
+    end
+
+    def insert(hash, k, v)
+      if Hash === v
+        v.each {|k2, v2| insert(hash, :"#{k}[#{k2}]", v2) }
+      else
+        hash[k.to_sym] = [*v]
+      end
+    end
   end
 end

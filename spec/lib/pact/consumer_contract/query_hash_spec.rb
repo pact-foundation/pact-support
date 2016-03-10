@@ -34,6 +34,45 @@ module Pact
           expect(subject.difference(other)).to_not be_empty
         end
       end
+
+      context "with nested query" do
+        let(:query) { { param: { a: { aa: '11', bb: '22' }, b: '2' } } }
+
+        context "when the other is same" do
+          let(:other) { QueryString.new('param[b]=2&param[a][aa]=11&param[a][bb]=22') }
+
+          it 'returns an empty diff' do
+            expect(subject.difference(other)).to be_empty
+          end
+        end
+
+        context "when the other has extra param" do
+          let(:other) { QueryString.new('param[b]=2&param[c]=1') }
+
+          it 'returns the diff' do
+            expect(subject.difference(other)).not_to be_empty
+            expect(subject.difference(other).keys).to contain_exactly(:"param[a][aa]", :"param[a][bb]", :"param[c]")
+          end
+        end
+
+        context "when the other has different value with value difference" do
+          let(:other) { QueryString.new('param[b]=2&param[a][aa]=00&param[a][bb]=22') }
+
+          it 'returns the diff' do
+            expect(subject.difference(other)).not_to be_empty
+            expect(subject.difference(other).keys).to contain_exactly(:"param[a][aa]")
+          end
+        end
+
+        context "when the other has different value without structural difference" do
+          let(:other) { QueryString.new('param[b]=2&param[a]=11') }
+
+          it 'returns the diff' do
+            expect(subject.difference(other)).not_to be_empty
+            expect(subject.difference(other).keys).to contain_exactly(:"param[a]", :"param[a][aa]", :"param[a][bb]")
+          end
+        end
+      end
     end
 
     describe "#as_json" do
