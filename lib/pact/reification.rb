@@ -20,7 +20,7 @@ module Pact
         from_term(term.to_hash)
       when Pact::QueryString
         from_term(term.query)
-        when Pact::QueryHash
+      when Pact::QueryHash
         term.query.map { |k, v|
           if v.nil?
             k
