@@ -25,14 +25,18 @@ module Pact
           if v.nil?
             k
           elsif v.is_a?(Array) #For cases where there are multiple instance of the same parameter
-            v.map { |x| "#{k}=#{from_term(x)}"}.join('&')
+            v.map { |x| "#{k}=#{escape(from_term(x))}"}.join('&')
           else
-            "#{k}=#{from_term(v)}"
+            "#{k}=#{escape(from_term(v))}"
           end
         }.join('&')
       else
         term
       end
+    end
+
+    def self.escape(str)
+      URI.encode_www_form_component(str)
     end
   end
 end

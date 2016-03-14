@@ -98,6 +98,17 @@ module Pact
       end
     end
 
+    context "when Hash Query with UTF-8 string" do
+
+      subject { Reification.from_term(query)}
+
+      let(:query) { QueryHash.new( {param: 'ILove', extra: '寿司'})}
+
+      it "returns the hash with escaping UTF-8 string" do
+        expect(subject).to eq("param=ILove&extra=%E5%AF%BF%E5%8F%B8")
+      end
+    end
+
     context "when Hash Query with embeded terms" do
 
       subject { Reification.from_term(query)}
