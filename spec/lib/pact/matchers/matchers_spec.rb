@@ -42,7 +42,6 @@ module Pact::Matchers
     end
 
     describe 'matching with something like' do
-
       context 'when the actual is something like the expected' do
         let(:expected) { Pact::SomethingLike.new( { a: 1 } ) }
         let(:actual) { { a: 2} }
@@ -50,9 +49,24 @@ module Pact::Matchers
         it 'returns an empty diff' do
           expect(diff(expected, actual)).to eq({})
         end
-
       end
 
+      context 'when Pact::SomethingLike including Pact::Term' do
+        let(:expected) { Pact::SomethingLike.new(a: 'A', b: Pact::Term.new(generate: 'B', matcher: /B\d?/)) }
+        let(:actual) { { a: 'X', b: 'B1' } }
+
+        it 'returns an empty diff' do
+          expect(diff(expected, actual)).to eq({})
+        end
+
+        context 'when the actual does not match' do
+          let(:actual) { { a: 'X', b: 'Y1' } }
+
+          it 'returns a diff' do
+            expect(diff(expected, actual)).to match(b: a_kind_of(Pact::Matchers::RegexpDifference))
+          end
+        end
+      end
     end
 
     describe 'option {allow_unexpected_keys: false}' do
