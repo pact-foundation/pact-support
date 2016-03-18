@@ -1,5 +1,6 @@
 require 'pact/matching_rules/extract'
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/array_like'
 require 'pact/term'
 

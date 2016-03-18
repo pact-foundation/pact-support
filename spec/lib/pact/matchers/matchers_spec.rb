@@ -69,6 +69,43 @@ module Pact::Matchers
       end
     end
 
+    describe 'matching with literal' do
+      context 'when the actual is literally the expected' do
+        let(:expected) { Pact::Literal.new(a: 1) }
+        let(:actual) { { a: 1 } }
+
+        it 'returns an empty diff' do
+          expect(diff(expected, actual)).to eq({})
+        end
+      end
+
+      context 'when the actual is not literally the expected' do
+        let(:expected) { Pact::Literal.new(a: 1) }
+        let(:actual) { { a: 2 } }
+
+        it 'returns a diff' do
+          expect(diff(expected, actual)).to match(a: a_kind_of(Pact::Matchers::Difference))
+        end
+      end
+
+      context 'when Pact::Literal including Pact::Term' do
+        let(:expected) { Pact::Literal.new(a: 'A', b: Pact::Term.new(generate: 'B', matcher: /B\d?/)) }
+        let(:actual) { { a: 'A', b: 'B1' } }
+
+        it 'returns an empty diff' do
+          expect(diff(expected, actual)).to eq({})
+        end
+
+        context 'when the actual does not match' do
+          let(:actual) { { a: 'A', b: 'Y1' } }
+
+          it 'returns a diff' do
+            expect(diff(expected, actual)).to match(b: a_kind_of(Pact::Matchers::RegexpDifference))
+          end
+        end
+      end
+    end
+
     describe 'option {allow_unexpected_keys: false}' do
       context "when an unexpected key is found" do
         let(:expected) { {:a => 1} }

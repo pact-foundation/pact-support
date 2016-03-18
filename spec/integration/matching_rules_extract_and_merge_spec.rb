@@ -1,5 +1,6 @@
 require 'pact/term'
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/matching_rules/extract'
 require 'pact/matching_rules/merge'
 require 'pact/reification'

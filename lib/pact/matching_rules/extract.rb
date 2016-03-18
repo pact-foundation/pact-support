@@ -1,4 +1,5 @@
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/array_like'
 require 'pact/term'
 

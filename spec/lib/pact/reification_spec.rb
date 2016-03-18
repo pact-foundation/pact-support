@@ -70,6 +70,24 @@ module Pact
       end
     end
 
+    context "when Literal" do
+      let(:request) { Pact::Literal.new(a: 'String') }
+      subject { Reification.from_term(request) }
+
+      it "returns the contents of the Literal" do
+        expect(subject).to eq(a: 'String')
+      end
+
+      context "including term" do
+        let(:request) { Pact::Literal.new(a: 'A', b: Pact::Term.new(generate: 'B', matcher: /./)) }
+        subject { Reification.from_term(request) }
+
+        it "returns the contents with reification" do
+          expect(subject[:b]).to eq('B')
+        end
+      end
+    end
+
     context "when ArrayLike" do
 
       let(:request) { Pact::ArrayLike.new({a: 'String'}, {min: 3})}

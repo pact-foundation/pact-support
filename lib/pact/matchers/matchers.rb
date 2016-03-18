@@ -1,6 +1,7 @@
 require 'awesome_print'
 require 'pact/term'
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/shared/null_expectation'
 require 'pact/shared/key_not_found'
 require 'pact/matchers/unexpected_key'
@@ -38,6 +39,7 @@ module Pact
       when Array then array_diff(expected, actual, options)
       when Regexp then regexp_diff(expected, actual, options)
       when Pact::SomethingLike then diff(expected.contents, actual, options.merge(type: true))
+      when Pact::Literal then diff(expected.contents, actual, options.merge(type: false))
       when Pact::ArrayLike then array_like_diff(expected, actual, options)
       else object_diff(expected, actual, options)
       end

@@ -1,5 +1,6 @@
 require 'pact/logging'
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/symbolize_keys'
 require 'pact/term'
 require 'pact/shared/active_support_support'

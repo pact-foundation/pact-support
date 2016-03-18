@@ -1,4 +1,5 @@
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/term'
 require 'pact/array_like'
 
@@ -23,6 +24,10 @@ module Pact
 
     def like content
       Pact::SomethingLike.new(content)
+    end
+
+    def literal(content)
+      Pact::Literal.new(content)
     end
 
     def each_like content, options = {}
