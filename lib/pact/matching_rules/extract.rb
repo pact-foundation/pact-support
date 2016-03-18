@@ -30,6 +30,7 @@ module Pact
         when Hash then recurse_hash(object, path, match_type)
         when Array then recurse_array(object, path, match_type)
         when Pact::SomethingLike then handle_something_like(object, path, match_type)
+        when Pact::Literal then handle_literal(object, path, match_type)
         when Pact::ArrayLike then handle_array_like(object, path, match_type)
         when Pact::Term then record_regex_rule object, path
         else
@@ -51,6 +52,10 @@ module Pact
 
       def handle_something_like something_like, path, match_type
         recurse something_like.contents, path, "type"
+      end
+
+      def handle_literal(literal, path, match_type)
+        recurse(literal.contents, path, "literal")
       end
 
       def handle_array_like array_like, path, match_type
