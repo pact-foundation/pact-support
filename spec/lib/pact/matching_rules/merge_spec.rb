@@ -86,6 +86,29 @@ module Pact
 
       end
 
+      describe "literal matching" do
+        let(:expected) do
+          {
+            "name" => "Mary"
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body.name" => { "match" => "literal", "ignored" => "matchingrule" }
+          }
+        end
+
+        it "creates a Literal at the appropriate path" do
+          expect(subject['name']).to be_instance_of(Pact::Literal)
+        end
+
+        it "logs the rules it has ignored" do
+          expect($stderr).to receive(:puts).with(/ignored.*matchingrule/)
+          subject
+        end
+      end
+
       describe "regular expressions" do
 
         describe "in a hash" do

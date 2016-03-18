@@ -1,5 +1,6 @@
 require 'pact/matching_rules/extract'
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/array_like'
 require 'pact/term'
 
@@ -26,6 +27,25 @@ module Pact
           end
 
           it "creates a rule that matches by type" do
+            expect(subject).to eq rules
+          end
+        end
+
+        context "with a Pact::Literal" do
+          let(:matchable) do
+            {
+              body: Pact::Literal.new(foo: 'bar', alligator: { name: 'Mary' })
+            }
+          end
+
+          let(:rules) do
+            {
+              "$.body.foo" => {"match" => "literal"},
+              "$.body.alligator.name" => {"match" => "literal"},
+            }
+          end
+
+          it "does not create any rules" do
             expect(subject).to eq rules
           end
         end
@@ -70,6 +90,50 @@ module Pact
           end
 
           it "the match:regex overrides the match:type" do
+            expect(subject).to eq rules
+          end
+        end
+
+        context "with a Pact::SomethingLike containing a Literal" do
+          let(:matchable) do
+            {
+              body: Pact::SomethingLike.new(
+                foo: 'bar',
+                alligator: { name: Pact::Literal.new('Mary') }
+              )
+            }
+          end
+
+          let(:rules) do
+            {
+              "$.body.foo" => {"match" => "type"},
+              "$.body.alligator.name" => {"match" => "literal"},
+            }
+          end
+
+          it "does not create any rules at the path" do
+            expect(subject).to eq rules
+          end
+        end
+
+        context "with a Pact::Literal containing a SomethingLike" do
+          let(:matchable) do
+            {
+              body: Pact::Literal.new(
+                foo: 'bar',
+                alligator: { name: Pact::SomethingLike.new('Mary') }
+              )
+            }
+          end
+
+          let(:rules) do
+            {
+              "$.body.foo" => {"match" => "literal"},
+              "$.body.alligator.name" => {"match" => "type"},
+            }
+          end
+
+          it "creates match:type rule at the path" do
             expect(subject).to eq rules
           end
         end

@@ -38,6 +38,12 @@ module Pact
       end
     end
 
+    describe "#literal" do
+      it "creates a Pact::Literal" do
+        expect(literal(1)).to eq Pact::Literal.new(1)
+      end
+    end
+
     describe "#each_like" do
       it "creates a Pact::ArrayLike" do
         expect(each_like(1)).to eq Pact::ArrayLike.new(1)

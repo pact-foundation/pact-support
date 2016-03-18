@@ -77,6 +77,8 @@ module Pact
 
         if rules['match'] == 'type'
           handle_match_type(object, path, rules)
+        elsif rules['match'] == 'literal'
+          handle_literal(object, path, rules)
         elsif rules['regex']
           handle_regex(object, path, rules)
         else
@@ -88,6 +90,11 @@ module Pact
       def handle_match_type object, path, rules
         log_ignored_rules(path, rules, {'match' => 'type'})
         Pact::SomethingLike.new(object)
+      end
+
+      def handle_literal(object, path, rules)
+        log_ignored_rules(path, rules, {'match' => 'literal'})
+        Pact::Literal.new(object)
       end
 
       def handle_regex object, path, rules

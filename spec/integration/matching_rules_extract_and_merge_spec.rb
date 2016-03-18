@@ -1,5 +1,6 @@
 require 'pact/term'
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/matching_rules/extract'
 require 'pact/matching_rules/merge'
 require 'pact/reification'
@@ -93,6 +94,74 @@ describe "converting Pact::Term and Pact::SomethingLike to matching rules and ba
 
     it "recreates a similar object hierarchy that does the same thing" do
       expect(recreated_expected).to eq similar
+    end
+  end
+
+  context "with a Pact::Literal" do
+    let(:expected) do
+      {
+        body: {
+          alligator: {
+            name: Pact::Literal.new("Mary")
+          }
+        }
+      }
+    end
+
+    it "recreates the same object hierarchy" do
+      expect(recreated_expected).to eq expected
+    end
+  end
+
+  context "with Pact::SomethingLike containing Literal" do
+    let(:expected) do
+      {
+        body: Pact::SomethingLike.new(
+          foo: "bar",
+          alligator: {
+            name: Pact::Literal.new("Mary")
+          }
+        )
+      }
+    end
+
+    it "recreates the semantically same object" do
+      expect(recreated_expected).to eq(
+        {
+          body: {
+            foo: Pact::SomethingLike.new("bar"),
+            alligator: {
+              name: Pact::Literal.new("Mary")
+            }
+          }
+        }
+      )
+    end
+  end
+
+  context "with Pact::Literal containing SomethingLike" do
+    let(:expected) do
+      {
+        body: Pact::Literal.new(
+          foo: "bar",
+          alligator: {
+            name: Pact::SomethingLike.new("Mary")
+          }
+        )
+      }
+    end
+
+    it "recreates the semantically same object" do
+      expect(recreated_expected).to eq(
+        {
+          body: {
+            foo: Pact::Literal.new("bar"),
+            alligator: {
+              name: Pact::SomethingLike.new("Mary")
+            }
+          }
+        }
+      )
     end
   end
 end

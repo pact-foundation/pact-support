@@ -1,6 +1,7 @@
 require 'awesome_print'
 require 'pact/term'
 require 'pact/something_like'
+require 'pact/literal'
 require 'pact/shared/null_expectation'
 require 'pact/shared/key_not_found'
 require 'pact/matchers/unexpected_key'
@@ -37,7 +38,8 @@ module Pact
       when Hash then hash_diff(expected, actual, options)
       when Array then array_diff(expected, actual, options)
       when Regexp then regexp_diff(expected, actual, options)
-      when Pact::SomethingLike then calculate_diff(expected.contents, actual, options.merge(:type => true))
+      when Pact::SomethingLike then diff(expected.contents, actual, options.merge(type: true))
+      when Pact::Literal then diff(expected.contents, actual, options.merge(type: false))
       when Pact::ArrayLike then array_like_diff(expected, actual, options)
       else object_diff(expected, actual, options)
       end
@@ -68,7 +70,7 @@ module Pact
       length.times do | index|
         expected_item = expected.fetch(index, Pact::UnexpectedIndex.new)
         actual_item = actual.fetch(index, Pact::IndexNotFound.new)
-        if (item_diff = calculate_diff(expected_item, actual_item, options)).any?
+        if (item_diff = diff(expected_item, actual_item, options)).any?
           diff_found = true
           difference << item_diff
         else
@@ -98,7 +100,7 @@ module Pact
 
     def actual_hash_diff expected, actual, options
       hash_diff = expected.each_with_object({}) do |(key, value), difference|
-        diff_at_key = calculate_diff(value, actual.fetch(key, Pact::KeyNotFound.new), options)
+        diff_at_key = diff(value, actual.fetch(key, Pact::KeyNotFound.new), options)
         difference[key] = diff_at_key if diff_at_key.any?
       end
       hash_diff.merge(check_for_unexpected_keys(expected, actual, options))
