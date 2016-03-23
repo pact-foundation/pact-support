@@ -62,7 +62,7 @@ module Pact
       new_instance_of_delegation_target_class = self.new(*args)
       dsl_delegator_class = self.const_get('DSL_DELEGATOR_CLASS')
       dsl_delegator = dsl_delegator_class.new(new_instance_of_delegation_target_class)
-      dsl_delegator.instance_eval_with_previous_context_available(&block)
+      dsl_delegator.instance_eval_with_previous_context_available(&block) if block
       new_instance_of_delegation_target_class.finalize
       new_instance_of_delegation_target_class
     end

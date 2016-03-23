@@ -9,6 +9,10 @@ module Pact
       extend DSL
       attr_accessor :thing, :blah, :global, :the_block, :another_block, :finalized
 
+      def initialize
+        @thing = 0
+      end
+
       dsl do
         def with_thing thing
           self.thing = thing
@@ -36,51 +40,61 @@ module Pact
     end
 
     describe "build" do
-       before do
-          def my_local_method
-             'LA LA LA'
-          end
-
-          my_local_var = 123
-
-          local_app = "I'm a local app"
-
-          @test = TestDSL.build do
-            with_thing my_local_method
-            with_blah my_local_var
-            with_global global_method
-            with_block do
-              global_app
+      context "with block" do
+        before do
+            def my_local_method
+              'LA LA LA'
             end
-            with_another_block do
-              local_app
+
+            my_local_var = 123
+
+            local_app = "I'm a local app"
+
+            @test = TestDSL.build do
+              with_thing my_local_method
+              with_blah my_local_var
+              with_global global_method
+              with_block do
+                global_app
+              end
+              with_another_block do
+                local_app
+              end
             end
-          end
-       end
+        end
 
-       it "supports using a local variable" do
-          expect(@test.blah).to eq 123
-       end
+        it "supports using a local variable" do
+            expect(@test.blah).to eq 123
+        end
 
-       it "supports using a local method" do
-          expect(@test.thing).to eq 'LA LA LA'
-       end
+        it "supports using a local method" do
+            expect(@test.thing).to eq 'LA LA LA'
+        end
 
-       it "supports using global methods from other files" do
-         expect(@test.global).to eq "I'm global"
-       end
+        it "supports using global methods from other files" do
+          expect(@test.global).to eq "I'm global"
+        end
 
-       it "supports using a local method to provide the app" do
-         expect(@test.another_block.call).to eq("I'm a local app")
-       end
+        it "supports using a local method to provide the app" do
+          expect(@test.another_block.call).to eq("I'm a local app")
+        end
 
-       it "should support using a global method to provide the app but it doesn't" do
-         expect(@test.the_block.call).to eq("I'm a global app")
-       end
+        it "should support using a global method to provide the app but it doesn't" do
+          expect(@test.the_block.call).to eq("I'm a global app")
+        end
 
-       it "calls finalize" do
-        expect(@test.finalized).to be true
-       end
+        it "calls finalize" do
+          expect(@test.finalized).to be true
+        end
+      end
+
+      context "without block" do
+        let(:test) { TestDSL.build }
+
+        it "initializes an instance" do
+          expect(test.thing).to eq(0)
+        end
+      end
     end
   end
 end
