@@ -47,6 +47,116 @@ module Pact
           end
         end
       end
+
+      describe 'retry feature' do
+        before { allow(PactFile).to receive(:delay_retry).with(kind_of(Integer)) }
+
+        def render_pact(options = {})
+          PactFile.render_pact(uri_without_userinfo, options)
+        end
+
+        context 'with client error' do
+          before { stub_request(:get, uri_without_userinfo).to_return(status: 400) }
+
+          it 'raises client error without retrying' do
+            expect(PactFile).not_to receive(:delay_retry)
+            expect { render_pact }.to raise_error(PactFile::HttpError, /status=400/)
+          end
+        end
+
+        context 'with single server error' do
+          before do
+            stub_request(:get, uri_without_userinfo).to_return(status: 500).
+              then.to_return(status: 200, body: pact_content)
+          end
+
+          it 'retries and succeeds' do
+            expect(render_pact).to eq(pact_content)
+          end
+        end
+
+        context 'with continuous server errors' do
+          before { stub_request(:get, uri_without_userinfo).to_return(status: 500) }
+
+          it 'retries but failed by retry limit' do
+            expect { render_pact }.to raise_error(PactFile::HttpError, /status=500/)
+          end
+        end
+
+        context 'with single open timeout' do
+          before do
+            stub_request(:get, uri_without_userinfo).to_raise(Net::OpenTimeout).
+              then.to_return(status: 200, body: pact_content)
+          end
+
+          it 'retries and succeeds' do
+            expect(render_pact).to eq(pact_content)
+          end
+        end
+
+        context 'with continuous open timeouts' do
+          before { stub_request(:get, uri_without_userinfo).to_raise(Net::OpenTimeout) }
+
+          it 'retries but failed by retry limit' do
+            expect { render_pact }.to raise_error(Net::OpenTimeout)
+          end
+        end
+
+        context 'with single read timeout' do
+          before do
+            stub_request(:get, uri_without_userinfo).to_raise(Net::ReadTimeout).
+              then.to_return(status: 200, body: pact_content)
+          end
+
+          it 'retries and succeeds' do
+            expect(render_pact).to eq(pact_content)
+          end
+        end
+
+        context 'with continuous read timeout' do
+          before { stub_request(:get, uri_without_userinfo).to_raise(Net::ReadTimeout) }
+
+          it 'retries but failed by retry limit' do
+            expect { render_pact }.to raise_error(Net::ReadTimeout)
+          end
+        end
+
+        context 'with retry_limit option and server error' do
+          before do
+            stub_request(:get, uri_without_userinfo).to_return(status: 500).
+              then.to_return(status: 200, body: pact_content)
+          end
+
+          it 'retries and succeeds' do
+            expect { render_pact(retry_limit: 0) }.to raise_error(PactFile::HttpError, /status=500/)
+          end
+        end
+
+        context 'with retry_limit option and open timeout error' do
+          before do
+            stub_request(:get, uri_without_userinfo).to_raise(Net::OpenTimeout).
+              then.to_return(status: 200, body: pact_content)
+          end
+
+          it 'retries and succeeds' do
+            expect { render_pact(retry_limit: 0) }.to raise_error(Net::OpenTimeout)
+          end
+        end
+
+        context 'with retry_limit option which is greater than default retry limit' do
+          before do
+            stub_request(:get, uri_without_userinfo).to_return(status: 500).
+              then.to_return(status: 500).
+              then.to_return(status: 500).
+              then.to_return(status: 500).
+              then.to_return(status: 200, body: pact_content)
+          end
+
+          it 'retries and succeeds' do
+            expect(render_pact(retry_limit: 4)).to eq(pact_content)
+          end
+        end
+      end
     end
   end
 end

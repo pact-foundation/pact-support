@@ -1,8 +1,21 @@
+require 'net/http'
+
 module Pact
-
   module PactFile
-
     extend self
+
+    OPEN_TIMEOUT = 5
+    READ_TIMEOUT = 5
+    RETRY_LIMIT = 3
+
+    class HttpError < StandardError
+      attr_reader :uri, :response
+
+      def initialize(uri, response)
+        @uri, @response = uri, response
+        super("HTTP request failed: status=#{response.code}")
+      end
+    end
 
     def read uri, options = {}
       uri_string = uri.to_s
@@ -22,16 +35,62 @@ module Pact
       ::File.open(Pact.configuration.tmp_dir + "/#{name}", "w") { |file|  file << pact}
     end
 
-    def render_pact uri_string, options
+    def render_pact(uri_string, options)
       uri_obj = URI(uri_string)
-      uri_user_info = uri_obj.userinfo
-      if(uri_user_info)
+      if uri_obj.userinfo
         options[:username] = uri_obj.user unless options[:username]
         options[:password] = uri_obj.password unless options[:password]
-        uri_string = uri_string.sub("#{uri_user_info}@", '')
       end
-      open_options = options[:username] ? {http_basic_authentication:[options[:username],options[:password]]} : {}
-      open(uri_string, open_options) { | file | file.read }
+      get_with_retry(uri_obj, options)
+    end
+
+    private
+
+    def get(uri, options)
+      request = Net::HTTP::Get.new(uri)
+      request.basic_auth(options[:username], options[:password]) if options[:username]
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        http.open_timeout = options[:open_timeout] || OPEN_TIMEOUT
+        http.read_timeout = options[:read_timeout] || READ_TIMEOUT
+        http.request(request)
+      end
+    end
+
+    def get_with_retry(uri, options)
+      ((options[:retry_limit] || RETRY_LIMIT) + 1).times do |i|
+        begin
+          response = get(uri, options)
+          case
+          when success?(response)
+            return response.body
+          when retryable?(response)
+            raise HttpError.new(uri, response) if abort_retry?(i, options)
+            delay_retry(i + 1)
+            next
+          else
+            raise HttpError.new(uri, response)
+          end
+        rescue Timeout::Error => e
+          raise e if abort_retry?(i, options)
+          delay_retry(i + 1)
+        end
+      end
+    end
+
+    def success?(response)
+      response.code.to_i == 200
+    end
+
+    def retryable?(response)
+      (500...600).cover?(response.code.to_i)
+    end
+
+    def abort_retry?(count, options)
+      count >= (options[:retry_limit] || RETRY_LIMIT)
+    end
+
+    def delay_retry(count)
+      Kernel.sleep(2 ** count * 0.3)
     end
   end
 end
