@@ -63,6 +63,27 @@ module Pact
 
     end
 
+    context "when nested SomethingLike" do
+
+      let(:request) {
+        Pact::SomethingLike.new(
+          {
+            a: 'String',
+            b: Pact::SomethingLike.new(
+              c: 'NestedString'
+            )
+          }
+        )
+      }
+
+      subject { Reification.from_term(request)}
+
+      it "returns the contents of the SomethingLike" do
+        expect(subject).to eq({a: 'String', b: { c: 'NestedString' }})
+      end
+
+    end
+
     context "when ArrayLike" do
 
       let(:request) { Pact::ArrayLike.new({a: 'String'}, {min: 3})}
