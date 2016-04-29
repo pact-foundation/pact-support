@@ -1,6 +1,25 @@
 Do this to generate your change history
 
-  git log --pretty=format:'  * %h - %s (%an, %ad)'
+  git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
+
+
+### 0.5.5 (4 November 2015)
+* e9aaff0 - Merge pull request #21 from TakatoshiMaeda/reify_support_nested_something_like (Sergei Matheson, Fri Apr 29 09:54:00 2016 +1000)
+* eb9aa26 - Supporting nested Pact::SomethingLike reification (Takatoshi Maeda, Thu Apr 28 02:04:58 2016 +0900)
+* 832790d - Merge pull request #20 from taiki45/dsl-without-block (Sergei Matheson, Thu Mar 24 09:36:22 2016 +1100)
+* 9e924c8 - Object supporting DSL can be built without block (Taiki Ono, Wed Mar 23 16:38:27 2016 +0900)
+* 57aa993 - Merge pull request #18 from taiki45/escape-query-string-component (Sergei Matheson, Tue Mar 15 09:24:36 2016 +1100)
+* 2b0e7b4 - Escape query string components (Taiki Ono, Mon Mar 14 15:22:29 2016 +0900)
+* a383368 - Fix indent (Taiki Ono, Mon Mar 14 15:18:26 2016 +0900)
+* fae9a14 - Merge pull request #17 from taiki45/upgrade-jruby (Ronald Holshausen, Mon Mar 14 09:56:16 2016 +1100)
+* dc54092 - Support latest jruby and drop supporting jruby 1.7 (Taiki Ono, Sun Mar 13 20:27:17 2016 +0900)
+* 22651e8 - Merge pull request #16 from taiki45/drop-supporting-ruby1.9 (Beth Skurrie, Sat Mar 12 14:04:41 2016 +1100)
+* 3dbaa38 - Merge pull request #15 from taiki45/suppress-rspec-warnings (Sergei Matheson, Fri Mar 11 09:29:26 2016 +1100)
+* 656c98a - Merge pull request #14 from taiki45/nested-query (Sergei Matheson, Fri Mar 11 09:19:58 2016 +1100)
+* 85fbb09 - Drop supporting ruby1.9 (Taiki Ono, Thu Mar 10 23:01:54 2016 +0900)
+* 966fa3a - `raise_error` should be with specific error (Taiki Ono, Thu Mar 10 22:50:13 2016 +0900)
+* 2861742 - Cosmetic change (Taiki Ono, Thu Mar 10 22:11:51 2016 +0900)
+* c491682 - `QueryHash` accepts nested hash query (Taiki Ono, Thu Mar 10 21:24:41 2016 +0900)
 
 ### 0.5.4 (4 November 2015)
 
