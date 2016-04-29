@@ -2,6 +2,12 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+### 0.5.6 (29 April 2016)
+* d8bc8fa - Remove pull request merge logs from changelog (Sergei Matheson, Fri Apr 29 10:06:51 2016 +1000)
+* 24ba197 - Corrected v0.5.5 release date in CHANGELOG (Sergei Matheson, Fri Apr 29 10:05:11 2016 +1000)
+* 9dcef8d - Retry reading pact file (Taiki Ono, Thu Apr 28 17:15:54 2016 +0900)
+* 61ceda1 - Re-write test with WebMock (Taiki Ono, Thu Apr 28 15:50:29 2016 +0900)
+* 62dcf66 - Use WebMock2 (Taiki Ono, Thu Apr 28 13:51:53 2016 +0900)
 
 ### 0.5.5 (29 April 2016)
 * eb9aa26 - Supporting nested Pact::SomethingLike reification (Takatoshi Maeda, Thu Apr 28 02:04:58 2016 +0900)
