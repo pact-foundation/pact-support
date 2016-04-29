@@ -3,7 +3,7 @@ Do this to generate your change history
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
 
-### 0.5.5 (4 November 2015)
+### 0.5.5 (29 April 2016)
 * e9aaff0 - Merge pull request #21 from TakatoshiMaeda/reify_support_nested_something_like (Sergei Matheson, Fri Apr 29 09:54:00 2016 +1000)
 * eb9aa26 - Supporting nested Pact::SomethingLike reification (Takatoshi Maeda, Thu Apr 28 02:04:58 2016 +0900)
 * 832790d - Merge pull request #20 from taiki45/dsl-without-block (Sergei Matheson, Thu Mar 24 09:36:22 2016 +1100)
