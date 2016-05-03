@@ -7,6 +7,19 @@ module Pact
     describe 'render_pact' do
       let(:uri_without_userinfo) { 'http://pactbroker.com'}
       let(:pact_content) { 'api contract'}
+
+      describe 'from a local file URI' do
+        let(:file_uri) { './tmp/local.json' }
+        let(:local_pact_content) { 'local pact content' }
+        before do
+          File.write file_uri, local_pact_content
+        end
+
+        it 'reads from the local file system' do
+          expect(PactFile.render_pact(file_uri, {})).to eq(local_pact_content)
+        end
+      end
+
       context 'without basic authentication' do
         before do
           stub_request(:get, uri_without_userinfo).to_return(body: pact_content)

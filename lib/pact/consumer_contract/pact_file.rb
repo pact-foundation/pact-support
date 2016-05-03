@@ -41,12 +41,24 @@ module Pact
         options[:username] = uri_obj.user unless options[:username]
         options[:password] = uri_obj.password unless options[:password]
       end
-      get_with_retry(uri_obj, options)
+      get(uri_obj, options)
     end
 
     private
 
     def get(uri, options)
+      local?(uri) ?  get_local(uri, options) : get_remote_with_retry(uri, options)
+    end
+
+    def local? uri
+      !uri.host
+    end
+
+    def get_local(uri, _)
+      File.read uri.to_s
+    end
+
+    def get_remote(uri, options)
       request = Net::HTTP::Get.new(uri)
       request.basic_auth(options[:username], options[:password]) if options[:username]
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
@@ -56,10 +68,10 @@ module Pact
       end
     end
 
-    def get_with_retry(uri, options)
+    def get_remote_with_retry(uri, options)
       ((options[:retry_limit] || RETRY_LIMIT) + 1).times do |i|
         begin
-          response = get(uri, options)
+          response = get_remote(uri, options)
           case
           when success?(response)
             return response.body
