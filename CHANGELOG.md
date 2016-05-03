@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+### 0.5.7 (3 May 2016)
+* 289d4e5 - Handle loading local pact files as well as remote (Sergei Matheson, Tue May 3 12:56:51 2016 +1000)
+* 6d4e559 - Update to ruby 2.3.1 in travis (Sergei Matheson, Tue May 3 10:46:46 2016 +1000)
+
 ### 0.5.6 (29 April 2016)
 * d8bc8fa - Remove pull request merge logs from changelog (Sergei Matheson, Fri Apr 29 10:06:51 2016 +1000)
 * 24ba197 - Corrected v0.5.5 release date in CHANGELOG (Sergei Matheson, Fri Apr 29 10:05:11 2016 +1000)
