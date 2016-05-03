@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tempfile'
 require 'pact/consumer_contract/pact_file'
 require 'base64' # XXX: https://github.com/bblimke/webmock/pull/611
 
@@ -9,10 +10,14 @@ module Pact
       let(:pact_content) { 'api contract'}
 
       describe 'from a local file URI' do
-        let(:file_uri) { './tmp/local.json' }
+        let(:temp_file) { Tempfile.new('local-pact-file') }
+        let(:file_uri) { temp_file.path }
         let(:local_pact_content) { 'local pact content' }
         before do
           File.write file_uri, local_pact_content
+        end
+        after do
+          temp_file.unlink
         end
 
         it 'reads from the local file system' do
