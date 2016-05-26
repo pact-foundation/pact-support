@@ -20,6 +20,16 @@ module Pact
 
     end
 
+    describe "#pactfile_write_order" do
+      it "sets pactfile_write_order to chronological by default" do
+        expect(subject.pactfile_write_order).to eq(:chronological)
+      end
+
+      it "allows configuration of pactfile_write_order" do
+        subject.pactfile_write_order = :alphabetical
+        expect(subject.pactfile_write_order).to eq(:alphabetical)
+      end
+    end
 
     describe "#body_differ_for_content_type" do
       context "when the Content-Type is nil" do

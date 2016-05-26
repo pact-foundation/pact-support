@@ -46,6 +46,7 @@ module Pact
 
     attr_accessor :error_stream
     attr_accessor :output_stream
+    attr_accessor :pactfile_write_order
 
     def self.default_configuration
       c = Configuration.new
@@ -55,6 +56,7 @@ module Pact
 
       c.output_stream = $stdout
       c.error_stream = $stderr
+      c.pactfile_write_order = :chronological
 
       c
     end
