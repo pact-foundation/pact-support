@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+
+### 0.5.8 (26 May 2016)
+* 768b382 - Add pactfile_write_order configuration (Alex Malkov, Mon May 23 11:02:27 2016 +0100)
+
 ### 0.5.7 (3 May 2016)
 * 289d4e5 - Handle loading local pact files as well as remote (Sergei Matheson, Tue May 3 12:56:51 2016 +1000)
 * 6d4e559 - Update to ruby 2.3.1 in travis (Sergei Matheson, Tue May 3 10:46:46 2016 +1000)
