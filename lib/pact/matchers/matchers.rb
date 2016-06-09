@@ -15,6 +15,7 @@ require 'pact/matchers/no_diff_at_index'
 require 'pact/array_like'
 
 module Pact
+  # should be called Differs
   module Matchers
 
     NO_DIFF_AT_INDEX = NoDiffAtIndex.new
