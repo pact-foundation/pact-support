@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+### 0.5.9 (27 Jun 2016)
+* dea4645 - Clarify that pact-support will only work with ruby >= 2.0 (Sergei Matheson, Mon Jun 27 10:18:32 2016 +1000)
+* 50ea21f - Update json_differ.rb (Beth Skurrie, Thu Jun 9 16:01:34 2016 +1000)
+* d303870 - Comment. (Beth Skurrie, Thu Jun 9 15:57:34 2016 +1000)
 
 ### 0.5.8 (26 May 2016)
 * 768b382 - Add pactfile_write_order configuration (Alex Malkov, Mon May 23 11:02:27 2016 +0100)
