@@ -3,6 +3,7 @@ require 'pact/consumer_contract/response'
 require 'pact/symbolize_keys'
 require 'pact/shared/active_support_support'
 require 'pact/matching_rules'
+require 'pact/errors'
 
 module Pact
    class Interaction
@@ -33,6 +34,10 @@ module Pact
           request: request.to_hash,
           response: response.to_hash
         }
+      end
+
+      def validate!
+        raise Pact::InvalidInteractionError.new(self) unless description && request && response
       end
 
       def matches_criteria? criteria
