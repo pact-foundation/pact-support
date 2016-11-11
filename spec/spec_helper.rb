@@ -1,3 +1,4 @@
+require 'awesome_print'
 require 'rspec'
 require 'fakefs/spec_helpers'
 require 'rspec'

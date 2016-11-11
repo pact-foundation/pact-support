@@ -22,12 +22,12 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'randexp', '~> 0.1.7'
   gem.add_runtime_dependency 'rspec', '>=2.14'
   gem.add_runtime_dependency 'rack-test', '~> 0.6.2'
-  gem.add_runtime_dependency 'awesome_print', '~> 1.1'
   gem.add_runtime_dependency 'json'
   gem.add_runtime_dependency 'term-ansicolor', '~> 1.0'
   gem.add_runtime_dependency 'find_a_port', '~> 1.0.1'
   gem.add_runtime_dependency 'thor'
 
+  gem.add_development_dependency 'awesome_print', '~> 1.1'
   gem.add_development_dependency 'rake', '~> 10.0.3'
   gem.add_development_dependency 'webmock', '~> 2.0.0'
   gem.add_development_dependency 'pry'

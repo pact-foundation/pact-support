@@ -1,4 +1,3 @@
-require 'awesome_print'
 require 'pact/term'
 require 'pact/something_like'
 require 'pact/shared/null_expectation'
