@@ -118,7 +118,27 @@ module Pact
             expect(subject).to be false
           end
         end
+      end
 
+      describe "#validate!" do
+        let(:interaction) { InteractionFactory.create }
+
+        context "when it lacks necessary data" do
+          before { interaction.description = nil }
+
+          it "raises Pact::InvalidInteractionError" do
+            expect { interaction.validate! }.to(raise_error(Pact::InvalidInteractionError) do |e|
+              expect(e.message).to include("description")
+              expect(e.message).not_to include("request")
+            end)
+          end
+        end
+
+        context "when it has all necessary data" do
+          it "does not raise any errors" do
+            expect { interaction.validate! }.not_to raise_error
+          end
+        end
       end
     end
   end
