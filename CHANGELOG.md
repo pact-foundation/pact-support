@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+### 0.6.0 (14 Nov 2016)
+* 64a9a37 - Enable interactions to validate themselves (Taiki Ono, Wed Nov 9 19:08:49 2016 +0900)
+
 ### 0.5.9 (27 Jun 2016)
 * dea4645 - Clarify that pact-support will only work with ruby >= 2.0 (Sergei Matheson, Mon Jun 27 10:18:32 2016 +1000)
 * 50ea21f - Update json_differ.rb (Beth Skurrie, Thu Jun 9 16:01:34 2016 +1000)
