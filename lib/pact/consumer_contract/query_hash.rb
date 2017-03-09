@@ -1,3 +1,4 @@
+require 'cgi'
 require 'pact/shared/active_support_support'
 require 'pact/matchers'
 require 'pact/symbolize_keys'
