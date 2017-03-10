@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+### 0.6.1 (10 Mar 2017)
+* 4627b56 - Explicit require of CGI class. (Tan Le, Thu Mar 9 17:01:37 2017 +1100)
+* 26b6678 - Added colon support to matching rules path. (soundstep, Wed Mar 8 09:18:35 2017 +0000)
+
 ### 0.6.0 (14 Nov 2016)
 * 64a9a37 - Enable interactions to validate themselves (Taiki Ono, Wed Nov 9 19:08:49 2016 +0900)
 
