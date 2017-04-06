@@ -45,5 +45,14 @@ module Pact
       Pact::Term.new(generate: date, matcher: /^\d{4}-[01]\d-[0-3]\d$/)
     end
 
+    def like_datetime_non_iso8601 datetime
+      Pact::Term.new(
+        generate: datetime,
+        matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?
+                        \s\d{2}\s
+                        (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                        \s\d{4}\s\d{2}:\d{2}:\d{2}\s(\+|-)\d{4}/
+      )
+    end
   end
 end
