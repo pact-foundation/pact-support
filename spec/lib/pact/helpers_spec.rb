@@ -88,13 +88,13 @@ module Pact
         )
       end
 
-      describe "#like_datetime_non_iso8601" do
-        let(:datetime) { 'Tue 04 Apr 2017 19:03:19 +0000' }
+      describe "#like_datetime_rfc822" do
+        let(:datetime) { 'Tue, 04 Apr 2017 19:03:19 +0000' }
 
         it "creates a Pact::Term with non iso8601 datetime matcher" do
-          expect(like_datetime_non_iso8601(datetime)).to eq Pact::Term.new(
+          expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
             generate: datetime,
-            matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?
+            matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),
                         \s\d{2}\s
                         (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
                         \s\d{4}\s\d{2}:\d{2}:\d{2}\s(\+|-)\d{4}/)
