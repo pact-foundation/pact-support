@@ -87,6 +87,57 @@ module Pact
           matcher: /^\d{4}-[01]\d-[0-3]\d$/
         )
       end
+
+      describe "#like_datetime_rfc822" do
+        context "Day is Tue" do
+          let(:datetime) { 'Tue, 04 Apr 2017 19:03:19 +0000' }
+          it "creates a Pact::Term with a rfc922 matcher" do
+            expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
+              generate: datetime,
+              matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),
+                        \s\d{2}\s
+                        (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                        \s\d{4}\s\d{2}:\d{2}:\d{2}\s(\+|-)\d{4}/)
+          end
+        end
+
+        context "Day is Sun" do
+          let(:datetime) { 'Sun, 09 Apr 2017 19:03:19 +0000' }
+          it "creates a Pact::Term with a rfc922 matcher" do
+            expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
+              generate: datetime,
+              matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),
+                        \s\d{2}\s
+                        (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                        \s\d{4}\s\d{2}:\d{2}:\d{2}\s(\+|-)\d{4}/)
+          end
+        end
+
+        context "Month is Jan" do
+          let(:datetime) { 'Mon, 02 Jan 2017 19:03:19 +0000' }
+          it "creates a Pact::Term with a rfc922 matcher" do
+            expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
+              generate: datetime,
+              matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),
+                        \s\d{2}\s
+                        (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                        \s\d{4}\s\d{2}:\d{2}:\d{2}\s(\+|-)\d{4}/)
+          end
+        end
+
+        context "Negative Offset" do
+          let(:datetime) { 'Mon, 31 Oct 2016 15:21:41 -0400' }
+          it "creates a Pact::Term with a rfc922 matcher" do
+            expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
+              generate: datetime,
+              matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),
+                        \s\d{2}\s
+                        (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)
+                        \s\d{4}\s\d{2}:\d{2}:\d{2}\s(\+|-)\d{4}/)
+          end
+        end
+
+      end
     end
   end
 end
