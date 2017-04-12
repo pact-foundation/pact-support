@@ -120,8 +120,8 @@ module Pact
         let(:expected_path) { '/foo' }
         let(:actual_path) { '/foo/' }
 
-        it "matches" do
-          expect(subject.matches? actual_request).to be true
+        it "does not match" do
+          expect(subject.matches? actual_request).to be false
         end
       end
 

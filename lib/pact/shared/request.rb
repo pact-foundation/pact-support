@@ -16,7 +16,7 @@ module Pact
 
       def initialize(method, path, headers, body, query)
         @method = method.to_s
-        @path = path.respond_to?(:chomp) ? path.chomp('/') : path #TODO get rid of the chomp in v2
+        @path = path
         @headers = Hash === headers ? Headers.new(headers) : headers # Could be a NullExpectation - TODO make this more elegant
         @body = body
         @query = is_unspecified?(query) ? query : Pact::Query.create(query)
