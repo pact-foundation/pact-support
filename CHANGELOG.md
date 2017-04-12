@@ -2,6 +2,10 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+### 1.0.0 (12 Apr 2017)
+* 0ad2ef5 - Stop removing trailing slash from path, as per https://github.com/pact-foundation/pact-specification/blob/version-2/testcases/request/path/missing%20trailing%20slash%20in%20path.json (Beth Skurrie, Wed Apr 12 14:59:04 2017 +1000)
+* 7f93c00 - add a helper to match a non iso861 datetime string (Courtney Braafhart, Thu Apr 6 12:18:53 2017 -0500)
+
 ### 0.6.1 (10 Mar 2017)
 * 4627b56 - Explicit require of CGI class. (Tan Le, Thu Mar 9 17:01:37 2017 +1100)
 * 26b6678 - Added colon support to matching rules path. (soundstep, Wed Mar 8 09:18:35 2017 +0000)
