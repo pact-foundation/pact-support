@@ -146,6 +146,42 @@ module Pact
           end
         end
 
+        context "with a Pact::QueryString containing a Pact::Term" do
+          let(:matchable) do
+            {
+              query: Pact::QueryString.new(Pact::Term.new(generate: 'foobar', matcher: /foo/))
+            }
+          end
+
+          let(:rules) do
+            {
+              "$.query" => {"match" => "regex", "regex" => "foo"}
+            }
+          end
+
+          it "lists a rule that specifies that the regular expression must match" do
+            expect(subject).to eq rules
+          end
+        end
+
+        context "with a Pact::QueryHash containing a Pact::Term" do
+          let(:matchable) do
+            {
+              query: Pact::QueryHash.new(bar: Pact::Term.new(generate: 'foobar', matcher: /foo/))
+            }
+          end
+
+          let(:rules) do
+            {
+              "$.query.bar[0]" => {"match" => "regex", "regex" => "foo"}
+            }
+          end
+
+          it "lists a rule that specifies that the regular expression must match" do
+            expect(subject).to eq rules
+          end
+        end
+
         context "with no special matching" do
           let(:matchable) do
             {
