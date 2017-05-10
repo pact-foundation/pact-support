@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
 
+### 1.0.1 (11 May 2017)
+* e34374b - Extract rules for QueryHash and QueryString so we can include request matching rules in the pact. (Beth Skurrie, Thu May 11 09:11:19 2017 +1000)
+
 ### 1.0.0 (12 Apr 2017)
 * 0ad2ef5 - Stop removing trailing slash from path, as per https://github.com/pact-foundation/pact-specification/blob/version-2/testcases/request/path/missing%20trailing%20slash%20in%20path.json (Beth Skurrie, Wed Apr 12 14:59:04 2017 +1000)
 * 7f93c00 - add a helper to match a non iso861 datetime string (Courtney Braafhart, Thu Apr 6 12:18:53 2017 -0500)
