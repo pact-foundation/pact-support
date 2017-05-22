@@ -26,11 +26,22 @@ module Pact
       end
     end
 
-    subject { ArrayLike.new({name: Pact::Term.new(generate: 'Fred', matcher: /F/)}, {min: 2}) }
 
     describe "#generate" do
-      it "creates an array with the reified example" do
-        expect(subject.generate).to eq [{name: 'Fred'},{name: 'Fred'}]
+      context "when min > 0" do
+        subject { ArrayLike.new({name: Pact::Term.new(generate: 'Fred', matcher: /F/)}, {min: 2}) }
+
+        it "creates an array with 'min' reified example members" do
+          expect(subject.generate).to eq [{name: 'Fred'},{name: 'Fred'}]
+        end
+      end
+
+      context "when min == 0" do
+        subject { ArrayLike.new({name: Pact::Term.new(generate: 'Fred', matcher: /F/)}, {min: 0}) }
+
+        it "creates an array with 1 reified example" do
+          expect(subject.generate).to eq [{name: 'Fred'}]
+        end
       end
     end
   end

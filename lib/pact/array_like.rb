@@ -41,7 +41,9 @@ module Pact
     end
 
     def generate
-      min.times.collect{ Pact::Reification.from_term contents }
+      n = min
+      n = 1 if n == 0
+      n.times.collect{ Pact::Reification.from_term contents }
     end
   end
 end
