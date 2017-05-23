@@ -9,6 +9,8 @@ module Pact
         britney: 'britney',
         nested: { foo: /bar/, baz: 'qux' },
         my_term: Term.new(generate: 'wiffle', matcher: /^wif/),
+        jwt: Jwt.new({foo: 'john'}, 'JWT_KEY','HS256'),
+        nested_jwt:  Jwt.new({foo: Term.new(generate: 'wiffle', matcher: /^wif/)}, 'JWT_KEY','HS256'),
         array: ['first', /second/]
       }
     end
@@ -37,6 +39,13 @@ module Pact
         expect(subject[:array]).to eql ['first', 'second']
       end
 
+      it "handles jwt" do
+        expect(subject[:jwt]).to eql 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmb28iOiJqb2huIn0.HWnd4KMrX6QyzQ78P93t-avWabIrURe6aX1M6Nh1Jn4'
+      end
+
+      it "handles nested jwt" do
+        expect(subject[:nested_jwt]).to eql 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmb28iOiJ3aWZmbGUifQ.FFQQzR6BEuNWZnTlVYjo3zR-rs6Sl_p3lU2EDdTkpE8'
+      end
     end
 
     context "when reifying a Request" do

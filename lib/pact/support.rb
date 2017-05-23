@@ -6,6 +6,7 @@ require 'pact/term'
 require 'pact/helpers'
 require 'pact/configuration'
 require 'pact/reification'
+require 'jwt'
 
 module Pact
   include Pact::Helpers

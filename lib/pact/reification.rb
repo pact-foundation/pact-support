@@ -9,6 +9,8 @@ module Pact
       case term
       when Pact::Term, Regexp, Pact::SomethingLike, Pact::ArrayLike
         from_term(term.generate)
+        when Pact::Jwt
+        JWT.encode(from_term(term.generate),term.key,term.algo)
       when Hash
         term.inject({}) do |mem, (key,term)|
           mem[key] = from_term(term)

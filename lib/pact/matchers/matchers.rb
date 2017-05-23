@@ -1,5 +1,6 @@
 require 'pact/term'
 require 'pact/something_like'
+require 'pact/jwt'
 require 'pact/shared/null_expectation'
 require 'pact/shared/key_not_found'
 require 'pact/matchers/unexpected_key'
@@ -39,6 +40,7 @@ module Pact
       when Regexp then regexp_diff(expected, actual, options)
       when Pact::SomethingLike then calculate_diff(expected.contents, actual, options.merge(:type => true))
       when Pact::ArrayLike then array_like_diff(expected, actual, options)
+      when Pact::Jwt then jwt_diff(expected,actual,options)
       else object_diff(expected, actual, options)
       end
     end
@@ -56,6 +58,14 @@ module Pact
     def array_diff expected, actual, options
       if actual.is_a? Array
         actual_array_diff expected, actual, options
+      else
+        Difference.new expected, actual
+      end
+    end
+
+    def jwt_diff expected, actual, options
+      if actual.is_a? String
+        diff(expected.contents, JWT.decode(actual,nil,nil)[0], options)
       else
         Difference.new expected, actual
       end

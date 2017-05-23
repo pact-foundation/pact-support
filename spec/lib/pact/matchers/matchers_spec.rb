@@ -55,6 +55,31 @@ module Pact::Matchers
 
     end
 
+    describe 'matching with jwt' do
+
+      context 'when the actual is a simple hash like the expected' do
+        let(:expected) { Pact::Jwt.new( { "a" => 1 },'JWT_KEY','HS256' ) }
+        let(:actual) { JWT.encode({ a: 1},'JWT_KEY', 'HS256') }
+
+        it 'returns an empty diff' do
+          expect(diff(expected, actual)).to eq({})
+        end
+
+      end
+
+      context 'when the actual is a Pact term like the expected' do
+        let(:expected) { Pact::Jwt.new( { "key" => Pact::Term.new(:matcher => /.*llo/, :generate => 'hello') }, 'JWT_KEY','HS256' ) }
+        let(:actual) { JWT.encode({ key: 'allo'},'JWT_KEY', 'HS256') }
+
+        it 'returns an empty diff' do
+          expect(diff(expected, actual)).to eq({})
+        end
+
+      end
+
+    end
+
+
     describe 'option {allow_unexpected_keys: false}' do
       context "when an unexpected key is found" do
         let(:expected) { {:a => 1} }
