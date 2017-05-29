@@ -61,12 +61,8 @@ describe "converting Pact::Term and Pact::SomethingLike to matching rules and ba
       }
     end
 
-    it "recreates the same object hierarchy", pending: 'Waiting for Pact JVM to implement nested type matching' do
+    it "recreates the same object hierarchy" do
       expect(recreated_expected).to eq expected
-    end
-
-    it "recreates a similar object hierarchy that does the same thing" do
-      expect(recreated_expected).to eq similar
     end
   end
 
@@ -87,12 +83,8 @@ describe "converting Pact::Term and Pact::SomethingLike to matching rules and ba
       }
     end
 
-    it "recreates the same object hierarchy", pending: 'Waiting for Pact JVM to implement nested type matching' do
+    it "recreates the same object hierarchy" do
       expect(recreated_expected).to eq expected
-    end
-
-    it "recreates a similar object hierarchy that does the same thing" do
-      expect(recreated_expected).to eq similar
     end
   end
 end

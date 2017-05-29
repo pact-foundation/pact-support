@@ -33,8 +33,6 @@ module Pact
         when Pact::Term then record_regex_rule object, path
         when Pact::QueryString then recurse(object.query, path, match_type)
         when Pact::QueryHash then recurse_hash(object.query, path, match_type)
-        else
-          record_match_type_rule path, match_type
         end
       end
 
@@ -51,6 +49,7 @@ module Pact
       end
 
       def handle_something_like something_like, path, match_type
+        record_match_type_rule path, "type"
         recurse something_like.contents, path, "type"
       end
 
