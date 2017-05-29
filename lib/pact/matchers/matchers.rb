@@ -22,11 +22,11 @@ module Pact
     NO_DIFF = {}.freeze
 
     def diff expected, actual, opts = {}
-      calculate_diff(Pact::Term.unpack_regexps(expected), actual, DEFAULT_OPTIONS.merge(opts))
+      calculate_diff(expected, actual, DEFAULT_OPTIONS.merge(opts))
     end
 
     def type_diff expected, actual, opts = {}
-      calculate_diff Pact::Term.unpack_regexps(expected), actual, DEFAULT_OPTIONS.merge(opts).merge(type: true)
+      calculate_diff expected, actual, DEFAULT_OPTIONS.merge(opts).merge(type: true)
     end
 
     private
@@ -39,17 +39,22 @@ module Pact
       when Regexp then regexp_diff(expected, actual, options)
       when Pact::SomethingLike then calculate_diff(expected.contents, actual, options.merge(:type => true))
       when Pact::ArrayLike then array_like_diff(expected, actual, options)
+      when Pact::Term then term_diff(expected, actual, options)
       else object_diff(expected, actual, options)
       end
     end
 
     alias_method :structure_diff, :type_diff # Backwards compatibility
 
+    def term_diff term, actual, options
+      regexp_diff(term.matcher, actual, options)
+    end
+
     def regexp_diff regexp, actual, options
       if actual.is_a?(String) && regexp.match(actual)
         NO_DIFF
       else
-        RegexpDifference.new regexp, actual
+        RegexpDifference.new regexp, Pact::Reification.from_term(actual)
       end
     end
 
@@ -57,7 +62,7 @@ module Pact
       if actual.is_a? Array
         actual_array_diff expected, actual, options
       else
-        Difference.new expected, actual
+        Difference.new Pact::Reification.from_term(expected), Pact::Reification.from_term(actual)
       end
     end
 
@@ -84,7 +89,7 @@ module Pact
         expected_array = expected_size.times.collect{ Pact::Term.unpack_regexps(array_like.contents) }
         actual_array_diff expected_array, actual, options.merge(:type => true)
       else
-        Difference.new array_like.generate, actual
+        Difference.new array_like.generate, Pact::Reification.from_term(actual)
       end
     end
 
@@ -92,7 +97,8 @@ module Pact
       if actual.is_a? Hash
         actual_hash_diff expected, actual, options
       else
-        Difference.new expected, actual
+        # type_difference(expected, actual)
+        Difference.new Pact::Reification.from_term(expected), Pact::Reification.from_term(actual)
       end
     end
 
@@ -153,7 +159,5 @@ module Pact
     def is_boolean object
       object == true || object == false
     end
-
-
   end
 end
