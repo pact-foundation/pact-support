@@ -1,5 +1,6 @@
 require 'pact/shared/jruby_support'
 require 'pact/matchers/differ'
+require 'pact/matchers/extract_messages'
 
 module Pact
   module Matchers
@@ -11,12 +12,15 @@ module Pact
       def initialize diff, options = {}
         @diff = diff
         @colour = options.fetch(:colour, false)
+        @actual = options.fetch(:actual, {})
         @include_explanation = options.fetch(:include_explanation, true)
         @differ = Pact::Matchers::Differ.new(@colour)
+        @messages = Pact::Matchers::ExtractDiffMessages.call(diff)
       end
 
-      def self.call diff, options = {colour: Pact.configuration.color_enabled}
-        new(diff, options).call
+      def self.call diff, options = {}
+        default_options = {colour: Pact.configuration.color_enabled}
+        new(diff, options.merge(default_options)).call
       end
 
       def call
@@ -24,11 +28,14 @@ module Pact
       end
 
       def to_s
+
         expected = generate_string(diff, :expected)
         actual = generate_string(diff, :actual)
-        suffix = @include_explanation ?  "\n" + key : ''
-        string_diff = remove_comma_from_end_of_arrays(@differ.diff_as_string(actual, expected).lstrip)
-        string_diff + suffix
+        suffix = @include_explanation ?  key + "\n" : ''
+        messages = @include_explanation ? "\n" + @messages : ''
+        string_diff = @differ.diff_as_string(actual, expected).lstrip
+        string_diff = remove_comma_from_end_of_arrays(string_diff)
+        suffix + string_diff + messages
       end
 
       private
@@ -91,9 +98,9 @@ module Pact
       end
 
       def key
-        "Key: " + @differ.red("-") + @differ.red(" means \"expected, but was not found\". \n") +
-        @differ.green("     +") + @differ.green(" means \"actual, should not be found\". \n") +
-        "     Values where the expected matches the actual are not shown.\n"
+        "Key: " + @differ.green("-") + @differ.green(" means \"expected, but not found\". \n") +
+        @differ.red("     +") + @differ.red(" means \"actual, should not be found\". \n") +
+        "     Matching keys and values are not shown.\n"
       end
 
       def add_comma_to_end_of_arrays string

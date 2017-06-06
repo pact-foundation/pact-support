@@ -162,8 +162,8 @@ module Pact
 
     def create_logger
       FileUtils::mkdir_p log_dir
-      logger = Logger.new(log_path)
-      logger.level = Logger::DEBUG
+      logger = ::Logger.new(log_path)
+      logger.level = ::Logger::DEBUG
       logger
     end
   end

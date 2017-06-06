@@ -5,11 +5,13 @@ module Pact
   module Matchers
     class BaseDifference
 
-      attr_reader :expected, :actual
+      attr_reader :expected, :actual, :message
+      attr_writer :message
 
-      def initialize expected, actual
+      def initialize expected, actual, message = nil
         @expected = expected
         @actual = actual
+        @message = message
       end
 
       def any?
