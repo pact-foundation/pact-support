@@ -106,7 +106,7 @@ module Pact
       hash_diff = expected.each_with_object({}) do |(key, expected_value), difference|
         actual_value = actual.fetch(key, Pact::KeyNotFound.new)
         if actual_value.is_a?(Pact::KeyNotFound)
-          diff_at_key = object_diff(actual_value, expected, options)
+          diff_at_key = calculate_diff(expected_value, actual_value, options)
           custom_message = "Could not find key \"#{key}\" (keys present are: #{actual.keys.join(", ")}) at <parent_path>"
           diff_at_key.message = custom_message
         else

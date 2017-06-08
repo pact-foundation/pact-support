@@ -20,7 +20,7 @@ module Pact
 
       def self.call diff, options = {}
         default_options = {colour: Pact.configuration.color_enabled}
-        new(diff, options.merge(default_options)).call
+        new(diff, default_options.merge(options)).call
       end
 
       def call
