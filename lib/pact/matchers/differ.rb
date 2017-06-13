@@ -106,9 +106,9 @@ module Pact
         diff.lines.map { |line|
           case line[0].chr
           when "+"
-            red line
-          when "-"
             green line
+          when "-"
+            red line
           when "@"
             line[1].chr == "@" ? blue(line) : line
           else

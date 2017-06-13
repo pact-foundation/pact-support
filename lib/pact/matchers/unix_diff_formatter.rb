@@ -98,8 +98,8 @@ module Pact
       end
 
       def key
-        "Key: " + @differ.green("-") + @differ.green(" means \"expected, but not found\". \n") +
-        @differ.red("     +") + @differ.red(" means \"actual, should not be found\". \n") +
+        "Key: " + @differ.red("-") + @differ.red(" means \"expected\". \n") +
+        @differ.green("     +") + @differ.green(" means \"actual\". \n") +
         "     Matching keys and values are not shown.\n"
       end
 
