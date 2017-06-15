@@ -32,8 +32,9 @@ module Pact
         expected = generate_string(diff, :expected)
         actual = generate_string(diff, :actual)
         suffix = @include_explanation ?  key + "\n" : ''
-        messages = @include_explanation ? "\n" + @messages : ''
+        messages = @include_explanation ? "\n\n#{@messages}\n" : ''
         string_diff = @differ.diff_as_string(actual, expected).lstrip
+        string_diff = remove_first_line(string_diff)
         string_diff = remove_comma_from_end_of_arrays(string_diff)
         suffix + string_diff + messages
       end
@@ -102,6 +103,16 @@ module Pact
         @differ.green("     +") + @differ.green(" means \"actual\". \n") +
         "     Matching keys and values are not shown.\n"
       end
+
+      def remove_first_line string_diff
+        lines = string_diff.split("\n")
+        if lines[0] =~ /@@/
+          lines[1..-1].join("\n")
+        else
+          string_diff
+        end
+      end
+
 
       def add_comma_to_end_of_arrays string
         string.gsub(/(\n\s*\])/, ',\1')
