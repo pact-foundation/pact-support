@@ -14,49 +14,86 @@ module Pact::Matchers
       HASH = {foo: "bar"}
       ARRAY = ["foo"]
 
-      let(:term) { Pact.term(/foo/, "food") }
 
-      let(:expected) { term }
+      let(:term) { Pact.term(/foo/, "food") }
+      let(:regexp) { /foo/ }
       let(:actual) { "drink" }
       let(:difference) { diff({thing: expected}, {thing: actual}) }
 
-      context "when the Pact::Term does not match" do
-        it "returns a message" do
-          expect(difference[:thing].message).to eq "Regular expression /foo/ did not match \"drink\" at <path>"
+      context "with a Pact::Term" do
+        let(:expected) { term }
+
+        context "when the Pact::Term does not match" do
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got \"drink\" at <path>"
+          end
+        end
+
+        context "when the actual is a Fixnum" do
+          let(:actual) { INT }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got a Fixnum (1) at <path>"
+          end
+        end
+
+        context "when the actual is Hash" do
+          let(:actual) { HASH }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got a Hash at <path>"
+          end
+        end
+
+        context "when the actual is a Fixnum" do
+          let(:actual) { INT }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got a Fixnum (1) at <path>"
+          end
+        end
+
+        context "when the actual is nil" do
+          let(:actual) { nil }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got nil at <path>"
+          end
         end
       end
 
-      context "when the actual is a Fixnum" do
-        let(:actual) { INT }
-        it "returns a message" do
-          expect(difference[:thing].message).to eq "Expected a String matching regular expression /foo/ but got a Fixnum (1) at <path>"
-        end
-      end
+      context "with a Regexp" do
 
-      context "when the actual is Hash" do
-        let(:actual) { HASH }
-        it "returns a message" do
-          expect(difference[:thing].message).to eq "Expected a String matching regular expression /foo/ but got a Hash at <path>"
-        end
-      end
+        let(:expected) { regexp }
 
-      context "when the Pact::Term does not match" do
-        it "returns a message" do
-          expect(difference[:thing].message).to eq "Regular expression /foo/ did not match \"drink\" at <path>"
+        context "when the Pact::Term does not match" do
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got \"drink\" at <path>"
+          end
         end
-      end
 
-      context "when the actual is a Fixnum" do
-        let(:actual) { INT }
-        it "returns a message" do
-          expect(difference[:thing].message).to eq "Expected a String matching regular expression /foo/ but got a Fixnum (1) at <path>"
+        context "when the actual is a Fixnum" do
+          let(:actual) { INT }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got a Fixnum (1) at <path>"
+          end
         end
-      end
 
-      context "when the actual is nil" do
-        let(:actual) { nil }
-        it "returns a message" do
-          expect(difference[:thing].message).to eq "Expected a String matching regular expression /foo/ but got nil at <path>"
+        context "when the actual is Hash" do
+          let(:actual) { HASH }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got a Hash at <path>"
+          end
+        end
+
+        context "when the actual is a Fixnum" do
+          let(:actual) { INT }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got a Fixnum (1) at <path>"
+          end
+        end
+
+        context "when the actual is nil" do
+          let(:actual) { nil }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got nil at <path>"
+          end
         end
       end
     end

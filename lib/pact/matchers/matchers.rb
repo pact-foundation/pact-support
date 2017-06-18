@@ -47,14 +47,26 @@ module Pact
     alias_method :structure_diff, :type_diff # Backwards compatibility
 
     def term_diff term, actual, options
-      regexp_diff(term.matcher, actual, options)
+      if actual.is_a?(String)
+        actual_term_diff term, actual, options
+      else
+        RegexpDifference.new term.matcher, Pact::Reification.from_term(actual), "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{class_name_with_value_in_brackets(actual)} at <path>"
+      end
+    end
+
+    def actual_term_diff term, actual, options
+      if term.matcher.match(actual)
+        NO_DIFF
+      else
+        RegexpDifference.new term.matcher, Pact::Reification.from_term(actual), "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{actual.inspect} at <path>"
+      end
     end
 
     def regexp_diff regexp, actual, options
       if actual.is_a?(String)
         actual_regexp_diff regexp, actual, options
       else
-        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Expected a String matching regular expression #{regexp.inspect} but got #{class_name_with_value_in_brackets(actual)} at <path>"
+        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Expected a String matching #{regexp.inspect} but got #{class_name_with_value_in_brackets(actual)} at <path>"
       end
     end
 
@@ -62,7 +74,7 @@ module Pact
       if regexp.match(actual)
         NO_DIFF
       else
-        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Regular expression #{regexp.inspect} did not match #{short_description(actual)} at <path>"
+        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Expected a String matching #{regexp.inspect} but got #{short_description(actual)} at <path>"
       end
     end
 
