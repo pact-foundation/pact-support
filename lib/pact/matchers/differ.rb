@@ -51,8 +51,8 @@ module Pact
           end
         end
         #Handle the last remaining hunk
-        output << matching_encoding(oldhunk.diff(format).to_s,output)
-        output << matching_encoding("\n",output)
+        output << matching_encoding(oldhunk.diff(format).to_s, output)
+        output << matching_encoding("\n", output)
         color_diff output
       rescue Encoding::CompatibilityError
         if input_data_new.encoding != input_data_old.encoding

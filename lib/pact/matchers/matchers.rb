@@ -22,11 +22,11 @@ module Pact
     NO_DIFF = {}.freeze
 
     def diff expected, actual, opts = {}
-      calculate_diff(Pact::Term.unpack_regexps(expected), actual, DEFAULT_OPTIONS.merge(opts))
+      calculate_diff(expected, actual, DEFAULT_OPTIONS.merge(opts))
     end
 
     def type_diff expected, actual, opts = {}
-      calculate_diff Pact::Term.unpack_regexps(expected), actual, DEFAULT_OPTIONS.merge(opts).merge(type: true)
+      calculate_diff expected, actual, DEFAULT_OPTIONS.merge(opts).merge(type: true)
     end
 
     private
@@ -39,17 +39,42 @@ module Pact
       when Regexp then regexp_diff(expected, actual, options)
       when Pact::SomethingLike then calculate_diff(expected.contents, actual, options.merge(:type => true))
       when Pact::ArrayLike then array_like_diff(expected, actual, options)
+      when Pact::Term then term_diff(expected, actual, options)
       else object_diff(expected, actual, options)
       end
     end
 
     alias_method :structure_diff, :type_diff # Backwards compatibility
 
-    def regexp_diff regexp, actual, options
-      if actual.is_a?(String) && regexp.match(actual)
+    def term_diff term, actual, options
+      if actual.is_a?(String)
+        actual_term_diff term, actual, options
+      else
+        RegexpDifference.new term.matcher, Pact::Reification.from_term(actual), "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{class_name_with_value_in_brackets(actual)} at <path>"
+      end
+    end
+
+    def actual_term_diff term, actual, options
+      if term.matcher.match(actual)
         NO_DIFF
       else
-        RegexpDifference.new regexp, actual
+        RegexpDifference.new term.matcher, Pact::Reification.from_term(actual), "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{actual.inspect} at <path>"
+      end
+    end
+
+    def regexp_diff regexp, actual, options
+      if actual.is_a?(String)
+        actual_regexp_diff regexp, actual, options
+      else
+        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Expected a String matching #{regexp.inspect} but got #{class_name_with_value_in_brackets(actual)} at <path>"
+      end
+    end
+
+    def actual_regexp_diff regexp, actual, options
+      if regexp.match(actual)
+        NO_DIFF
+      else
+        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Expected a String matching #{regexp.inspect} but got #{short_description(actual)} at <path>"
       end
     end
 
@@ -57,7 +82,7 @@ module Pact
       if actual.is_a? Array
         actual_array_diff expected, actual, options
       else
-        Difference.new expected, actual
+        Difference.new Pact::Reification.from_term(expected), Pact::Reification.from_term(actual), type_difference_message(expected, actual)
       end
     end
 
@@ -84,7 +109,7 @@ module Pact
         expected_array = expected_size.times.collect{ Pact::Term.unpack_regexps(array_like.contents) }
         actual_array_diff expected_array, actual, options.merge(:type => true)
       else
-        Difference.new array_like.generate, actual
+        Difference.new array_like.generate, Pact::Reification.from_term(actual), type_difference_message(expected, actual)
       end
     end
 
@@ -92,16 +117,25 @@ module Pact
       if actual.is_a? Hash
         actual_hash_diff expected, actual, options
       else
-        Difference.new expected, actual
+        Difference.new Pact::Reification.from_term(expected), Pact::Reification.from_term(actual), type_difference_message(expected, actual)
       end
     end
 
     def actual_hash_diff expected, actual, options
-      hash_diff = expected.each_with_object({}) do |(key, value), difference|
-        diff_at_key = calculate_diff(value, actual.fetch(key, Pact::KeyNotFound.new), options)
+      hash_diff = expected.each_with_object({}) do |(key, expected_value), difference|
+        diff_at_key = calculate_diff_at_key(key, expected_value, actual, difference, options)
         difference[key] = diff_at_key if diff_at_key.any?
       end
       hash_diff.merge(check_for_unexpected_keys(expected, actual, options))
+    end
+
+    def calculate_diff_at_key key, expected_value, actual, difference, options
+      actual_value = actual.fetch(key, Pact::KeyNotFound.new)
+      diff_at_key = calculate_diff(expected_value, actual_value, options)
+      if actual_value.is_a?(Pact::KeyNotFound)
+        diff_at_key.message = key_not_found_message(key, actual)
+      end
+      diff_at_key
     end
 
     def check_for_unexpected_keys expected, actual, options
@@ -109,7 +143,7 @@ module Pact
         NO_DIFF
       else
         (actual.keys - expected.keys).each_with_object({}) do | key, running_diff |
-          running_diff[key] = Difference.new(UnexpectedKey.new, actual[key])
+          running_diff[key] = Difference.new(UnexpectedKey.new, actual[key], "Did not expect the key \"#{key}\" to exist at <parent_path>")
         end
       end
     end
@@ -124,7 +158,7 @@ module Pact
 
     def exact_value_diff expected, actual, options
       if expected != actual
-        Difference.new expected, actual
+        Difference.new expected, actual, value_difference_message(expected, actual, options)
       else
         NO_DIFF
       end
@@ -134,7 +168,7 @@ module Pact
       if types_match? expected, actual
         NO_DIFF
       else
-        TypeDifference.new type_diff_expected_display(expected), type_diff_actual_display(actual)
+        TypeDifference.new type_diff_expected_display(expected), type_diff_actual_display(actual), type_difference_message(expected, actual)
       end
     end
 
@@ -154,6 +188,67 @@ module Pact
       object == true || object == false
     end
 
+    def has_children? object
+      object.is_a?(Hash) || object.is_a?(Array)
+    end
 
+    def value_difference_message expected, actual, options = {}
+      case expected
+      when Pact::UnexpectedIndex
+        "Actual array is too long and should not contain #{short_description(actual)} at <path>"
+      else
+        case actual
+        when Pact::IndexNotFound
+          "Actual array is too short and should have contained #{short_description(expected)} at <path>"
+        else
+          "Expected #{short_description(expected)} but got #{short_description(actual)} at <path>"
+        end
+      end
+    end
+
+    def type_difference_message expected, actual
+      case actual
+      when Pact::IndexNotFound
+        "Actual array is too short and should have contained #{short_description(expected)} at <path>"
+      else
+        expected_desc = class_name_with_value_in_brackets(expected)
+        expected_desc.gsub!("(", "(like ")
+        actual_desc = class_name_with_value_in_brackets(actual)
+        message = "Expected #{expected_desc} but got #{actual_desc} at <path>"
+      end
+    end
+
+    def class_name_with_value_in_brackets object
+      object_desc = has_children?(object) && object.inspect.length < 100 ? "" : " (#{object.inspect})"
+      object_desc = if object.nil?
+        "nil"
+      else
+        "#{class_description(object)}#{object_desc}"
+      end
+    end
+
+    def key_not_found_message key, actual
+      hint = actual.any? ? "(keys present are: #{actual.keys.join(", ")})" : "in empty Hash"
+      "Could not find key \"#{key}\" #{hint} at <parent_path>"
+    end
+
+    def short_description object
+      return "nil" if object.nil?
+      case object
+      when Hash then "a Hash"
+      when Array then "an Array"
+      else object.inspect
+      end
+    end
+
+    def class_description object
+      return "nil" if object.nil?
+      clazz = object.class
+      case clazz.name[0]
+      when /[AEIOU]/ then "an #{clazz}"
+      else
+        "a #{clazz}"
+      end
+    end
   end
 end

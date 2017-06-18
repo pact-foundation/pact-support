@@ -1,5 +1,6 @@
 require 'pact/shared/jruby_support'
 require 'pact/matchers/differ'
+require 'pact/matchers/extract_messages'
 
 module Pact
   module Matchers
@@ -8,15 +9,20 @@ module Pact
 
       include JRubySupport
 
+      MESSAGES_TITLE = "\n\nDescription of differences\n--------------------------------------"
+
       def initialize diff, options = {}
         @diff = diff
         @colour = options.fetch(:colour, false)
+        @actual = options.fetch(:actual, {})
         @include_explanation = options.fetch(:include_explanation, true)
         @differ = Pact::Matchers::Differ.new(@colour)
+        @messages = Pact::Matchers::ExtractDiffMessages.call(diff)
       end
 
-      def self.call diff, options = {colour: Pact.configuration.color_enabled}
-        new(diff, options).call
+      def self.call diff, options = {}
+        default_options = {colour: Pact.configuration.color_enabled}
+        new(diff, default_options.merge(options)).call
       end
 
       def call
@@ -24,11 +30,15 @@ module Pact
       end
 
       def to_s
+
         expected = generate_string(diff, :expected)
         actual = generate_string(diff, :actual)
-        suffix = @include_explanation ?  "\n" + key : ''
-        string_diff = remove_comma_from_end_of_arrays(@differ.diff_as_string(actual, expected).lstrip)
-        string_diff + suffix
+        suffix = @include_explanation ?  key + "\n" : ''
+        messages = @include_explanation ? "#{MESSAGES_TITLE}\n#{@messages}\n" : ''
+        string_diff = @differ.diff_as_string(actual, expected).lstrip
+        string_diff = remove_first_line(string_diff)
+        string_diff = remove_comma_from_end_of_arrays(string_diff)
+        suffix + string_diff + messages
       end
 
       private
@@ -91,10 +101,21 @@ module Pact
       end
 
       def key
-        "Key: " + @differ.red("-") + @differ.red(" means \"expected, but was not found\". \n") +
-        @differ.green("     +") + @differ.green(" means \"actual, should not be found\". \n") +
-        "     Values where the expected matches the actual are not shown.\n"
+        "Diff\n--------------------------------------\n" +
+        "Key: " + @differ.red("-") + @differ.red(" is expected \n") +
+        @differ.green("     +") + @differ.green(" is actual \n") +
+        "Matching keys and values are not shown\n"
       end
+
+      def remove_first_line string_diff
+        lines = string_diff.split("\n")
+        if lines[0] =~ /@@/
+          lines[1..-1].join("\n")
+        else
+          string_diff
+        end
+      end
+
 
       def add_comma_to_end_of_arrays string
         string.gsub(/(\n\s*\])/, ',\1')

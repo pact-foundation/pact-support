@@ -45,7 +45,7 @@ module Pact::Matchers
 
       context 'when the actual is something like the expected' do
         let(:expected) { Pact::SomethingLike.new( { a: 1 } ) }
-        let(:actual) { { a: 2} }
+        let(:actual)   { { a: 2 } }
 
         it 'returns an empty diff' do
           expect(diff(expected, actual)).to eq({})
@@ -53,6 +53,15 @@ module Pact::Matchers
 
       end
 
+      context 'when the there is a mismatch of a parent, and a child contains a SomethingLike' do
+        let(:expected) { {thing: {foo: Pact::SomethingLike.new(1)}} }
+        let(:actual)   { {thing: [Pact::SomethingLike.new(1)]} }
+        let(:difference) { {thing: Difference.new({foo: 1}, [1]) } }
+
+        it "reifies the children" do
+          expect(diff(expected, actual)).to eq difference
+        end
+      end
     end
 
     describe 'option {allow_unexpected_keys: false}' do
@@ -125,14 +134,14 @@ module Pact::Matchers
         end
         context "and a hash is found" do
           let(:actual) { {a: {b: 1}} }
-          let(:difference) { {:a=>TypeDifference.new(Pact::ExpectedType.new(1), Pact::ActualType.new({:b=>1})) } }
+          let(:difference) { {a: TypeDifference.new(Pact::ExpectedType.new(1), Pact::ActualType.new({:b=>1})) } }
           it "returns the diff" do
             expect(type_diff(expected, actual)).to eq difference
           end
         end
         context "and an array is found" do
           let(:actual) { {a: [1] } }
-          let(:difference) { {:a=>TypeDifference.new(Pact::ExpectedType.new(1), Pact::ActualType.new([1]))}}
+          let(:difference) { {a: TypeDifference.new(Pact::ExpectedType.new(1), Pact::ActualType.new([1]))}}
           it "returns the diff" do
             expect(type_diff(expected, actual)).to eq difference
           end
@@ -147,7 +156,7 @@ module Pact::Matchers
             [
               NoDiffAtIndex.new,
               {
-                :name => TypeDifference.new(Pact::ExpectedType.new("Mary"), Pact::ActualType.new(1))
+                name: TypeDifference.new(Pact::ExpectedType.new("Mary"), Pact::ActualType.new(1))
               }
             ]
           }
@@ -162,7 +171,7 @@ module Pact::Matchers
         let(:expected) { {a: nil} }
         context "and a string is found" do
           let(:actual) { {a: 'a string'} }
-          let(:difference) { {:a=>TypeDifference.new(Pact::ExpectedType.new(nil), Pact::ActualType.new("a string")) } }
+          let(:difference) { {a: TypeDifference.new(Pact::ExpectedType.new(nil), Pact::ActualType.new("a string")) } }
           it "returns the diff" do
             expect(type_diff(expected, actual)).to eq difference
           end
@@ -184,8 +193,8 @@ module Pact::Matchers
         let(:expected) { {a: {b: Pact::Term.new(:matcher => /p/, :generate => 'apple')}} }
         context "and a non matching value is found" do
           let(:actual) { {a: nil} }
-          let(:difference) { {a: Difference.new({b: /p/}, nil)} }
-          it "returns the diff with the regexp unpacked" do
+          let(:difference) { {a: Difference.new({b: "apple"}, nil)} }
+          it "returns the diff with the term reified" do
             expect(type_diff(expected, actual)).to eq difference
           end
         end
@@ -264,6 +273,17 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
+        context "when the actual value is an array, and both expected and actual contain SomethingLike" do
+          subject { {a: {foo: Pact.like("b")}} }
+          let(:actual) { {a: [Pact.like(1)] } }
+          let(:difference) { {a: Difference.new({foo: "b"}, [1]) } }
+
+          it "should return the diff with the reified likes" do
+            expect(diff(subject, actual)).to eq(difference)
+          end
+        end
+
         context "when the actual value is an hash" do
           let(:actual) { {b: 'c'} }
           let(:difference) { { a: Difference.new("b",Pact::KeyNotFound.new)} }

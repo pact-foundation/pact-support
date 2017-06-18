@@ -9,7 +9,7 @@ module Pact
 
       describe ".call" do
 
-        let(:key_lines_count) { 4 }
+        let(:key_lines_count) { 9 }
         let(:colour) { false }
         subject { UnixDiffFormatter.call(diff, {colour: colour}) }
 
@@ -55,7 +55,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 9 + key_lines_count
+            expect(line_count).to eq 8 + key_lines_count
           end
 
         end
@@ -77,7 +77,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 9 + key_lines_count
+            expect(line_count).to eq 8 + key_lines_count
           end
 
         end
@@ -99,7 +99,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 5 + key_lines_count
+            expect(line_count).to eq 4 + key_lines_count
           end
 
         end
@@ -121,7 +121,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 8 + key_lines_count
+            expect(line_count).to eq 7 + key_lines_count
           end
         end
 
@@ -141,7 +141,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 8 + key_lines_count
+            expect(line_count).to eq 7 + key_lines_count
           end
 
         end
@@ -160,7 +160,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 7 + key_lines_count
+            expect(line_count).to eq 6 + key_lines_count
           end
 
         end
@@ -187,7 +187,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 9 + key_lines_count
+            expect(line_count).to eq 8 + key_lines_count
           end
 
         end
@@ -205,7 +205,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 10 + key_lines_count
+            expect(line_count).to eq 9 + key_lines_count
           end
 
         end
