@@ -9,7 +9,7 @@ module Pact
 
       describe ".call" do
 
-        let(:key_lines_count) { 4 }
+        let(:key_lines_count) { 9 }
         let(:colour) { false }
         subject { UnixDiffFormatter.call(diff, {colour: colour}) }
 
