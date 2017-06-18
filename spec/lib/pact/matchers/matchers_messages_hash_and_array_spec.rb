@@ -14,57 +14,6 @@ module Pact::Matchers
       HASH = {foo: "bar"}
       ARRAY = ["foo"]
 
-      COMBINATIONS = [
-        [STRING, "bar", "Expected \"foo\" but got \"bar\" at <path>"],
-        [STRING, nil, "Expected \"foo\" but got nil at <path>"],
-        [STRING, INT, "Expected \"foo\" but got 1 at <path>"],
-        [STRING, FLOAT, "Expected \"foo\" but got 1.0 at <path>"],
-        [STRING, HASH, "Expected \"foo\" but got a Hash at <path>"],
-        [STRING, ARRAY, "Expected \"foo\" but got an Array at <path>"],
-        [Pact.like(STRING), "bar", nil],
-        [Pact.like(STRING), nil, "Expected a String (like \"foo\") but got nil at <path>"],
-        [Pact.like(STRING), INT, "Expected a String (like \"foo\") but got a Fixnum (1) at <path>"],
-        [Pact.like(STRING), FLOAT, "Expected a String (like \"foo\") but got a Float (1.0) at <path>"],
-        [Pact.like(STRING), HASH, "Expected a String (like \"foo\") but got a Hash at <path>"],
-        [Pact.like(STRING), ARRAY, "Expected a String (like \"foo\") but got an Array at <path>"],
-        [INT, 2, "Expected 1 but got 2 at <path>"],
-        [INT, nil, "Expected 1 but got nil at <path>"],
-        [INT, STRING, "Expected 1 but got \"foo\" at <path>"],
-        [INT, FLOAT, "Expected 1 but got \"foo\" at <path>", {pending: true}],
-        [INT, HASH, "Expected 1 but got a Hash at <path>"],
-        [INT, ARRAY, "Expected 1 but got an Array at <path>"],
-        [Pact.like(INT), 2, nil],
-        [Pact.like(INT), nil, "Expected a Fixnum (like 1) but got nil at <path>"],
-        [Pact.like(INT), STRING, "Expected a Fixnum (like 1) but got a String (\"foo\") at <path>"],
-        [Pact.like(INT), FLOAT, "Expected a Fixnum (like 1) but got a Float (1.0) at <path>"],
-        [Pact.like(INT), HASH, "Expected a Fixnum (like 1) but got a Hash at <path>"],
-        [Pact.like(INT), ARRAY, "Expected a Fixnum (like 1) but got an Array at <path>"],
-        [HASH, HASH, nil],
-        [HASH, nil, "Expected a Hash but got nil at <path>"],
-        [HASH, STRING, "Expected a Hash but got a String (\"foo\") at <path>"],
-        [HASH, INT, "Expected a Hash but got a Fixnum (1) at <path>"],
-        [HASH, FLOAT, "Expected a Hash but got a Float (1.0) at <path>"],
-        [HASH, ARRAY, "Expected a Hash but got an Array at <path>"],
-        [Pact.like(HASH), STRING, "Expected a Hash but got a String (\"foo\") at <path>"],
-        [ARRAY, ARRAY, nil],
-        [ARRAY, nil, "Expected an Array but got nil at <path>"],
-        [ARRAY, STRING, "Expected an Array but got a String (\"foo\") at <path>"],
-        [ARRAY, INT, "Expected an Array but got a Fixnum (1) at <path>"],
-        [ARRAY, FLOAT, "Expected an Array but got a Float (1.0) at <path>"],
-        [ARRAY, HASH, "Expected an Array but got a Hash at <path>"]
-      ]
-
-      COMBINATIONS.each do | expected, actual, expected_message, options |
-        context "when expected is #{expected.inspect} and actual is #{actual.inspect}", options || {} do
-          let(:difference) { diff({thing: expected}, {thing: actual}) }
-          let(:message) { difference[:thing] ? difference[:thing].message : nil }
-
-          it "returns the message '#{expected_message}'" do
-            expect(message).to eq expected_message
-          end
-        end
-      end
-
       context "with a Hash" do
 
         context "with a missing key when the actual is an empty Hash" do

@@ -51,7 +51,15 @@ module Pact
     end
 
     def regexp_diff regexp, actual, options
-      if actual.is_a?(String) && regexp.match(actual)
+      if actual.is_a?(String)
+        actual_regexp_diff regexp, actual, options
+      else
+        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Expected a String matching regular expression #{regexp.inspect} but got #{class_name_with_value_in_brackets(actual)} at <path>"
+      end
+    end
+
+    def actual_regexp_diff regexp, actual, options
+      if regexp.match(actual)
         NO_DIFF
       else
         RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Regular expression #{regexp.inspect} did not match #{short_description(actual)} at <path>"

@@ -31,14 +31,15 @@ module Pact
         when BaseDifference then handle_difference obj, path, messages
         when NoDiffAtIndex then nil
         else
-          raise "Invalid diff, expected Hash, Array, NoDiffAtIndex or Difference, found #{obj.class}"
+          raise "Invalid diff, expected Hash, Array, NoDiffAtIndex or BaseDifference, found #{obj.class}"
         end
         messages
       end
 
       def handle_hash hash, path, messages
         hash.each_pair do | key, value |
-          diff_messages value, path + [".#{key}"], messages
+          next_part = key =~ /\s/ ? key.inspect : key
+          diff_messages value, path + [".#{next_part}"], messages
         end
       end
 
