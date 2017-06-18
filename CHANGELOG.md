@@ -1,6 +1,11 @@
 Do this to generate your change history
 
-  git log --pretty=format:'  * %h - %s (%an, %ad)' vX.Y.Z..HEAD
+  git log --pretty=format:'  * %h - %s (%an, %ad)'
+
+### 1.1.0 (19 June 2017)
+* 1659c54 - Add list of messages to diff output (Beth Skurrie, Mon Jun 19 09:39:08 2017 +1000)
+* e18debc - Reify actual and expected when a type difference is encountered while doing exact matching (Beth Skurrie, Tue May 30 09:24:18 2017 +1000)
+* 2ba49b6 - Updating matching rules extraction to use inheritance as per #34 (Beth Skurrie, Mon May 29 16:17:57 2017 +1000)
 
 ### 1.0.1 (11 May 2017)
 * e34374b - Extract rules for QueryHash and QueryString so we can include request matching rules in the pact. (Beth Skurrie, Thu May 11 09:11:19 2017 +1000)
