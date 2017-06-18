@@ -9,6 +9,8 @@ module Pact
 
       include JRubySupport
 
+      MESSAGES_TITLE = "\n\nDescription of differences\n--------------------------------------"
+
       def initialize diff, options = {}
         @diff = diff
         @colour = options.fetch(:colour, false)
@@ -32,7 +34,7 @@ module Pact
         expected = generate_string(diff, :expected)
         actual = generate_string(diff, :actual)
         suffix = @include_explanation ?  key + "\n" : ''
-        messages = @include_explanation ? "\n\n#{@messages}\n" : ''
+        messages = @include_explanation ? "#{MESSAGES_TITLE}\n#{@messages}\n" : ''
         string_diff = @differ.diff_as_string(actual, expected).lstrip
         string_diff = remove_first_line(string_diff)
         string_diff = remove_comma_from_end_of_arrays(string_diff)
@@ -99,9 +101,10 @@ module Pact
       end
 
       def key
-        "Key: " + @differ.red("-") + @differ.red(" means \"expected\". \n") +
-        @differ.green("     +") + @differ.green(" means \"actual\". \n") +
-        "     Matching keys and values are not shown.\n"
+        "Diff\n--------------------------------------\n" +
+        "Key: " + @differ.red("-") + @differ.red(" is expected \n") +
+        @differ.green("     +") + @differ.green(" is actual \n") +
+        "Matching keys and values are not shown\n"
       end
 
       def remove_first_line string_diff
