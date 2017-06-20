@@ -1,7 +1,9 @@
 require 'pact/term'
 require 'pact/something_like'
+require 'pact/reification'
 require 'pact/shared/null_expectation'
 require 'pact/shared/key_not_found'
+require 'pact/shared/request' # Not sure why this is needed, possibly something downstream https://github.com/pact-foundation/pact-support/issues/36
 require 'pact/matchers/unexpected_key'
 require 'pact/matchers/unexpected_index'
 require 'pact/matchers/index_not_found'
@@ -14,7 +16,10 @@ require 'pact/matchers/no_diff_at_index'
 require 'pact/array_like'
 
 module Pact
-  # should be called Differs
+  # Should be called Differs
+  # Note to self: Some people (Mike Williams) are using this module directly, so if you refactor it
+  # maintain backwards compatibility
+
   module Matchers
 
     NO_DIFF_AT_INDEX = NoDiffAtIndex.new
