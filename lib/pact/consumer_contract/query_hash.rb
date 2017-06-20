@@ -1,13 +1,11 @@
 require 'cgi'
 require 'pact/shared/active_support_support'
-require 'pact/matchers'
 require 'pact/symbolize_keys'
 
 module Pact
   class QueryHash
 
     include ActiveSupportSupport
-    include Pact::Matchers
     include SymbolizeKeys
 
     def initialize(query)
@@ -33,7 +31,8 @@ module Pact
     # other will always be a QueryString, not a QueryHash, as it will have ben created
     # from the actual query string.
     def difference(other)
-      diff(query, symbolize_keys(CGI::parse(other.query)), allow_unexpected_keys: false)
+      require 'pact/matchers' # avoid recursive loop between this file, pact/reification and pact/matchers
+      Pact::Matchers.diff(query, symbolize_keys(CGI::parse(other.query)), allow_unexpected_keys: false)
     end
 
     def query

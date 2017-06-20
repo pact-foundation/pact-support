@@ -1,9 +1,8 @@
 require 'pact/term'
 require 'pact/something_like'
-require 'pact/reification'
+require 'pact/array_like'
 require 'pact/shared/null_expectation'
 require 'pact/shared/key_not_found'
-require 'pact/shared/request' # Not sure why this is needed, possibly something downstream https://github.com/pact-foundation/pact-support/issues/36
 require 'pact/matchers/unexpected_key'
 require 'pact/matchers/unexpected_index'
 require 'pact/matchers/index_not_found'
@@ -13,11 +12,11 @@ require 'pact/matchers/type_difference'
 require 'pact/matchers/expected_type'
 require 'pact/matchers/actual_type'
 require 'pact/matchers/no_diff_at_index'
-require 'pact/array_like'
+require 'pact/reification'
 
 module Pact
   # Should be called Differs
-  # Note to self: Some people (Mike Williams) are using this module directly, so if you refactor it
+  # Note to self: Some people are using this module directly, so if you refactor it
   # maintain backwards compatibility
 
   module Matchers
@@ -25,6 +24,8 @@ module Pact
     NO_DIFF_AT_INDEX = NoDiffAtIndex.new
     DEFAULT_OPTIONS = {allow_unexpected_keys: true, type: false}.freeze
     NO_DIFF = {}.freeze
+
+    extend self
 
     def diff expected, actual, opts = {}
       calculate_diff(expected, actual, DEFAULT_OPTIONS.merge(opts))

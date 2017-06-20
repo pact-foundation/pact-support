@@ -1,6 +1,12 @@
 require 'randexp'
 require 'rack/utils'
-# reqiore 'active_support/core_ext/object/to_param'
+require 'pact/term'
+require 'pact/something_like'
+require 'pact/array_like'
+require 'pact/shared/request'
+require 'pact/consumer_contract/query_hash'
+require 'pact/consumer_contract/query_string'
+
 module Pact
   module Reification
     include ActiveSupportSupport

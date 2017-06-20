@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'pact/reification'
+require 'pact/consumer_contract/request'
 
 module Pact
   describe Reification do

@@ -8,9 +8,7 @@ module Pact
   module Request
 
     class Base
-      include Pact::Matchers
       include Pact::SymbolizeKeys
-      extend Pact::Matchers
 
       attr_reader :method, :path, :headers, :body, :query, :options
 
