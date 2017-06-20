@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.1.1 (20 June 2017)
+* 14789df - Adding missing requires for #36 (Beth Skurrie, Tue Jun 20 16:27:43 2017 +1000)
+
 ### 1.1.0 (19 June 2017)
 * 1659c54 - Add list of messages to diff output (Beth Skurrie, Mon Jun 19 09:39:08 2017 +1000)
 * e18debc - Reify actual and expected when a type difference is encountered while doing exact matching (Beth Skurrie, Tue May 30 09:24:18 2017 +1000)
