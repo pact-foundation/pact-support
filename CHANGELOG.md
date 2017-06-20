@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.1.2 (20 June 2017)
+* 8c3e53d - Fixing recursive require problems for https://github.com/pact-foundation/pact-support/issues/36 (Beth Skurrie, Tue Jun 20 18:59:24 2017 +1000)
+
 ### 1.1.1 (20 June 2017)
 * 14789df - Adding missing requires for #36 (Beth Skurrie, Tue Jun 20 16:27:43 2017 +1000)
 
