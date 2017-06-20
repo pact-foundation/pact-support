@@ -1,4 +1,4 @@
-require 'pact/matchers/extract_messages'
+require 'pact/matchers/extract_diff_messages'
 
 module Pact
   module Matchers

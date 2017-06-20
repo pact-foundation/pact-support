@@ -1,6 +1,7 @@
 require 'pact/shared/jruby_support'
 require 'pact/matchers/differ'
-require 'pact/matchers/extract_messages'
+require 'pact/matchers/extract_diff_messages'
+require 'pact/configuration'
 
 module Pact
   module Matchers
