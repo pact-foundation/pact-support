@@ -24,9 +24,11 @@ module Pact
 
     def initialize(attributes = {})
       @generate = attributes[:generate]
+      raise "Please specify a value to generate for the Term" unless @generate != nil
+      
+      @generate = @generate.to_s 
       @matcher = attributes[:matcher]
       raise "Please specify a matcher for the Term" unless @matcher != nil
-      raise "Please specify a value to generate for the Term" unless @generate != nil
       raise "Value to generate \"#{@generate}\" does not match regular expression #{@matcher.inspect}" unless @generate =~ @matcher
     end
 
