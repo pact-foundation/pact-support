@@ -14,6 +14,22 @@ module Pact
           end
         end
 
+        context "when the generate is a integer" do
+          let(:term) { Term.new(generate: 10, matcher: /[0-9]/)} 
+
+          it 'does not raise an exception' do
+            term
+          end 
+        end
+        
+        context "when the generate is a float" do
+          let(:term) { Term.new(generate: 50.51, matcher: /\d(\.\d{1,2})/)} 
+
+          it 'does not raise an exception' do
+            term
+          end 
+        end
+
         context "when the matcher does not match the generated value" do
           let(:generate) { 'banana' }
           it 'raises an exception' do
