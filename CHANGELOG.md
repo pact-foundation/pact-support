@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.1.3 (28 July 2017)
+* cd0fc09 - fix(pact serialisation): Use square bracket notation for JSON path keys containing dots when serialising the pact Fixes https://github.com/pact-foundation/pact-support/issues/39 (Beth Skurrie, Fri Jul 28 09:39:15 2017 +1000)
+
 ### 1.1.2 (20 June 2017)
 * 8c3e53d - Fixing recursive require problems for https://github.com/pact-foundation/pact-support/issues/36 (Beth Skurrie, Tue Jun 20 18:59:24 2017 +1000)
 
