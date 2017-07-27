@@ -40,7 +40,7 @@ module Pact
 
       def recurse_hash hash, path
         hash.each_with_object({}) do | (k, v), new_hash |
-          new_path = path + "['#{k.to_s}']"
+          new_path = path + "['#{k}']"
           new_hash[k] = recurse(wrap(v, new_path), new_path)
         end
       end

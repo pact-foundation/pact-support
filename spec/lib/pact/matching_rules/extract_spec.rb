@@ -196,6 +196,20 @@ module Pact
             expect(subject).to eq rules
           end
         end
+
+        context "with a key containing a dot" do
+          let(:matchable) do
+            {
+              "key" => {
+                "key.with.dots" => Pact::SomethingLike.new("foo")
+              }
+            }
+          end
+
+          it "uses square brackets notation for the key with dots" do
+            expect(subject.keys).to include '$.key["key.with.dots"]'
+          end
+        end
       end
     end
   end

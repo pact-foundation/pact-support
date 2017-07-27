@@ -38,7 +38,7 @@ module Pact
 
       def recurse_hash hash, path, match_type
         hash.each do | (key, value) |
-          recurse value, "#{path}.#{key.to_s}", match_type
+          recurse value, "#{path}#{next_path_part(key)}", match_type
         end
       end
 
@@ -74,6 +74,14 @@ module Pact
         unless match_type == :array_like || match_type.nil?
           rules[path] ||= {}
           rules[path]['match'] = match_type
+        end
+      end
+
+      def next_path_part key
+        if key.to_s.include?('.')
+          "[\"#{key}\"]"
+        else
+          ".#{key}"
         end
       end
     end
