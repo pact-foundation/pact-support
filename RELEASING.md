@@ -8,6 +8,7 @@
 3. Add files to git
 
       $ git add CHANGELOG.md lib/pact/support/version.rb
+      $ git commit -m "Releasing version $(ruby -r ./lib/pact/support/version.rb -e "puts Pact::Support::VERSION")"
 
 3. Release:
 
