@@ -1,7 +1,6 @@
 require 'pact/shared/jruby_support'
 require 'pact/matchers/differ'
 require 'pact/matchers/extract_diff_messages'
-require 'pact/configuration'
 
 module Pact
   module Matchers
@@ -22,6 +21,8 @@ module Pact
       end
 
       def self.call diff, options = {}
+        # require stops circular dependency from pact/configuration <-> pact/matchers/unix_diff_formatter
+        require 'pact/configuration'
         default_options = {colour: Pact.configuration.color_enabled}
         new(diff, default_options.merge(options)).call
       end
