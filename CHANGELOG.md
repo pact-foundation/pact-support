@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.1.4 (31 July 2017)
+* 425881c - fix(cirular dependency for UnixDiffFormatter): Fixes circular dependency between pact/configuration and pact/matchers/unix_diff_formatter (Beth Skurrie, Mon Jul 31 11:45:44 2017 +1000)
+
 ### 1.1.3 (28 July 2017)
 * cd0fc09 - fix(pact serialisation): Use square bracket notation for JSON path keys containing dots when serialising the pact Fixes https://github.com/pact-foundation/pact-support/issues/39 (Beth Skurrie, Fri Jul 28 09:39:15 2017 +1000)
 
