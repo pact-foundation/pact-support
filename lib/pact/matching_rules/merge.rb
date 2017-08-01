@@ -46,12 +46,13 @@ module Pact
       end
 
       def recurse_array array, path
-        array_like_path = "#{path}[*]*"
-        array_match_type = @matching_rules[array_like_path] && @matching_rules[array_like_path]['match']
+        array_like_children_path = "#{path}[*]*"
+        parent_match_rule = @matching_rules[path] && @matching_rules[path]['match']
+        children_match_rule = @matching_rules[array_like_children_path] && @matching_rules[array_like_children_path]['match']
+        min = @matching_rules[path] && @matching_rules[path]['min']
 
-        if array_match_type == 'type'
+        if min && (children_match_rule == 'type' || (children_match_rule.nil? && parent_match_rule == 'type'))
           warn_when_not_one_example_item(array, path)
-          min = @matching_rules[path]['min']
           # log_ignored_rules(path, @matching_rules[path], {'min' => min})
           Pact::ArrayLike.new(recurse(array.first, "#{path}[*]"), min: min)
         else
@@ -75,7 +76,7 @@ module Pact
         array_rules = @matching_rules["#{path}[*]*"]
         return object unless rules || array_rules
 
-        if rules['match'] == 'type'
+        if rules['match'] == 'type' && !rules.has_key?('min')
           handle_match_type(object, path, rules)
         elsif rules['regex']
           handle_regex(object, path, rules)
