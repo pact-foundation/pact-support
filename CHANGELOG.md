@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.1.5 (1 Aug 2017)
+* 81bc967 - fix(match type rules): Allow match: 'type' to be specified on the parent element of the array. Closes: #35, https://github.com/pact-foundation/pact-provider-verifier/issues/8 (Beth Skurrie, Tue Aug 1 10:33:02 2017 +1000)
+
 ### 1.1.4 (31 July 2017)
 * 425881c - fix(cirular dependency for UnixDiffFormatter): Fixes circular dependency between pact/configuration and pact/matchers/unix_diff_formatter (Beth Skurrie, Mon Jul 31 11:45:44 2017 +1000)
 
