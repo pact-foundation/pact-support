@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.1.6 (2017-08-25)
+* be9ef39 - fix(matching): use single quotes instead of double to escape keys with dots (Beth Skurrie, Fri Aug 25 09:41:14 2017 +1000)
+
 ### 1.1.5 (1 Aug 2017)
 * 81bc967 - fix(match type rules): Allow match: 'type' to be specified on the parent element of the array. Closes: #35, https://github.com/pact-foundation/pact-provider-verifier/issues/8 (Beth Skurrie, Tue Aug 1 10:33:02 2017 +1000)
 
