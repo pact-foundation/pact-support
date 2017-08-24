@@ -307,6 +307,42 @@ module Pact
           expect(subject['name']).to be_instance_of(Pact::SomethingLike)
         end
       end
+
+      describe "with a dot in the path" do
+        let(:expected) do
+          {
+            "first.name" => "Mary"
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body['first.name']" => { "match" => "type" }
+          }
+        end
+
+        it "applies the rule" do
+          expect(subject['first.name']).to be_instance_of(Pact::SomethingLike)
+        end
+      end
+
+      describe "with an @ in the path" do
+        let(:expected) do
+          {
+            "@name" => "Mary"
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body['@name']" => { "match" => "type" }
+          }
+        end
+
+        it "applies the rule" do
+          expect(subject['@name']).to be_instance_of(Pact::SomethingLike)
+        end
+      end
     end
   end
 end

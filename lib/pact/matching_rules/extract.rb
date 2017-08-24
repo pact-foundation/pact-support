@@ -77,9 +77,11 @@ module Pact
         end
       end
 
+      # Beth: there's a potential bug if the key contains a dot and a single quote.
+      # Not sure what to do then.
       def next_path_part key
         if key.to_s.include?('.')
-          "[\"#{key}\"]"
+          "['#{key}']"
         else
           ".#{key}"
         end

@@ -207,7 +207,7 @@ module Pact
           end
 
           it "uses square brackets notation for the key with dots" do
-            expect(subject.keys).to include '$.key["key.with.dots"]'
+            expect(subject.keys).to include "$.key['key.with.dots']"
           end
         end
       end
