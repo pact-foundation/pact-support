@@ -31,7 +31,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake', '~> 10.0.3'
   gem.add_development_dependency 'webmock', '~> 2.0.0'
   gem.add_development_dependency 'pry'
-  gem.add_development_dependency 'fakefs', '0.11.1'
+  gem.add_development_dependency 'fakefs', '0.11.2'
   gem.add_development_dependency 'hashie', '~> 2.0'
   gem.add_development_dependency 'activesupport'
   gem.add_development_dependency 'appraisal'
