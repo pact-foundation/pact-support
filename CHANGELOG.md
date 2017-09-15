@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.1.7 (2017-09-15)
+* a339b52 - Gemspec: Try using FakeFS 0.11.2 (Olle Jonsson, Wed Sep 13 09:28:27 2017 +0200)
+
 ### 1.1.6 (2017-08-25)
 * be9ef39 - fix(matching): use single quotes instead of double to escape keys with dots (Beth Skurrie, Fri Aug 25 09:41:14 2017 +1000)
 
