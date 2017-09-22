@@ -29,3 +29,4 @@ log
 reports
 Gemfile.lock
 gemfiles/*.lock
+spec/examples.txt
