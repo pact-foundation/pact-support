@@ -88,7 +88,7 @@ module Pact
       if actual.is_a? Array
         actual_array_diff expected, actual, options
       else
-        Difference.new Pact::Reification.from_term(expected), Pact::Reification.from_term(actual), type_difference_message(expected, actual)
+        Difference.new Pact::Reification.from_term(expected), actual, type_difference_message(Pact::Reification.from_term(expected), actual)
       end
     end
 
