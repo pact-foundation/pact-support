@@ -55,7 +55,7 @@ module Pact::Matchers
 
       context 'when the there is a mismatch of a parent, and a child contains a SomethingLike' do
         let(:expected) { {thing: {foo: Pact::SomethingLike.new(1)}} }
-        let(:actual)   { {thing: [Pact::SomethingLike.new(1)]} }
+        let(:actual)   { {thing: [1]} }
         let(:difference) { {thing: Difference.new({foo: 1}, [1]) } }
 
         it "reifies the children" do
@@ -276,7 +276,7 @@ module Pact::Matchers
 
         context "when the actual value is an array, and both expected and actual contain SomethingLike" do
           subject { {a: {foo: Pact.like("b")}} }
-          let(:actual) { {a: [Pact.like(1)] } }
+          let(:actual) { {a: [1] } }
           let(:difference) { {a: Difference.new({foo: "b"}, [1]) } }
 
           it "should return the diff with the reified likes" do

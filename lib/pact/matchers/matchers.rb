@@ -56,7 +56,7 @@ module Pact
       if actual.is_a?(String)
         actual_term_diff term, actual, options
       else
-        RegexpDifference.new term.matcher, Pact::Reification.from_term(actual), "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{class_name_with_value_in_brackets(actual)} at <path>"
+        RegexpDifference.new term.matcher, actual, "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{class_name_with_value_in_brackets(actual)} at <path>"
       end
     end
 
@@ -64,7 +64,7 @@ module Pact
       if term.matcher.match(actual)
         NO_DIFF
       else
-        RegexpDifference.new term.matcher, Pact::Reification.from_term(actual), "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{actual.inspect} at <path>"
+        RegexpDifference.new term.matcher, actual, "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{actual.inspect} at <path>"
       end
     end
 
@@ -72,7 +72,7 @@ module Pact
       if actual.is_a?(String)
         actual_regexp_diff regexp, actual, options
       else
-        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Expected a String matching #{regexp.inspect} but got #{class_name_with_value_in_brackets(actual)} at <path>"
+        RegexpDifference.new regexp, actual, "Expected a String matching #{regexp.inspect} but got #{class_name_with_value_in_brackets(actual)} at <path>"
       end
     end
 
@@ -80,7 +80,7 @@ module Pact
       if regexp.match(actual)
         NO_DIFF
       else
-        RegexpDifference.new regexp, Pact::Reification.from_term(actual), "Expected a String matching #{regexp.inspect} but got #{short_description(actual)} at <path>"
+        RegexpDifference.new regexp, actual, "Expected a String matching #{regexp.inspect} but got #{short_description(actual)} at <path>"
       end
     end
 
@@ -115,7 +115,7 @@ module Pact
         expected_array = expected_size.times.collect{ Pact::Term.unpack_regexps(array_like.contents) }
         actual_array_diff expected_array, actual, options.merge(:type => true)
       else
-        Difference.new array_like.generate, Pact::Reification.from_term(actual), type_difference_message(expected, actual)
+        Difference.new array_like.generate, actual, type_difference_message(expected, actual)
       end
     end
 
@@ -123,7 +123,7 @@ module Pact
       if actual.is_a? Hash
         actual_hash_diff expected, actual, options
       else
-        Difference.new Pact::Reification.from_term(expected), Pact::Reification.from_term(actual), type_difference_message(expected, actual)
+        Difference.new Pact::Reification.from_term(expected), actual, type_difference_message(Pact::Reification.from_term(expected), actual)
       end
     end
 
