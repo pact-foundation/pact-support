@@ -126,7 +126,7 @@ module Pact::Matchers
           end
         end
         context "and nil is found" do
-          let(:actual) { {a: nil}}
+          let(:actual) { {a: nil} }
           let(:difference ) { {a: TypeDifference.new(Pact::ExpectedType.new(1), Pact::ActualType.new(nil)) } }
           it "returns the diff" do
             expect(type_diff(expected, actual)).to eq difference
@@ -222,8 +222,8 @@ module Pact::Matchers
     describe 'diffing' do
 
       context "when expected is longer than the actual" do
-        subject { [1,2,3] }
-        let(:actual) { [1,2]}
+        subject { [1, 2, 3] }
+        let(:actual) { [1, 2] }
         let(:difference) { [NoDiffAtIndex.new, NoDiffAtIndex.new, Difference.new(3, Pact::IndexNotFound.new)] }
         it 'returns the diff' do
           expect(diff(subject, actual)).to eq(difference)
@@ -480,7 +480,7 @@ module Pact::Matchers
 
       context "where an array is expected, but a hash is found" do
         subject { {:a => :b} }
-        let(:actual) { [4,5,6] }
+        let(:actual) { [4, 5, 6] }
 
         it 'includes this in the diff' do
           expect(diff(subject, actual)).to eq(Difference.new({:a => :b}, [4,5,6] ))
@@ -498,7 +498,7 @@ module Pact::Matchers
 
       context "when two different arrays are found" do
         subject { [4,5,6] }
-        let(:actual) { [4,6,7] }
+        let(:actual) { [4, 6, 7] }
         let(:difference) { [NoDiffAtIndex.new, Difference.new(5, 6), Difference.new(6, 7)] }
 
         it 'includes this in the diff' do
@@ -508,7 +508,7 @@ module Pact::Matchers
 
       context "when an array that matches the Pact::Term is found" do
         subject { [Pact::Term.new(:matcher => /4/, :generate => '4'),"5","6"] }
-        let(:actual) { ["4","5","6"] }
+        let(:actual) { ["4", "5", "6"] }
 
         it 'includes this in the diff' do
           expect(diff(subject, actual)).to eq({})
