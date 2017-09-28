@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.2.0 (2017-09-28)
+* 4489d96 - feat(pact file name): allow unique pact file names to be generated (Beth Skurrie, Thu Sep 28 11:05:33 2017 +1000)
+
 ### 1.1.8 (2017-09-25)
 * d4029ab - fix: use reified value when creating diff message for arrays (Beth Skurrie, Fri Sep 22 10:57:01 2017 +1000)
 
