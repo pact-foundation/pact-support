@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.2.1 (2017-10-03)
+* c3b3f22 - fix: ignore invalid params in response constructor hash (Beth Skurrie, Tue Oct 3 15:40:22 2017 +1100)
+
 ### 1.2.0 (2017-09-28)
 * 4489d96 - feat(pact file name): allow unique pact file names to be generated (Beth Skurrie, Thu Sep 28 11:05:33 2017 +1000)
 
