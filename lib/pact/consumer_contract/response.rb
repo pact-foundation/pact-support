@@ -7,8 +7,11 @@ module Pact
 
     include SymbolizeKeys
 
+    ALLOWED_KEYS = [:status, :headers, :body, 'status', 'headers', 'body'].freeze
+    private_constant :ALLOWED_KEYS
+
     def initialize attributes
-      merge!(attributes)
+      merge!(attributes.reject{|key, value| !ALLOWED_KEYS.include?(key)})
     end
 
     def status

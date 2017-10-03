@@ -7,6 +7,15 @@ module Pact
 
     subject { Response.from_hash(status: 200, headers: {'Content-Type' => 'application/json'}, body: {some: 'body'}) }
 
+    describe "initialize" do
+      context "with invalid params" do
+        it "ignores the invalid params" do
+          response = Response.new(foo: 'bar')
+          expect(response).to_not have_key(:foo)
+        end
+      end
+    end
+
     describe "#status" do
       it "returns the status" do
         expect(subject.status).to eq 200
