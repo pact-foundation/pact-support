@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.2.2 (2017-10-27)
+* 97ba7d9 - fix: correctly handle array like when key not found (Beth Skurrie, Fri Oct 27 12:50:50 2017 +1100)
+
 ### 1.2.1 (2017-10-03)
 * c3b3f22 - fix: ignore invalid params in response constructor hash (Beth Skurrie, Tue Oct 3 15:40:22 2017 +1100)
 
