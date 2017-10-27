@@ -3,8 +3,6 @@ require 'pact/matchers'
 module Pact
   describe Matchers do
 
-    include Pact::Matchers
-
     let(:min) { 1 }
     let(:expected) do
       {
@@ -12,7 +10,7 @@ module Pact
       }
     end
 
-    let(:difference) { diff(expected, actual) }
+    let(:difference) { Pact::Matchers.diff(expected, actual) }
 
     context "when each element in the array matches by type" do
       let(:actual) do
@@ -91,6 +89,23 @@ module Pact
           animals: [Matchers::Difference.new({name: 'Fred'}, Pact::IndexNotFound.new)]
         }
       end
+      it "returns a diff" do
+        expect(difference).to eq expected_difference
+      end
+    end
+
+    context "when an ArrayLike is expected but a hash is found" do
+      let(:actual) do
+        {
+
+        }
+      end
+      let(:expected_difference) do
+        {
+          animals: Matchers::Difference.new([{name: 'Fred'}], Pact::KeyNotFound.new)
+        }
+      end
+
       it "returns a diff" do
         expect(difference).to eq expected_difference
       end

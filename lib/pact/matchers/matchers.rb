@@ -115,7 +115,7 @@ module Pact
         expected_array = expected_size.times.collect{ Pact::Term.unpack_regexps(array_like.contents) }
         actual_array_diff expected_array, actual, options.merge(:type => true)
       else
-        Difference.new array_like.generate, actual, type_difference_message(expected, actual)
+        Difference.new array_like.generate, actual, type_difference_message(array_like.generate, actual)
       end
     end
 
