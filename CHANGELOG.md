@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.2.4 (2017-10-30)
+* 80bbdcc - fix: remove unused dependency on rack-test (Beth Skurrie, Mon Oct 30 09:52:22 2017 +1100)
+
 ### 1.2.3 (2017-10-30)
 * 68be738 - fix: diff message when actual 'array like' is too long (Beth Skurrie, Mon Oct 30 09:28:20 2017 +1100)
 
