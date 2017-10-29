@@ -2,6 +2,9 @@ Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
 
+### 1.2.3 (2017-10-30)
+* 68be738 - fix: diff message when actual 'array like' is too long (Beth Skurrie, Mon Oct 30 09:28:20 2017 +1100)
+
 ### 1.2.2 (2017-10-27)
 * 97ba7d9 - fix: correctly handle array like when key not found (Beth Skurrie, Fri Oct 27 12:50:50 2017 +1100)
 
