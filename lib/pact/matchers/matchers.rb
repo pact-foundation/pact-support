@@ -213,14 +213,19 @@ module Pact
     end
 
     def type_difference_message expected, actual
-      case actual
-      when Pact::IndexNotFound
-        "Actual array is too short and should have contained #{short_description(expected)} at <path>"
+      case expected
+      when Pact::UnexpectedIndex
+        "Actual array is too long and should not contain #{short_description(actual)} at <path>"
       else
-        expected_desc = class_name_with_value_in_brackets(expected)
-        expected_desc.gsub!("(", "(like ")
-        actual_desc = class_name_with_value_in_brackets(actual)
-        message = "Expected #{expected_desc} but got #{actual_desc} at <path>"
+        case actual
+        when Pact::IndexNotFound
+          "Actual array is too short and should have contained #{short_description(expected)} at <path>"
+        else
+          expected_desc = class_name_with_value_in_brackets(expected)
+          expected_desc.gsub!("(", "(like ")
+          actual_desc = class_name_with_value_in_brackets(actual)
+          message = "Expected #{expected_desc} but got #{actual_desc} at <path>"
+        end
       end
     end
 

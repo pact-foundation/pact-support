@@ -129,6 +129,18 @@ module Pact::Matchers
           end
         end
       end
+
+      context "with an ArrayLike" do
+        context "with an extra item that is an Integer" do
+          let(:expected) { {thing: Pact.like([1])} }
+          let(:actual) { {thing: [1, 2]} }
+          let(:difference) { diff(expected, actual) }
+
+          it "returns a message" do
+            expect(difference[:thing][1].message).to eq "Actual array is too long and should not contain 2 at <path>"
+          end
+        end
+      end
     end
   end
 end
