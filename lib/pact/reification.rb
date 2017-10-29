@@ -1,5 +1,4 @@
 require 'randexp'
-require 'rack/utils'
 require 'pact/term'
 require 'pact/something_like'
 require 'pact/array_like'
