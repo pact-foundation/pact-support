@@ -9,6 +9,7 @@ require 'open-uri'
 require 'pact/consumer_contract/service_consumer'
 require 'pact/consumer_contract/service_provider'
 require 'pact/consumer_contract/interaction'
+require 'pact/consumer_contract/message'
 require 'pact/consumer_contract/pact_file'
 
 module Pact
@@ -31,10 +32,18 @@ module Pact
 
     def self.from_hash(hash)
       hash = symbolize_keys(hash)
+      interactions = if hash[:interactions]
+        hash[:interactions].collect { |hash| Interaction.from_hash(hash)}
+      elsif hash[:messages]
+        hash[:messages].collect { |hash| Message.from_hash(hash)}
+      else
+        []
+      end
+
       new(
         :consumer => ServiceConsumer.from_hash(hash[:consumer]),
         :provider => ServiceProvider.from_hash(hash[:provider]),
-        :interactions => hash[:interactions].collect { |hash| Interaction.from_hash(hash)}
+        :interactions => interactions
       )
     end
 
@@ -54,9 +63,9 @@ module Pact
     def find_interaction criteria
       interactions = find_interactions criteria
       if interactions.size == 0
-        raise "Could not find interaction matching #{criteria} in pact file between #{consumer.name} and #{provider.name}."
+        raise Pact::Error.new("Could not find interaction matching #{criteria} in pact file between #{consumer.name} and #{provider.name}.")
       elsif interactions.size > 1
-        raise "Found more than 1 interaction matching #{criteria} in pact file between #{consumer.name} and #{provider.name}."
+        raise Pact::Error.new("Found more than 1 interaction matching #{criteria} in pact file between #{consumer.name} and #{provider.name}.")
       end
       interactions.first
     end

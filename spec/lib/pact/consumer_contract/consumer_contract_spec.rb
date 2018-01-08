@@ -3,37 +3,66 @@ require 'pact/consumer_contract'
 
 module Pact
   describe ConsumerContract do
-
     describe ".from_json" do
+
       let(:loaded_pact) { ConsumerContract.from_json(string) }
-      context "when the top level object is a ConsumerContract" do
-        let(:string) { '{"interactions":[{"request": {"path":"/path", "method" : "get"}, "response": {"status" : 200}}], "consumer": {"name" : "Bob"} , "provider": {"name" : "Mary"} }' }
 
-        it "should create a Pact" do
-          expect(loaded_pact).to be_instance_of ConsumerContract
+      context "with an HTTP contract" do
+        context "when the top level object is a ConsumerContract" do
+          let(:string) { '{"interactions":[{"request": {"path":"/path", "method" : "get"}, "response": {"status" : 200}}], "consumer": {"name" : "Bob"} , "provider": {"name" : "Mary"} }' }
+
+          it "should create a Pact" do
+            expect(loaded_pact).to be_instance_of ConsumerContract
+          end
+
+          it "should have interactions" do
+            expect(loaded_pact.interactions).to be_instance_of Array
+          end
+
+          it "should have a consumer" do
+            expect(loaded_pact.consumer).to be_instance_of Pact::ServiceConsumer
+          end
+
+          it "should have a provider" do
+            expect(loaded_pact.provider).to be_instance_of Pact::ServiceProvider
+          end
         end
 
-        it "should have interactions" do
-          expect(loaded_pact.interactions).to be_instance_of Array
-        end
+        context "with old 'producer' key" do
+          let(:string) { File.read('./spec/support/a_consumer-a_producer.json')}
+          it "should create a Pact" do
+            expect(loaded_pact).to be_instance_of ConsumerContract
+          end
 
-        it "should have a consumer" do
-          expect(loaded_pact.consumer).to be_instance_of Pact::ServiceConsumer
-        end
+          it "should have interactions" do
+            expect(loaded_pact.interactions).to be_instance_of Array
+          end
 
-        it "should have a provider" do
-          expect(loaded_pact.provider).to be_instance_of Pact::ServiceProvider
+          it "should have a consumer" do
+            expect(loaded_pact.consumer).to be_instance_of Pact::ServiceConsumer
+          end
+
+          it "should have a provider" do
+            expect(loaded_pact.provider).to be_instance_of Pact::ServiceProvider
+            expect(loaded_pact.provider.name).to eq "an old producer"
+          end
+
+          it "should have a provider_state" do
+            expect(loaded_pact.interactions.first.provider_state).to eq 'state one'
+          end
         end
       end
 
-      context "with old 'producer' key" do
-        let(:string) { File.read('./spec/support/a_consumer-a_producer.json')}
+      context "with a Message contract" do
+        let(:string) { '{"messages":[{"content": {"foo": "bar"}}],  "consumer": {"name" : "Bob"} , "provider": {"name" : "Mary"}}' }
+
         it "should create a Pact" do
           expect(loaded_pact).to be_instance_of ConsumerContract
         end
 
-        it "should have interactions" do
+        it "should have messages" do
           expect(loaded_pact.interactions).to be_instance_of Array
+          expect(loaded_pact.interactions.first).to be_instance_of Pact::Message
         end
 
         it "should have a consumer" do
@@ -42,12 +71,8 @@ module Pact
 
         it "should have a provider" do
           expect(loaded_pact.provider).to be_instance_of Pact::ServiceProvider
-          expect(loaded_pact.provider.name).to eq "an old producer"
         end
 
-        it "should have a provider_state" do
-          expect(loaded_pact.interactions.first.provider_state).to eq 'state one'
-        end
       end
     end
 

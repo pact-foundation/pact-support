@@ -2,6 +2,9 @@ module Pact
   class Error < ::StandardError
   end
 
+  class InvalidMessageError < Error
+  end
+
   # Raised when the interaction is not defined correctly
   class InvalidInteractionError < Error
     def initialize(interaction)
