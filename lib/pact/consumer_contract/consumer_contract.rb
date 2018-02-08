@@ -37,7 +37,7 @@ module Pact
       elsif hash[:messages]
         hash[:messages].collect { |hash| Message.from_hash(hash)}
       else
-        []
+        [] # or raise an error?
       end
 
       new(

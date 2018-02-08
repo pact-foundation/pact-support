@@ -3,6 +3,8 @@ require 'pact/symbolize_keys'
 require 'pact/shared/active_support_support'
 require 'pact/matching_rules'
 require 'pact/errors'
+require 'pact/consumer/request'
+require 'pact/consumer_contract/response'
 
 module Pact
   class Message
@@ -13,8 +15,8 @@ module Pact
 
       def initialize attributes = {}
         @description = attributes[:description]
-        @request = attributes[:content]
         @provider_state = attributes[:provider_state] || attributes[:providerState]
+        @content = attributes[:content]
       end
 
       def self.from_hash hash
@@ -29,6 +31,41 @@ module Pact
           provider_state: provider_state,
           content: content.to_hash,
         }
+      end
+
+
+      def request
+        @request ||= Pact::Consumer::Request::Actual.from_hash(
+          path: '/',
+          method: 'POST',
+          query: nil,
+          headers: {'Content-Type' => 'application/json'},
+          body: {
+            description: description,
+            providerStates: [{
+              name: provider_state
+            }]
+          }
+        )
+      end
+
+      # custom media type?
+      def response
+        @response ||= Pact::Response.new(
+          status: 200,
+          headers: {'Content-Type' => 'application/json'},
+          body: {
+            content: content
+          }
+        )
+      end
+
+      def http?
+        false
+      end
+
+      def message?
+        true
       end
 
       def validate!
