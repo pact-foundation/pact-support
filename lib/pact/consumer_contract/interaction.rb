@@ -6,7 +6,7 @@ require 'pact/matching_rules'
 require 'pact/errors'
 
 module Pact
-   class Interaction
+  class Interaction
     include ActiveSupportSupport
       include SymbolizeKeys
 

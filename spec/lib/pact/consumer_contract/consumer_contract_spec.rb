@@ -62,7 +62,7 @@ module Pact
 
         it "should have messages" do
           expect(loaded_pact.interactions).to be_instance_of Array
-          expect(loaded_pact.interactions.first).to be_instance_of Pact::Message
+          expect(loaded_pact.interactions.first).to be_instance_of Pact::ConsumerContract::Message
         end
 
         it "should have a consumer" do
