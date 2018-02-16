@@ -8,11 +8,15 @@ module Pact
     end
 
     def file_path consumer_name, provider_name, pact_dir = Pact.configuration.pact_dir, options = {}
-      File.join(pact_dir, file_name(consumer_name, provider_name, options))
+      File.join(windows_safe(pact_dir), file_name(consumer_name, provider_name, options))
     end
 
     def filenamify name
       name.downcase.gsub(/\s/, '_')
+    end
+
+    def windows_safe(pact_dir)
+      pact_dir.gsub("\\", "/")
     end
   end
 end
