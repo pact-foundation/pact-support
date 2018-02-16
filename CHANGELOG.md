@@ -5,11 +5,6 @@
 
 * replace backslashes in pact dir path with forward slashes	 ([a1b5013](/../../commit/a1b5013))
 
-
-Do this to generate your change history
-
-  git log --pretty=format:'  * %h - %s (%an, %ad)'
-
 ### 1.2.4 (2017-10-30)
 * 80bbdcc - fix: remove unused dependency on rack-test (Beth Skurrie, Mon Oct 30 09:52:22 2017 +1100)
 
