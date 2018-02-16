@@ -1,3 +1,11 @@
+<a name="v1.2.5"></a>
+### v1.2.5 (2018-02-16)
+
+#### Bug Fixes
+
+* replace backslashes in pact dir path with forward slashes	 ([a1b5013](/../../commit/a1b5013))
+
+
 Do this to generate your change history
 
   git log --pretty=format:'  * %h - %s (%an, %ad)'
