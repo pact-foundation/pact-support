@@ -34,4 +34,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'hashie', '~> 2.0'
   gem.add_development_dependency 'activesupport'
   gem.add_development_dependency 'appraisal'
+  gem.add_development_dependency 'conventional-changelog', '~>1.3'
+  gem.add_development_dependency 'bump', '~> 0.5'
 end
