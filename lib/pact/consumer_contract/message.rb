@@ -44,7 +44,6 @@ module Pact
           }
         end
 
-
         def request
           @request ||= Pact::Consumer::Request::Actual.from_hash(
             path: '/',
@@ -115,8 +114,30 @@ module Pact
   end
 end
 
-module Pact::Message
-  def self.new *args
-    Pact::ConsumerContract::Message.new(*args)
+if Pact.const_defined?('Message') && Pact::Message.class == Module
+  module Pact
+    module Message
+      def self.new *args
+        Pact::ConsumerContract::Message.new(*args)
+      end
+
+      def self.from_hash *args
+        Pact::ConsumerContract::Message.from_hash(*args)
+      end
+    end
+  end
+end
+
+if Pact.const_defined?('Message') && Pact::Message.class == Class
+  module Pact
+    class Message
+      def self.new *args
+        Pact::ConsumerContract::Message.new(*args)
+      end
+
+      def self.from_hash *args
+        Pact::ConsumerContract::Message.from_hash(*args)
+      end
+    end
   end
 end
