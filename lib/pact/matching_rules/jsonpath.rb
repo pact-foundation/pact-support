@@ -13,7 +13,6 @@ module Pact
       def initialize(path)
         scanner = StringScanner.new(path)
         @path = []
-        bracket_count = 0
         while not scanner.eos?
           if token = scanner.scan(/\$/)
             @path << token

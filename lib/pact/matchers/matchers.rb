@@ -224,7 +224,7 @@ module Pact
           expected_desc = class_name_with_value_in_brackets(expected)
           expected_desc.gsub!("(", "(like ")
           actual_desc = class_name_with_value_in_brackets(actual)
-          message = "Expected #{expected_desc} but got #{actual_desc} at <path>"
+          "Expected #{expected_desc} but got #{actual_desc} at <path>"
         end
       end
     end
