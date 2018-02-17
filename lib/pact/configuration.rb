@@ -72,8 +72,8 @@ module Pact
 
     # Should this be deprecated in favour of register_diff_formatter???
     def diff_formatter= diff_formatter
-      register_diff_formatter /.*/, diff_formatter
-      register_diff_formatter nil, diff_formatter
+      register_diff_formatter(/.*/, diff_formatter)
+      register_diff_formatter(nil, diff_formatter)
     end
 
     def register_diff_formatter content_type, diff_formatter
