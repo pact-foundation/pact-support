@@ -1,5 +1,3 @@
-require 'pact/matchers/matchers'
-
 module Pact
   class JsonDiffer
 

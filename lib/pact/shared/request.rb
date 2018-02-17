@@ -1,4 +1,3 @@
-require 'pact/matchers'
 require 'pact/symbolize_keys'
 require 'pact/consumer_contract/headers'
 require 'pact/consumer_contract/query'

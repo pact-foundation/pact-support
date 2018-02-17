@@ -1,4 +1,3 @@
-require 'pact/matchers/matchers'
 require 'pact/matchers/difference'
 
 module Pact

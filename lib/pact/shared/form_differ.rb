@@ -1,4 +1,3 @@
-require 'pact/matchers/matchers'
 require 'uri'
 
 module Pact
