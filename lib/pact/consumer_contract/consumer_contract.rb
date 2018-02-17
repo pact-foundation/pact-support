@@ -34,7 +34,7 @@ module Pact
       new(
         :consumer => ServiceConsumer.from_hash(hash[:consumer]),
         :provider => ServiceProvider.from_hash(hash[:provider]),
-        :interactions => hash[:interactions].collect { |hash| Interaction.from_hash(hash)}
+        :interactions => hash[:interactions].collect { |h| Interaction.from_hash(h)}
       )
     end
 

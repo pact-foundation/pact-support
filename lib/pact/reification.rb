@@ -15,8 +15,8 @@ module Pact
       when Pact::Term, Regexp, Pact::SomethingLike, Pact::ArrayLike
         from_term(term.generate)
       when Hash
-        term.inject({}) do |mem, (key,term)|
-          mem[key] = from_term(term)
+        term.inject({}) do |mem, (key,t)|
+          mem[key] = from_term(t)
           mem
         end
       when Array
