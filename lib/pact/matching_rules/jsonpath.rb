@@ -48,10 +48,10 @@ module Pact
             @path.last << token
           end
         end
+      end
 
-        def to_s
-          path.join
-        end
+      def to_s
+        path.join
       end
     end
   end
