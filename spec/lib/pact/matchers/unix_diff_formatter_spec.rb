@@ -2,10 +2,12 @@ require 'spec_helper'
 require 'pact/matchers/unix_diff_formatter'
 require 'pact/matchers/expected_type'
 require 'pact/matchers/actual_type'
+require 'support/ruby_version_helpers'
 
 module Pact
   module Matchers
     describe UnixDiffFormatter do
+      include RubyVersionHelpers
 
       describe ".call" do
 
@@ -35,7 +37,7 @@ module Pact
           let(:output) { <<-EOF
  {
 -  "thing": String
-+  "thing": Fixnum
++  "thing": #{numeric_type}
  }
 EOF
           }

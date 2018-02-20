@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'pact/matchers/list_diff_formatter'
 require 'pact/matchers/matchers'
+require 'support/ruby_version_helpers'
 
 # Needed to stop the ai printing in color
 # TODO: fix this!
@@ -23,7 +24,7 @@ module Pact
 \tExpected type:
 \t\tString
 \tActual type:
-\t\tFixnum
+\t\t#{RubyVersionHelpers.numeric_type}
 EOS
           }
 

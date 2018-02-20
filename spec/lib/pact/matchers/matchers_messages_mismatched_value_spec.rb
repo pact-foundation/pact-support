@@ -1,11 +1,13 @@
 require 'spec_helper'
 require 'pact/matchers'
 require 'pact/consumer_contract/headers'
+require 'support/ruby_version_helpers'
 
 module Pact::Matchers
 
   describe Pact::Matchers do
     include Pact::Matchers
+    extend RubyVersionHelpers
 
     describe "diff" do
       STRING = "foo"
@@ -23,7 +25,7 @@ module Pact::Matchers
         [STRING, ARRAY, "Expected \"foo\" but got an Array at <path>"],
         [Pact.like(STRING), "bar", nil],
         [Pact.like(STRING), nil, "Expected a String (like \"foo\") but got nil at <path>"],
-        [Pact.like(STRING), INT, "Expected a String (like \"foo\") but got a Fixnum (1) at <path>"],
+        [Pact.like(STRING), INT, "Expected a String (like \"foo\") but got #{a_numeric} (1) at <path>"],
         [Pact.like(STRING), FLOAT, "Expected a String (like \"foo\") but got a Float (1.0) at <path>"],
         [Pact.like(STRING), HASH, "Expected a String (like \"foo\") but got a Hash at <path>"],
         [Pact.like(STRING), ARRAY, "Expected a String (like \"foo\") but got an Array at <path>"],
@@ -34,22 +36,22 @@ module Pact::Matchers
         [INT, HASH, "Expected 1 but got a Hash at <path>"],
         [INT, ARRAY, "Expected 1 but got an Array at <path>"],
         [Pact.like(INT), 2, nil],
-        [Pact.like(INT), nil, "Expected a Fixnum (like 1) but got nil at <path>"],
-        [Pact.like(INT), STRING, "Expected a Fixnum (like 1) but got a String (\"foo\") at <path>"],
-        [Pact.like(INT), FLOAT, "Expected a Fixnum (like 1) but got a Float (1.0) at <path>"],
-        [Pact.like(INT), HASH, "Expected a Fixnum (like 1) but got a Hash at <path>"],
-        [Pact.like(INT), ARRAY, "Expected a Fixnum (like 1) but got an Array at <path>"],
+        [Pact.like(INT), nil, "Expected #{a_numeric} (like 1) but got nil at <path>"],
+        [Pact.like(INT), STRING, "Expected #{a_numeric} (like 1) but got a String (\"foo\") at <path>"],
+        [Pact.like(INT), FLOAT, "Expected #{a_numeric} (like 1) but got a Float (1.0) at <path>"],
+        [Pact.like(INT), HASH, "Expected #{a_numeric} (like 1) but got a Hash at <path>"],
+        [Pact.like(INT), ARRAY, "Expected #{a_numeric} (like 1) but got an Array at <path>"],
         [HASH, HASH, nil],
         [HASH, nil, "Expected a Hash but got nil at <path>"],
         [HASH, STRING, "Expected a Hash but got a String (\"foo\") at <path>"],
-        [HASH, INT, "Expected a Hash but got a Fixnum (1) at <path>"],
+        [HASH, INT, "Expected a Hash but got #{a_numeric} (1) at <path>"],
         [HASH, FLOAT, "Expected a Hash but got a Float (1.0) at <path>"],
         [HASH, ARRAY, "Expected a Hash but got an Array at <path>"],
         [Pact.like(HASH), STRING, "Expected a Hash but got a String (\"foo\") at <path>"],
         [ARRAY, ARRAY, nil],
         [ARRAY, nil, "Expected an Array but got nil at <path>"],
         [ARRAY, STRING, "Expected an Array but got a String (\"foo\") at <path>"],
-        [ARRAY, INT, "Expected an Array but got a Fixnum (1) at <path>"],
+        [ARRAY, INT, "Expected an Array but got #{a_numeric} (1) at <path>"],
         [ARRAY, FLOAT, "Expected an Array but got a Float (1.0) at <path>"],
         [ARRAY, HASH, "Expected an Array but got a Hash at <path>"]
       ]
