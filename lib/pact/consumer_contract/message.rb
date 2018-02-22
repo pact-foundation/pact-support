@@ -114,6 +114,9 @@ module Pact
   end
 end
 
+# I'm not sure whether to make Pact::Message a module or a class at this stage, so making
+# the "public interface" to the pact-support library support Pact::Message.new either way
+
 if Pact.const_defined?('Message') && Pact::Message.class == Module
   module Pact
     module Message
