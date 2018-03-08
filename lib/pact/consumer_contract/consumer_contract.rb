@@ -9,11 +9,10 @@ require 'open-uri'
 require 'pact/consumer_contract/service_consumer'
 require 'pact/consumer_contract/service_provider'
 require 'pact/consumer_contract/interaction'
-require 'pact/consumer_contract/message'
 require 'pact/consumer_contract/pact_file'
+require 'pact/consumer_contract/http_consumer_contract_parser'
 
 module Pact
-
   class ConsumerContract
 
     include SymbolizeKeys
@@ -30,21 +29,19 @@ module Pact
       @provider = attributes[:provider]
     end
 
-    def self.from_hash(hash)
-      hash = symbolize_keys(hash)
-      interactions = if hash[:interactions]
-        hash[:interactions].collect { |hash| Interaction.from_hash(hash)}
-      elsif hash[:messages]
-        hash[:messages].collect { |hash| Message.from_hash(hash)}
-      else
-        [] # or raise an error?
-      end
+    def self.add_parser consumer_contract_parser
+      parsers << consumer_contract_parser
+    end
 
-      new(
-        :consumer => ServiceConsumer.from_hash(hash[:consumer]),
-        :provider => ServiceProvider.from_hash(hash[:provider]),
-        :interactions => interactions
-      )
+    def self.parsers
+      @parsers ||= [Pact::HttpConsumerContractParser.new]
+    end
+
+    def self.from_hash(hash)
+      parsers.each do | parser |
+        return parser.call(hash) if parser.can_parse?(hash)
+      end
+      raise Pact::Error.new("No consumer contract parser found for hash: #{hash}")
     end
 
     def self.from_json string

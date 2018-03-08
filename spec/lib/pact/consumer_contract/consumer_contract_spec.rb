@@ -52,28 +52,6 @@ module Pact
           end
         end
       end
-
-      context "with a Message contract" do
-        let(:string) { '{"messages":[{"content": {"foo": "bar"}}],  "consumer": {"name" : "Bob"} , "provider": {"name" : "Mary"}}' }
-
-        it "should create a Pact" do
-          expect(loaded_pact).to be_instance_of ConsumerContract
-        end
-
-        it "should have messages" do
-          expect(loaded_pact.interactions).to be_instance_of Array
-          expect(loaded_pact.interactions.first).to be_instance_of Pact::ConsumerContract::Message
-        end
-
-        it "should have a consumer" do
-          expect(loaded_pact.consumer).to be_instance_of Pact::ServiceConsumer
-        end
-
-        it "should have a provider" do
-          expect(loaded_pact.provider).to be_instance_of Pact::ServiceProvider
-        end
-
-      end
     end
 
     describe "find_interactions" do

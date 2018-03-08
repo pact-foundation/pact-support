@@ -40,10 +40,6 @@ module Pact
         true
       end
 
-      def message?
-        false
-      end
-
       def validate!
         raise Pact::InvalidInteractionError.new(self) unless description && request && response
       end
