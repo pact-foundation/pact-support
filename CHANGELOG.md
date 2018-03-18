@@ -1,3 +1,11 @@
+<a name="v1.3.0"></a>
+### v1.3.0 (2018-03-19)
+
+#### Features
+
+* do not automatically create tmp/pacts dir	 ([de9e25e](/../../commit/de9e25e))
+
+
 <a name="v1.2.5"></a>
 ### v1.2.5 (2018-02-16)
 
