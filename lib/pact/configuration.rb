@@ -174,11 +174,9 @@ module Pact
 
   def self.configure
     yield configuration
-    FileUtils::mkdir_p configuration.tmp_dir
   end
 
   def self.clear_configuration
     @configuration = nil
   end
-
 end
