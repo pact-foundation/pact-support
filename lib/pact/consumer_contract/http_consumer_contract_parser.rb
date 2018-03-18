@@ -4,13 +4,7 @@ module Pact
 
     def call(hash)
       hash = symbolize_keys(hash)
-      interactions = if hash[:interactions]
-        hash[:interactions].collect { |hash| Interaction.from_hash(hash)}
-      elsif hash[:messages]
-        hash[:messages].collect { |hash| Message.from_hash(hash)}
-      else
-        [] # or raise an error?
-      end
+      interactions = hash[:interactions].collect { |hash| Interaction.from_hash(hash)}
 
       ConsumerContract.new(
         :consumer => ServiceConsumer.from_hash(hash[:consumer]),
