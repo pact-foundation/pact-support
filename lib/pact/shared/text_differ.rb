@@ -1,12 +1,10 @@
-require 'pact/matchers/difference'
 
 module Pact
   class TextDiffer
 
-    extend Matchers
-
     def self.call expected, actual, options = {}
-      diff expected, actual, options
+      require 'pact/matchers' # avoid recursive loop between this file and pact/matchers
+      ::Pact::Matchers.diff expected, actual, options
     end
 
   end
