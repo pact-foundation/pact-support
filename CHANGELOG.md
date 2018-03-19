@@ -1,3 +1,11 @@
+<a name="v1.3.1"></a>
+### v1.3.1 (2018-03-19)
+
+#### Bug Fixes
+
+* dynamically load pact/matchers	 ([d80e0ff](/../../commit/d80e0ff))
+
+
 <a name="v1.3.0"></a>
 ### v1.3.0 (2018-03-19)
 
