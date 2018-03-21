@@ -17,7 +17,7 @@ module Pact
         @actual = options.fetch(:actual, {})
         @include_explanation = options.fetch(:include_explanation, true)
         @differ = Pact::Matchers::Differ.new(@colour)
-        @messages = Pact::Matchers::ExtractDiffMessages.call(diff)
+        @messages = Pact::Matchers::ExtractDiffMessages.call(diff).collect{ | message| "* #{message}" }.join("\n")
       end
 
       def self.call diff, options = {}

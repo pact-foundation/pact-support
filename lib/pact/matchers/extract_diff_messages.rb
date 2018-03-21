@@ -1,3 +1,4 @@
+# @api public. Used by lib/pact/provider/rspec/pact_broker_formatter.rb
 module Pact
   module Matchers
     class ExtractDiffMessages
@@ -13,15 +14,19 @@ module Pact
       end
 
       def to_hash
-        diff
+        to_a
       end
 
       def call
-        to_s
+        to_a
       end
 
       def to_s
         diff_messages(diff).join("\n")
+      end
+
+      def to_a
+        diff_messages(diff)
       end
 
       def diff_messages obj, path = [], messages = []
@@ -51,7 +56,7 @@ module Pact
 
       def handle_difference difference, path, messages
         if difference.message
-          message = "* #{difference.message}"
+          message = difference.message
           message = message.gsub("<path>", path_to_s(path))
           message = message.gsub("<parent_path>", parent_path_to_s(path))
           messages << message
