@@ -23,7 +23,7 @@ module Pact
       def self.from_hash hash, options = {}
         pact_specification_version = options[:pact_specification_version] || Pact::SpecificationVersion::NIL_VERSION
         case pact_specification_version.major
-        when nil, 1, 2 then parse_v2_interaction(hash, pact_specification_version: pact_specification_version)
+        when nil, 0, 1, 2 then parse_v2_interaction(hash, pact_specification_version: pact_specification_version)
         else parse_v3_interaction(hash, pact_specification_version: pact_specification_version)
         end
       end

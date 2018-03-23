@@ -12,7 +12,7 @@ module Pact
 
     def self.merge object_graph, matching_rules, options = {}
       case options[:pact_specification_version].major
-      when nil, 1, 2
+      when nil, 0, 1, 2
         Merge.(object_graph, matching_rules)
       else
         V3::Merge.(object_graph, matching_rules)
