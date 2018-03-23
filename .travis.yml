@@ -4,6 +4,8 @@ rvm:
   - 2.1.8
   - 2.2.4
   - 2.3.1
+  - 2.4.3
+  - 2.5.0
   - jruby-9.1.13.0
 gemfile:
   - gemfiles/default.gemfile
@@ -18,6 +20,10 @@ matrix:
     - rvm: 2.2.4
       gemfile: gemfiles/ruby_under_22.gemfile
     - rvm: 2.3.1
+      gemfile: gemfiles/ruby_under_22.gemfile
+    - rvm: 2.4.3
+      gemfile: gemfiles/ruby_under_22.gemfile
+    - rvm: 2.5.0
       gemfile: gemfiles/ruby_under_22.gemfile
     - rvm: jruby-9.1.13.0
       gemfile: gemfiles/ruby_under_22.gemfile

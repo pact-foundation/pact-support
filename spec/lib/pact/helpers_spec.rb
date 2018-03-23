@@ -59,7 +59,7 @@ module Pact
     describe "#like_datetime" do
       let(:datetime) { '2015-08-06T16:53:10+01:00' }
 
-      it "creates a Pact::Term with UUID matcher" do
+      it "creates a Pact::Term with DateTime matcher" do
         expect(like_datetime(datetime)).to eq Pact::Term.new(
           generate: datetime,
           matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)$/
@@ -67,11 +67,11 @@ module Pact
       end
     end
 
-    describe "#like_datetime_with_miliseconds" do
+    describe "#like_datetime_with_milliseconds" do
       let(:datetime) { '2015-08-06T16:53:10.123+01:00' }
 
-      it "creates a Pact::Term with UUID matcher" do
-        expect(like_datetime_with_miliseconds(datetime)).to eq Pact::Term.new(
+      it "creates a Pact::Term with DateTime and Millisecond precision matcher" do
+        expect(like_datetime_with_milliseconds(datetime)).to eq Pact::Term.new(
           generate: datetime,
           matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d{3}([+-][0-2]\d:[0-5]\d|Z)$/
         )
@@ -81,7 +81,7 @@ module Pact
     describe "#like_date" do
       let(:date) { '2015-08-06' }
 
-      it "creates a Pact::Term with UUID matcher" do
+      it "creates a Pact::Term with Date matcher" do
         expect(like_date(date)).to eq Pact::Term.new(
           generate: date,
           matcher: /^\d{4}-[01]\d-[0-3]\d$/
@@ -91,7 +91,7 @@ module Pact
       describe "#like_datetime_rfc822" do
         context "Day is Tue" do
           let(:datetime) { 'Tue, 04 Apr 2017 19:03:19 +0000' }
-          it "creates a Pact::Term with a rfc922 matcher" do
+          it "creates a Pact::Term with a rfc822 matcher" do
             expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
               generate: datetime,
               matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),
@@ -103,7 +103,7 @@ module Pact
 
         context "Day is Sun" do
           let(:datetime) { 'Sun, 09 Apr 2017 19:03:19 +0000' }
-          it "creates a Pact::Term with a rfc922 matcher" do
+          it "creates a Pact::Term with a rfc822 matcher" do
             expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
               generate: datetime,
               matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),
@@ -115,7 +115,7 @@ module Pact
 
         context "Month is Jan" do
           let(:datetime) { 'Mon, 02 Jan 2017 19:03:19 +0000' }
-          it "creates a Pact::Term with a rfc922 matcher" do
+          it "creates a Pact::Term with a rfc822 matcher" do
             expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
               generate: datetime,
               matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),
@@ -127,7 +127,7 @@ module Pact
 
         context "Negative Offset" do
           let(:datetime) { 'Mon, 31 Oct 2016 15:21:41 -0400' }
-          it "creates a Pact::Term with a rfc922 matcher" do
+          it "creates a Pact::Term with a rfc822 matcher" do
             expect(like_datetime_rfc822(datetime)).to eq Pact::Term.new(
               generate: datetime,
               matcher: /(?x)(Mon|Tue|Wed|Thu|Fri|Sat|Sun),

@@ -1,13 +1,11 @@
-require 'pact/matchers/matchers'
 require 'uri'
 
 module Pact
   class FormDiffer
 
-    extend Matchers
-
     def self.call expected, actual, options = {}
-      diff to_hash(expected), to_hash(actual), options
+      require 'pact/matchers' # avoid recursive loop between this file and pact/matchers
+      ::Pact::Matchers.diff to_hash(expected), to_hash(actual), options
     end
 
     def self.to_hash form_body
@@ -19,8 +17,8 @@ module Pact
     end
 
     def self.ensure_values_are_arrays hash
-      hash.each_with_object({}) do | (key, value), hash |
-        hash[key.to_s] = [*value]
+      hash.each_with_object({}) do | (key, value), h |
+        h[key.to_s] = [*value]
       end
     end
 
@@ -30,6 +28,5 @@ module Pact
         hash[key] << value
       end
     end
-
   end
 end

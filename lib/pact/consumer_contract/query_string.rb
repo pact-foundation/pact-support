@@ -1,5 +1,4 @@
 require 'pact/shared/active_support_support'
-require 'pact/matchers'
 
 module Pact
   class QueryString

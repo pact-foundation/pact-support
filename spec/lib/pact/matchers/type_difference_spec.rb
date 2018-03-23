@@ -1,9 +1,11 @@
 require 'spec_helper'
 require 'pact/matchers/type_difference'
+require 'support/ruby_version_helpers'
 
 module Pact
   module Matchers
     describe TypeDifference do
+      include RubyVersionHelpers
 
       describe "#as_json" do
 
@@ -21,7 +23,7 @@ module Pact
         end
 
         context "when the actual is an ActualType" do
-          let(:expected_hash) { {:EXPECTED_TYPE => "String", :ACTUAL_TYPE => "Fixnum" } }
+          let(:expected_hash) { {:EXPECTED_TYPE => "String", :ACTUAL_TYPE => numeric_type.to_s } }
 
           it "uses the key ACTUAL_TYPE" do
              expect(subject.as_json).to eq(expected_hash)

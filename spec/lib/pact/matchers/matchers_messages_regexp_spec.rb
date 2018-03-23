@@ -1,11 +1,13 @@
 require 'spec_helper'
 require 'pact/matchers'
 require 'pact/consumer_contract/headers'
+require 'support/ruby_version_helpers'
 
 module Pact::Matchers
 
   describe Pact::Matchers do
     include Pact::Matchers
+    include RubyVersionHelpers
 
     describe "diff" do
       STRING = "foo"
@@ -29,10 +31,10 @@ module Pact::Matchers
           end
         end
 
-        context "when the actual is a Fixnum" do
+        context "when the actual is a numeric" do
           let(:actual) { INT }
           it "returns a message" do
-            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got a Fixnum (1) at <path>"
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got #{a_numeric} (1) at <path>"
           end
         end
 
@@ -43,10 +45,10 @@ module Pact::Matchers
           end
         end
 
-        context "when the actual is a Fixnum" do
+        context "when the actual is a numeric" do
           let(:actual) { INT }
           it "returns a message" do
-            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got a Fixnum (1) at <path>"
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got #{a_numeric} (1) at <path>"
           end
         end
 
@@ -68,10 +70,10 @@ module Pact::Matchers
           end
         end
 
-        context "when the actual is a Fixnum" do
+        context "when the actual is a numeric" do
           let(:actual) { INT }
           it "returns a message" do
-            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got a Fixnum (1) at <path>"
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got #{a_numeric} (1) at <path>"
           end
         end
 
@@ -82,10 +84,10 @@ module Pact::Matchers
           end
         end
 
-        context "when the actual is a Fixnum" do
+        context "when the actual is a numeric" do
           let(:actual) { INT }
           it "returns a message" do
-            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got a Fixnum (1) at <path>"
+            expect(difference[:thing].message).to eq "Expected a String matching /foo/ but got #{a_numeric} (1) at <path>"
           end
         end
 

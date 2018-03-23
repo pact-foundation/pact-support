@@ -1,6 +1,25 @@
-Do this to generate your change history
+<a name="v1.3.1"></a>
+### v1.3.1 (2018-03-19)
 
-  git log --pretty=format:'  * %h - %s (%an, %ad)'
+#### Bug Fixes
+
+* dynamically load pact/matchers	 ([d80e0ff](/../../commit/d80e0ff))
+
+
+<a name="v1.3.0"></a>
+### v1.3.0 (2018-03-19)
+
+#### Features
+
+* do not automatically create tmp/pacts dir	 ([de9e25e](/../../commit/de9e25e))
+
+
+<a name="v1.2.5"></a>
+### v1.2.5 (2018-02-16)
+
+#### Bug Fixes
+
+* replace backslashes in pact dir path with forward slashes	 ([a1b5013](/../../commit/a1b5013))
 
 ### 1.2.4 (2017-10-30)
 * 80bbdcc - fix: remove unused dependency on rack-test (Beth Skurrie, Mon Oct 30 09:52:22 2017 +1100)
