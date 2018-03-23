@@ -1,3 +1,20 @@
+<a name="v1.5.0"></a>
+### v1.5.0 (2018-03-23)
+
+#### Features
+
+* parse pacts without a specification version as v2	 ([a69b5e6](/../../commit/a69b5e6))
+* locate matching rules correctly for v3 pacts	 ([0f22db2](/../../commit/0f22db2))
+* read matching rules from v3 format	 ([07013de](/../../commit/07013de))
+* allow different consumer contract parsers to be registered	 ([531ab3a](/../../commit/531ab3a))
+* update message classes to support pact-message	 ([2e48892](/../../commit/2e48892))
+* add request and response to message	 ([93839cf](/../../commit/93839cf))
+
+* **message contracts**
+  * dynamically mix in new and from_hash into Pact::Message	 ([c0c3ad5](/../../commit/c0c3ad5))
+  * read message pact into Ruby object	 ([6573bd4](/../../commit/6573bd4))
+
+
 <a name="v1.3.1"></a>
 ### v1.3.1 (2018-03-19)
 
