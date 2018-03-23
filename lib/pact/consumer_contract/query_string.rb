@@ -4,7 +4,6 @@ module Pact
   class QueryString
 
     include ActiveSupportSupport
-    include Pact::Matchers
 
     def initialize query
       @query = query.nil? ? query : query.dup
