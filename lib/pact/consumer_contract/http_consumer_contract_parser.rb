@@ -6,7 +6,12 @@ module Pact
 
     def call(hash)
       hash = symbolize_keys(hash)
-      options = { pact_specification_version: pact_specification_version(hash) }
+      v = pact_specification_version(hash)
+      options = { pact_specification_version: v }
+
+      if v.after? 3
+        Pact.configuration.error_stream.puts "WARN: This code only knows how to parse v3 pacts, attempting to parse v#{options[:pact_specification_version]} pact using v3 code."
+      end
 
       interactions = hash[:interactions].collect { |hash| Interaction.from_hash(hash, options) }
       ConsumerContract.new(
@@ -22,7 +27,7 @@ module Pact
       maybe_pact_specification_version_1 = hash[:metadata] && hash[:metadata]['pactSpecification'] && hash[:metadata]['pactSpecification']['version']
       maybe_pact_specification_version_2 = hash[:metadata] && hash[:metadata]['pactSpecificationVersion']
       pact_specification_version = maybe_pact_specification_version_1 || maybe_pact_specification_version_2
-      Pact::SpecificationVersion.new(pact_specification_version)
+      pact_specification_version ? Pact::SpecificationVersion.new(pact_specification_version) : Pact::SpecificationVersion::NIL_VERSION
     end
 
     def can_parse?(hash)

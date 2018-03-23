@@ -14,10 +14,7 @@ module Pact
       case options[:pact_specification_version].major
       when nil, 1, 2
         Merge.(object_graph, matching_rules)
-      when 3
-        V3::Merge.(object_graph, matching_rules)
       else
-        Pact.configuration.error_stream.puts "WARN: This code only knows how to parse v3 pacts, attempting to parse v#{options[:pact_specification_version]} pact using v3 code."
         V3::Merge.(object_graph, matching_rules)
       end
     end

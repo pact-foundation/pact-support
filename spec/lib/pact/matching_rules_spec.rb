@@ -63,11 +63,6 @@ module Pact
       context "when the pact_specification_version starts with '4.'" do
         let(:pact_specification_version) { "4.0" }
 
-        it "prints a warning" do
-          expect(Pact.configuration.error_stream).to receive(:puts).with(/only knows how to parse v3 pacts/)
-          subject
-        end
-
         it "calls V3::Merge" do
           expect(V3::Merge).to receive(:call)
           subject
@@ -76,11 +71,6 @@ module Pact
 
       context "when the pact_specification_version is with '11'" do
         let(:pact_specification_version) { "11" }
-
-        it "prints a warning" do
-          expect(Pact.configuration.error_stream).to receive(:puts).with(/only knows how to parse v3 pacts/)
-          subject
-        end
 
         it "calls V3::Merge" do
           expect(V3::Merge).to receive(:call)
