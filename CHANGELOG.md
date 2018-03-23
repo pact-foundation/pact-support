@@ -1,3 +1,11 @@
+<a name="v1.5.2"></a>
+### v1.5.2 (2018-03-23)
+
+#### Bug Fixes
+
+* remove include of pact matchers in query string	 ([c478dff](/../../commit/c478dff))
+
+
 <a name="v1.5.1"></a>
 ### v1.5.1 (2018-03-23)
 
