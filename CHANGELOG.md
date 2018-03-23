@@ -1,3 +1,11 @@
+<a name="v1.5.1"></a>
+### v1.5.1 (2018-03-23)
+
+#### Bug Fixes
+
+* add missing require for pact matchers in query	 ([927d3b9](/../../commit/927d3b9))
+
+
 <a name="v1.5.0"></a>
 ### v1.5.0 (2018-03-23)
 
