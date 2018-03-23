@@ -1,0 +1,36 @@
+{
+  "consumer": {
+    "name": "consumer"
+  },
+  "interactions": [
+    {
+      "description": "a test request",
+      "providerState": "the weather is sunny",
+      "request": {
+        "method": "get",
+        "path": "/foo"
+      },
+      "response": {
+        "body": {
+          "foo": "bar"
+        },
+        "matchingRules": {
+          "body": {
+            "$.foo": {
+              "matchers": [{ "match": "type" }]
+            }
+          }
+        },
+        "status": 200
+      }
+    }
+  ],
+  "provider": {
+    "name": "provider"
+  },
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0"
+    }
+  }
+}

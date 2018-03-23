@@ -19,10 +19,33 @@ module Pact
         @provider_state = attributes[:provider_state] || attributes[:providerState]
       end
 
-      def self.from_hash hash
-        request_hash = Pact::MatchingRules.merge(hash['request'], hash['request']['matchingRules'])
+      def self.from_hash hash, options = {}
+        pact_specification_version = options[:pact_specification_version] || Gem::Version.new("") # use some global default
+        case pact_specification_version.segments.first
+        when 1, 2 then parse_v2_interaction(hash, pact_specification_version: pact_specification_version)
+        else parse_v3_interaction(hash, pact_specification_version: pact_specification_version)
+        end
+      end
+
+      def self.parse_v2_interaction hash, options
+        request_hash = Pact::MatchingRules.merge(hash['request'], hash['request']['matchingRules'], options)
         request = Pact::Request::Expected.from_hash(request_hash)
-        response_hash = Pact::MatchingRules.merge(hash['response'], hash['response']['matchingRules'])
+        response_hash = Pact::MatchingRules.merge(hash['response'], hash['response']['matchingRules'], options)
+        response = Pact::Response.from_hash(response_hash)
+        new(symbolize_keys(hash).merge(request: request, response: response))
+      end
+
+      def self.parse_v3_interaction hash, options
+
+        request_hash = hash['request'].keys.each_with_object({}) do | key, new_hash |
+          new_hash[key] = Pact::MatchingRules.merge(hash['request'][key], hash['request'].fetch('matchingRules', {})[key], options)
+        end
+        request = Pact::Request::Expected.from_hash(request_hash)
+
+        response_hash = hash['response'].keys.each_with_object({}) do | key, new_hash |
+          new_hash[key] = Pact::MatchingRules.merge(hash['response'][key], hash['response'].fetch('matchingRules', {})[key], options)
+        end
+
         response = Pact::Response.from_hash(response_hash)
         new(symbolize_keys(hash).merge(request: request, response: response))
       end
