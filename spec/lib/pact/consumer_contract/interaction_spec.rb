@@ -65,7 +65,7 @@ module Pact
         context "when there are matching rules" do
           let(:hash) { load_json_fixture 'interaction-with-matching-rules.json' }
 
-          subject { Interaction.from_hash hash, pact_specification_version: Gem::Version.new("2") }
+          subject { Interaction.from_hash hash, pact_specification_version: Pact::SpecificationVersion.new("2") }
 
           it "merges the rules with the example for the request" do
             expect(subject.request.body['name']).to be_instance_of(Pact::Term)

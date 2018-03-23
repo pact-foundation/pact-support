@@ -5,6 +5,14 @@ module Pact
     describe "#call integration test" do
       subject { HttpConsumerContractParser.new.call(pact_hash) }
 
+      context "with a v2 pact" do
+        let(:pact_hash) { load_json_fixture('pact-http-v2.json') }
+
+        it "correctly parses the pact" do
+          expect(subject.interactions.first.response.headers['Content-Type']).to be_a(Pact::Term)
+        end
+      end
+
       context "with a v3 pact" do
         let(:pact_hash) { load_json_fixture('pact-http-v3.json') }
 

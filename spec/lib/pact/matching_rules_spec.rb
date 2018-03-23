@@ -11,17 +11,12 @@ module Pact
 
       let(:object) { double('object') }
       let(:rules) { double('rules') }
-      let(:options) { { pact_specification_version: Gem::Version.new(pact_specification_version) } }
+      let(:options) { { pact_specification_version: Pact::SpecificationVersion.new(pact_specification_version) } }
 
       subject { MatchingRules.merge(object, rules, options)}
 
       context "when the pact_specification_version is nil" do
         let(:pact_specification_version) { nil }
-
-        it "prints a warning" do
-          expect(Pact.configuration.error_stream).to receive(:puts).with(/No pact specification version found/)
-          subject
-        end
 
         it "calls Merge" do
           expect(Merge).to receive(:call)

@@ -4,6 +4,7 @@ require 'pact/symbolize_keys'
 require 'pact/shared/active_support_support'
 require 'pact/matching_rules'
 require 'pact/errors'
+require 'pact/specification_version'
 
 module Pact
   class Interaction
@@ -20,9 +21,9 @@ module Pact
       end
 
       def self.from_hash hash, options = {}
-        pact_specification_version = options[:pact_specification_version] || Gem::Version.new("") # use some global default
-        case pact_specification_version.segments.first
-        when 1, 2 then parse_v2_interaction(hash, pact_specification_version: pact_specification_version)
+        pact_specification_version = options[:pact_specification_version] || Pact::SpecificationVersion::NIL_VERSION
+        case pact_specification_version.major
+        when nil, 1, 2 then parse_v2_interaction(hash, pact_specification_version: pact_specification_version)
         else parse_v3_interaction(hash, pact_specification_version: pact_specification_version)
         end
       end

@@ -11,16 +11,13 @@ module Pact
     end
 
     def self.merge object_graph, matching_rules, options = {}
-      case options[:pact_specification_version].segments.first
-      when nil
-        Pact.configuration.error_stream.puts "No pact specification version found, using v2 code to parse contract"
-        Merge.(object_graph, matching_rules)
-      when 1, 2
+      case options[:pact_specification_version].major
+      when nil, 1, 2
         Merge.(object_graph, matching_rules)
       when 3
         V3::Merge.(object_graph, matching_rules)
       else
-        Pact.configuration.error_stream.puts "This code only knows how to parse v3 pacts, attempting to parse v#{options[:pact_specification_version]} pact using v3 code."
+        Pact.configuration.error_stream.puts "WARN: This code only knows how to parse v3 pacts, attempting to parse v#{options[:pact_specification_version]} pact using v3 code."
         V3::Merge.(object_graph, matching_rules)
       end
     end
