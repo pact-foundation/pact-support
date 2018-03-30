@@ -1,6 +1,7 @@
 require 'pact/something_like'
 require 'pact/term'
 require 'pact/provider_param'
+require 'pact/var'
 require 'pact/array_like'
 
 # Protected, exposed through Pact.term and Pact.like, and included in Pact::Consumer::RSpec
@@ -22,13 +23,12 @@ module Pact
       end
     end
 
-    def provider_param arg1, arg2 = nil
-      case arg1
-      when Hash then Pact::ProviderParam.new(arg1)
-      when String then Pact::ProviderParam.new(generate: arg1, fill_string: arg2)
-      else
-        raise ArgumentError, "Cannot create a Pact::ProviderParam from arguments #{arg1.inspect} and #{arg2.inspect}. Both should be strings."
-      end
+    def provider_param arg1
+      Pact::ProviderParam.new(arg1)
+    end
+
+    def var arg1, arg2
+      Pact::Var.new(arg1, arg2)
     end
 
     def like content
