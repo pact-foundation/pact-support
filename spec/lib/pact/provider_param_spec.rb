@@ -23,6 +23,12 @@ module Pact
             expect{subject}.to raise_error /not a valid substitute/
           end
         end
+        context "and fill string has too many parameters" do
+          let(:generate) {'some/url/here'}
+          it 'should throw an error' do
+            expect{ProviderParam.new(generate: generate, fill_string: 'some/:url/:here')}.to raise_error /not a valid substitute/
+          end
+        end
       end
     end
   end

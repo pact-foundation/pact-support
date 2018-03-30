@@ -1,5 +1,6 @@
 require 'pact/something_like'
 require 'pact/term'
+require 'pact/provider_param'
 require 'pact/array_like'
 
 # Protected, exposed through Pact.term and Pact.like, and included in Pact::Consumer::RSpec
@@ -18,6 +19,15 @@ module Pact
       when String then Pact::Term.new(matcher: arg2, generate: arg1)
       else
         raise ArgumentError, "Cannot create a Pact::Term from arguments #{arg1.inspect} and #{arg2.inspect}. Please provide a Regexp and a String."
+      end
+    end
+
+    def provider_param arg1, arg2 = nil
+      case arg1
+      when Hash then Pact::ProviderParam.new(arg1)
+      when String then Pact::ProviderParam.new(generate: arg1, fill_string: arg2)
+      else
+        raise ArgumentError, "Cannot create a Pact::ProviderParam from arguments #{arg1.inspect} and #{arg2.inspect}. Both should be strings."
       end
     end
 
