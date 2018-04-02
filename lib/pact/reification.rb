@@ -1,5 +1,6 @@
 require 'randexp'
 require 'pact/term'
+require 'pact/provider_param'
 require 'pact/something_like'
 require 'pact/array_like'
 require 'pact/shared/request'
@@ -14,6 +15,8 @@ module Pact
       case term
       when Pact::Term, Regexp, Pact::SomethingLike, Pact::ArrayLike
         from_term(term.generate)
+      when Pact::ProviderParam
+        from_term(term.default_string)
       when Hash
         term.inject({}) do |mem, (key,t)|
           mem[key] = from_term(t)

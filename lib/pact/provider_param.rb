@@ -9,7 +9,15 @@ module Pact
     attr_reader :string_parts, :fillable_param_names
 
     def self.json_create(obj)
-      new(string_parts: obj['data']['string_parts'])
+      stringified_string_parts = []
+      string_parts = obj['data'].each do |part|
+        if (part.is_a? String)
+          stringified_string_parts << part
+        else
+          stringified_string_parts << part.to_json
+        end
+      end
+      new(string_parts)
     end
 
     def initialize(string_parts)
@@ -18,15 +26,37 @@ module Pact
     end
 
     def default_string
-      string_parts.map do |string_part|
+      stringified_string_parts = ''
+      string_parts.each do |string_part|
         if string_part.is_a? String
-          return string_part
+          stringified_string_parts << string_part
         elsif string_part.is_a? Pact::Var
-          return string_part.default_value
-        else
-          return ''
+          stringified_string_parts << string_part.default_value
+        elsif string_part.is_a? Hash
+          stringified_string_parts << string_part["default_value"]
         end
       end
+      return stringified_string_parts
+    end
+
+    def matches_string string
+      unmatched_index = 0
+      string_parts.each do |part|
+        if part.is_a? String
+          if (string.slice(unmatched_index)).start_with? part
+            unmatched_index += part.length
+            next
+          end
+        end
+        if part.is_a? Hash
+          if (string.slice(unmatched_index)).start_with? part['default_value']
+            unmatched_index += part['default_value'].length
+            next
+          end
+        end
+      end
+
+      return unmatched_index == string.length
     end
 
     def to_hash
@@ -61,6 +91,8 @@ module Pact
       string_parts.each do |string_part|
         if string_part.is_a? Pact::Var
           @fillable_param_names.push(string_part.var_name)
+        elsif string_part.is_a? Hash
+          @fillable_param_names.push(string_part['var_name'])
         end
       end
     end
