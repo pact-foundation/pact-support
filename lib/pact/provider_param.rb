@@ -41,15 +41,16 @@ module Pact
 
     def matches_string string
       unmatched_index = 0
+      last_char = string.length - 1
       string_parts.each do |part|
         if part.is_a? String
-          if (string.slice(unmatched_index)).start_with? part
+          if string[unmatched_index..last_char].start_with? part
             unmatched_index += part.length
             next
           end
         end
         if part.is_a? Hash
-          if (string.slice(unmatched_index)).start_with? part['default_value']
+          if string[unmatched_index..last_char].start_with? part['default_value']
             unmatched_index += part['default_value'].length
             next
           end
