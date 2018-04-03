@@ -1,4 +1,5 @@
 require 'pact/matching_rules/extract'
+require 'pact/matching_rules/v3/extract'
 require 'pact/matching_rules/merge'
 require 'pact/matching_rules/v3/merge'
 
@@ -10,9 +11,9 @@ module Pact
       pact_specification_version = options[:pact_specification_version] || Pact::SpecificationVersion::NIL_VERSION
       case pact_specification_version.major
       when nil, 0, 1, 2
-        Extract.(object_graph, matching_rules)
+        Extract.(object_graph)
       else
-        V3::Extract.(object_graph, matching_rules)
+        V3::Extract.(object_graph)
       end
     end
 
