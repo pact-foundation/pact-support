@@ -69,6 +69,12 @@ module Pact
             next
           end
         end
+        if part.is_a? Pact::Var
+          if string[unmatched_index..last_char].start_with? part.default_value
+            unmatched_index += part.default_value.length
+            next
+          end
+        end
       end
 
       return unmatched_index == string.length
