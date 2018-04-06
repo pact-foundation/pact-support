@@ -39,6 +39,20 @@ module Pact
       return stringified_string_parts
     end
 
+    def fill_string
+      stringified_string_parts = ''
+      string_parts.each do |string_part|
+        if string_part.is_a? String
+          stringified_string_parts << string_part
+        elsif string_part.is_a? Pact::Var
+          stringified_string_parts << (':{' + string_part.var_name.to_s + '}')
+        elsif string_part.is_a? Hash
+          stringified_string_parts << (':{' + string_part["var_name"].to_s + '}')
+        end
+      end
+      return stringified_string_parts
+    end
+
     def matches_string string
       unmatched_index = 0
       last_char = string.length - 1

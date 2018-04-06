@@ -17,5 +17,13 @@ module Pact
         expect(pp.default_string).to eq('/some/url/with/variable')
       end
     end
+
+    describe 'fill_string' do
+      it 'returns the fill string' do
+        pp = ProviderParam.new(['/some/', Var.new(:var, 'var'), '/here', Var.new(:blah, 'aoeu')])
+        expect(pp.fill_string).to eq('/some/:{var}/here:{blah}')
+        expect(pp.default_string).to eq('/some/var/hereaoeu')
+      end
+    end
   end
 end
