@@ -23,8 +23,8 @@ module Pact
       end
     end
 
-    def provider_param arg1
-      Pact::ProviderParam.new(arg1)
+    def provider_param arg1, arg2
+      Pact::ProviderParam.new(arg1, arg2)
     end
 
     def var arg1, arg2

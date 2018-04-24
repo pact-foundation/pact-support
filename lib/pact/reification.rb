@@ -11,11 +11,12 @@ module Pact
   module Reification
     include ActiveSupportSupport
 
-    def self.from_term(term)
+    def self.from_term(term, replacement_params = {})
       case term
       when Pact::Term, Regexp, Pact::SomethingLike, Pact::ArrayLike
         from_term(term.generate)
       when Pact::ProviderParam
+        term.replace_params(replacement_params) unless replacement_params.empty?
         from_term(term.default_string)
       when Hash
         term.inject({}) do |mem, (key,t)|

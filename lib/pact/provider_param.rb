@@ -9,15 +9,7 @@ module Pact
     attr_reader :string_parts, :fillable_param_names, :fill_string, :default_string, :params
 
     def self.json_create(obj)
-      stringified_string_parts = []
-      string_parts = obj['data'].each do |part|
-        if (part.is_a? String)
-          stringified_string_parts << part
-        else
-          stringified_string_parts << part.to_json
-        end
-      end
-      new(string_parts)
+      new(obj['data']['fill_string'], obj['data']['params'])
     end
 
     def initialize(fill_string, arg2)
@@ -26,73 +18,23 @@ module Pact
         @default_string = arg2
         @params = find_default_values
       else
-        @params = params.map{ |k, v| [k.to_s, v] }
+        @params = arg2.map{ |k, v| [k.to_s, v] }.to_h
+        @default_string = default_string_from_params @params
       end
       var_names = parse_fill_string
     end
 
-    # def initialize(string_parts)
-    #   @string_parts = string_parts
-    #   get_fillable_parameters
-    # end
-
-    # def default_string
-    #   stringified_string_parts = ''
-    #   string_parts.each do |string_part|
-    #     if string_part.is_a? String
-    #       stringified_string_parts << string_part
-    #     elsif string_part.is_a? Pact::Var
-    #       stringified_string_parts << string_part.default_value
-    #     elsif string_part.is_a? Hash
-    #       stringified_string_parts << string_part["default_value"]
-    #     end
-    #   end
-    #   return stringified_string_parts
-    # end
-
-    def fill_string
-      stringified_string_parts = ''
-      string_parts.each do |string_part|
-        if string_part.is_a? String
-          stringified_string_parts << string_part
-        elsif string_part.is_a? Pact::Var
-          stringified_string_parts << (':{' + string_part.var_name.to_s + '}')
-        elsif string_part.is_a? Hash
-          stringified_string_parts << (':{' + string_part["var_name"].to_s + '}')
-        end
-      end
-      return stringified_string_parts
+    def replace_params params
+      @params = params.map{ |k, v| [k.to_s, v] }.to_h
+      @default_string = default_string_from_params @params
     end
 
     def matches_string string
-      unmatched_index = 0
-      last_char = string.length - 1
-      string_parts.each do |part|
-        if part.is_a? String
-          if string[unmatched_index..last_char].start_with? part
-            unmatched_index += part.length
-            next
-          end
-        end
-        if part.is_a? Hash
-          if string[unmatched_index..last_char].start_with? part['default_value']
-            unmatched_index += part['default_value'].length
-            next
-          end
-        end
-        if part.is_a? Pact::Var
-          if string[unmatched_index..last_char].start_with? part.default_value
-            unmatched_index += part.default_value.length
-            next
-          end
-        end
-      end
-
-      return unmatched_index == string.length
+      @default_string == string
     end
 
     def to_hash
-      {json_class: self.class.name, data: string_parts}
+      {json_class: self.class.name, data: {fill_string: @fill_string, params: @params}}
     end
 
     def as_json
@@ -167,6 +109,14 @@ module Pact
       values << last_string unless last_string.empty?
 
       return var_names.zip(values).to_h
+    end
+
+    def default_string_from_params params
+      default_string = @fill_string
+      params.each do |key, value|
+        default_string = @fill_string.gsub(':{' + key + '}', value)
+      end
+      default_string
     end
   end
 end
