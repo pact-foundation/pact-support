@@ -6,7 +6,7 @@ module Pact
 
     include Pact::ActiveSupportSupport
 
-    attr_reader :string_parts, :fillable_param_names
+    attr_reader :string_parts, :fillable_param_names, :fill_string, :default_string, :params
 
     def self.json_create(obj)
       stringified_string_parts = []
@@ -20,24 +20,35 @@ module Pact
       new(string_parts)
     end
 
-    def initialize(string_parts)
-      @string_parts = string_parts
-      get_fillable_parameters
+    def initialize(fill_string, arg2)
+      @fill_string = fill_string
+      if arg2.is_a? String
+        @default_string = arg2
+        @params = find_default_values
+      else
+        @params = params.map{ |k, v| [k.to_s, v] }
+      end
+      var_names = parse_fill_string
     end
 
-    def default_string
-      stringified_string_parts = ''
-      string_parts.each do |string_part|
-        if string_part.is_a? String
-          stringified_string_parts << string_part
-        elsif string_part.is_a? Pact::Var
-          stringified_string_parts << string_part.default_value
-        elsif string_part.is_a? Hash
-          stringified_string_parts << string_part["default_value"]
-        end
-      end
-      return stringified_string_parts
-    end
+    # def initialize(string_parts)
+    #   @string_parts = string_parts
+    #   get_fillable_parameters
+    # end
+
+    # def default_string
+    #   stringified_string_parts = ''
+    #   string_parts.each do |string_part|
+    #     if string_part.is_a? String
+    #       stringified_string_parts << string_part
+    #     elsif string_part.is_a? Pact::Var
+    #       stringified_string_parts << string_part.default_value
+    #     elsif string_part.is_a? Hash
+    #       stringified_string_parts << string_part["default_value"]
+    #     end
+    #   end
+    #   return stringified_string_parts
+    # end
 
     def fill_string
       stringified_string_parts = ''
@@ -116,6 +127,46 @@ module Pact
           @fillable_param_names.push(string_part['var_name'])
         end
       end
+    end
+
+    def parse_fill_string
+      param_name_regex = /:{[a-zA-Z0-9_-]+}/
+      matches = @fill_string.scan(param_name_regex)
+      var_names = matches.map do |match|
+        match[2..(match.length - 2)]
+      end
+    end
+
+    def find_default_values
+      param_name_regex = /:{[a-zA-Z0-9_-]+}/
+      var_names = parse_fill_string
+      in_between_strings = []
+      previous_string_end = 0
+      matches = @fill_string.scan(param_name_regex)
+      matches.size.times do |index|
+        # get the locations of the string in between the matched variable names
+        variable_name_start = @fill_string.index(matches[index])
+        variable_name_end = variable_name_start + matches[index].length
+        string_text = @fill_string[previous_string_end..variable_name_start - 1]
+        previous_string_end = variable_name_end
+        in_between_strings << string_text unless string_text.empty?
+      end
+      last_bit = @fill_string[previous_string_end..@fill_string.length - 1]
+      in_between_strings << last_bit unless last_bit.empty?
+
+      previous_value_end = 0
+      values = []
+      in_between_strings.each do |string|
+        string_start = @default_string.index(string)
+        value = @default_string[previous_value_end..string_start - 1]
+        values << value unless string_start == 0
+        previous_value_end = string_start + string.length
+      end
+
+      last_string = @default_string[previous_value_end..@default_string.length - 1]
+      values << last_string unless last_string.empty?
+
+      return var_names.zip(values).to_h
     end
   end
 end
