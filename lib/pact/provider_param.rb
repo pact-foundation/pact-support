@@ -114,7 +114,7 @@ module Pact
     def default_string_from_params params
       default_string = @fill_string
       params.each do |key, value|
-        default_string = @fill_string.gsub(':{' + key + '}', value)
+        default_string = default_string.gsub(':{' + key + '}', value)
       end
       default_string
     end
