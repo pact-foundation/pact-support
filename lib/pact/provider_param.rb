@@ -1,12 +1,11 @@
 require 'pact/shared/active_support_support'
-require 'pact/var'
 
 module Pact
   class ProviderParam
 
     include Pact::ActiveSupportSupport
 
-    attr_reader :string_parts, :fillable_param_names, :fill_string, :default_string, :params
+    attr_reader :fill_string, :default_string, :params
 
     def self.json_create(obj)
       new(obj['data']['fill_string'], obj['data']['params'])
@@ -46,12 +45,18 @@ module Pact
     end
 
     def ==(other)
-      return false unless other.respond_to?(:string_parts)
-      string_parts == other.string_parts
+      if !other.respond_to?(:fill_string) || other.fill_string != @fill_string
+        return false
+      end
+      if !other.respond_to?(:params) || other.params != @params
+        return false
+      end
+
+      return true
     end
 
     def to_s
-      "Pact::ProviderParam matcher: #{string_parts}"
+      "Pact::ProviderParam: #{@fill_string} #{@params}"
     end
 
     def empty?
@@ -60,19 +65,11 @@ module Pact
 
     private
 
-    def get_fillable_parameters
-      @fillable_param_names = []
-      string_parts.each do |string_part|
-        if string_part.is_a? Pact::Var
-          @fillable_param_names.push(string_part.var_name)
-        elsif string_part.is_a? Hash
-          @fillable_param_names.push(string_part['var_name'])
-        end
-      end
+    def param_name_regex
+      /:{[a-zA-Z0-9_-]+}/
     end
 
     def parse_fill_string
-      param_name_regex = /:{[a-zA-Z0-9_-]+}/
       matches = @fill_string.scan(param_name_regex)
       var_names = matches.map do |match|
         match[2..(match.length - 2)]
@@ -80,7 +77,6 @@ module Pact
     end
 
     def find_default_values
-      param_name_regex = /:{[a-zA-Z0-9_-]+}/
       var_names = parse_fill_string
       in_between_strings = []
       previous_string_end = 0

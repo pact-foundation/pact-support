@@ -1,7 +1,6 @@
 require 'pact/something_like'
 require 'pact/term'
 require 'pact/provider_param'
-require 'pact/var'
 require 'pact/array_like'
 
 # Protected, exposed through Pact.term and Pact.like, and included in Pact::Consumer::RSpec
