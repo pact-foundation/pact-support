@@ -110,7 +110,12 @@ module Pact
       last_string = @default_string[previous_value_end..@default_string.length - 1]
       values << last_string unless last_string.empty?
 
-      return var_names.zip(values).to_h
+      param_hash = {}
+      new_params_arr = var_names.zip(values)
+      new_params_arr.each do |key, value|
+        param_hash[key] = value
+      end
+      param_hash
     end
 
     def default_string_from_params params
