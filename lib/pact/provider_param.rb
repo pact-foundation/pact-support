@@ -17,14 +17,14 @@ module Pact
         @default_string = arg2
         @params = find_default_values
       else
-        @params = arg2.map{ |k, v| [k.to_s, v] }.to_h
+        @params = stringify_params(arg2)
         @default_string = default_string_from_params @params
       end
       var_names = parse_fill_string
     end
 
     def replace_params params
-      @params = params.map{ |k, v| [k.to_s, v] }.to_h
+      @params = strigify_params(params)
       @default_string = default_string_from_params @params
     end
 
@@ -64,6 +64,12 @@ module Pact
     end
 
     private
+
+    def stringify_params(params)
+      stringified_params = {}
+      params.each{ |k, v| stringified_params[k.to_s] = v }
+      stringified_params
+    end
 
     def param_name_regex
       /:{[a-zA-Z0-9_-]+}/
