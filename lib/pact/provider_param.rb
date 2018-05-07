@@ -24,7 +24,7 @@ module Pact
     end
 
     def replace_params params
-      @params = strigify_params(params)
+      @params = stringify_params(params)
       @default_string = default_string_from_params @params
     end
 
