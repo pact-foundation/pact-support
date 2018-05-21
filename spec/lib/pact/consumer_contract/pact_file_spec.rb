@@ -25,6 +25,15 @@ module Pact
         end
       end
 
+      describe 'with backslashes to a local path' do
+        let(:windows_path) { 'spec\support\a_consumer-a_provider.json' }
+        let(:unix_path) { 'spec/support/a_consumer-a_provider.json' }
+
+        it 'transforms them to forward slashes' do
+          expect(PactFile.read(windows_path)).to eq PactFile.read(unix_path)
+        end
+      end
+
       context 'without basic authentication' do
         before do
           stub_request(:get, uri_without_userinfo).to_return(body: pact_content)

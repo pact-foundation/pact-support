@@ -36,7 +36,7 @@ module Pact
     end
 
     def render_pact(uri_string, options)
-      uri_obj = URI(uri_string)
+      uri_obj = URI(windows_safe(uri_string))
       if uri_obj.userinfo
         options[:username] = uri_obj.user unless options[:username]
         options[:password] = uri_obj.password unless options[:password]
@@ -103,6 +103,10 @@ module Pact
 
     def delay_retry(count)
       Kernel.sleep(2 ** count * 0.3)
+    end
+
+    def windows_safe(uri)
+      uri.start_with?("http") ? uri : uri.gsub("\\", File::SEPARATOR)
     end
   end
 end
