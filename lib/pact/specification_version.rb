@@ -1,8 +1,6 @@
 module Pact
   class SpecificationVersion < Gem::Version
 
-    NIL_VERSION = Pact::SpecificationVersion.new('')
-
     def major
       segments.first
     end
@@ -15,4 +13,6 @@ module Pact
       major && other < major
     end
   end
+
+  SpecificationVersion::NIL_VERSION = Pact::SpecificationVersion.new('')
 end

@@ -1,3 +1,21 @@
+<a name="v1.6.1"></a>
+### v1.6.1 (2018-05-21)
+
+
+#### Bug Fixes
+
+* correctly read local windows pact file paths with backslashes	 ([e27bd38](/../../commit/e27bd38))
+
+
+<a name="v1.6.0"></a>
+### v1.6.0 (2018-04-03)
+
+
+#### Features
+
+* add support for writing v3 matching rules	 ([fc89696](/../../commit/fc89696))
+
+
 <a name="v1.5.2"></a>
 ### v1.5.2 (2018-03-23)
 
