@@ -16,7 +16,7 @@ module Pact
       subject { MatchingRules.merge(object, rules, options)}
 
       context "when the pact_specification_version is nil" do
-        let(:pact_specification_version) { nil }
+        let(:options) { { pact_specification_version: nil } }
 
         it "calls Merge" do
           expect(Merge).to receive(:call)
