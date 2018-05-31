@@ -1,3 +1,13 @@
+<a name="v1.6.2"></a>
+### v1.6.2 (2018-05-31)
+
+
+#### Bug Fixes
+
+* **windows-path**
+  * prevent locale file paths to be parsed by URI to stop errors in windows paths like spaces in paths	 ([ecf64d6](/../../commit/ecf64d6))
+
+
 <a name="v1.6.1"></a>
 ### v1.6.1 (2018-05-21)
 
