@@ -36,39 +36,25 @@ module Pact
     end
 
     def render_pact(uri_string, options)
-      uri_obj = URI(windows_safe(uri_string))
-      if uri_obj.userinfo
-        options[:username] = uri_obj.user unless options[:username]
-        options[:password] = uri_obj.password unless options[:password]
-      end
-      get(uri_obj, options)
+      local?(uri_string) ? get_local(uri_string, options) : get_remote_with_retry(uri_string, options)
     end
 
     private
-
-    def get(uri, options)
-      local?(uri) ?  get_local(uri, options) : get_remote_with_retry(uri, options)
-    end
-
+    
     def local? uri
-      !uri.host
+      !uri.start_with?("http://", "https://")
     end
 
-    def get_local(uri, _)
-      File.read uri.to_s
+    def get_local(filepath, _)
+      File.read windows_safe(filepath)
     end
 
-    def get_remote(uri, options)
-      request = Net::HTTP::Get.new(uri)
-      request.basic_auth(options[:username], options[:password]) if options[:username]
-      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-        http.open_timeout = options[:open_timeout] || OPEN_TIMEOUT
-        http.read_timeout = options[:read_timeout] || READ_TIMEOUT
-        http.request(request)
-      end
-    end
-
-    def get_remote_with_retry(uri, options)
+    def get_remote_with_retry(uri_string, options)
+      uri = URI(uri_string)
+      if uri.userinfo
+		options[:username] = uri.user unless options[:username]
+		options[:password] = uri.password unless options[:password]
+	  end
       ((options[:retry_limit] || RETRY_LIMIT) + 1).times do |i|
         begin
           response = get_remote(uri, options)
@@ -86,6 +72,16 @@ module Pact
           raise e if abort_retry?(i, options)
           delay_retry(i + 1)
         end
+      end
+    end
+    
+    def get_remote(uri, options)
+      request = Net::HTTP::Get.new(uri)
+      request.basic_auth(options[:username], options[:password]) if options[:username]
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        http.open_timeout = options[:open_timeout] || OPEN_TIMEOUT
+        http.read_timeout = options[:read_timeout] || READ_TIMEOUT
+        http.request(request)
       end
     end
 
