@@ -1,6 +1,7 @@
 require 'pact/something_like'
 require 'pact/array_like'
 require 'pact/term'
+require 'pact/provider_param'
 
 module Pact
   module MatchingRules
@@ -31,6 +32,7 @@ module Pact
         when Pact::SomethingLike then handle_something_like(object, path, match_type)
         when Pact::ArrayLike then handle_array_like(object, path, match_type)
         when Pact::Term then record_regex_rule object, path
+        when Pact::ProviderParam then record_provider_param_rule object, path
         when Pact::QueryString then recurse(object.query, path, match_type)
         when Pact::QueryHash then recurse_hash(object.query, path, match_type)
         end
@@ -68,6 +70,12 @@ module Pact
         rules[path] ||= {}
         rules[path]['match'] = 'regex'
         rules[path]['regex'] = term.matcher.inspect[1..-2]
+      end
+
+      def record_provider_param_rule provider_param, path
+        rules[path] ||= {}
+        rules[path]['match'] = 'provider_param'
+        rules[path]['fill_string'] = provider_param.fill_string
       end
 
       def record_match_type_rule path, match_type
