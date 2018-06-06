@@ -35,6 +35,11 @@ module Pact
         pp = ProviderParam.new('/some/:{id}/path_:{here}', '/some/4/path_blah')
         expect(pp.params).to eq({'id' => '4', 'here' => 'blah'})
       end
+
+      it 'finds the param names with a param at the start' do
+        pp = ProviderParam.new(':{first}and:{second}then:{third}', 'oneandtwothenthree')
+        expect(pp.params).to eq({'first' => 'one', 'second' => 'two', 'third' => 'three'})
+      end
     end
   end
 end

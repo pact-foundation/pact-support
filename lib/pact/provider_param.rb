@@ -86,7 +86,7 @@ module Pact
         # get the locations of the string in between the matched variable names
         variable_name_start = @fill_string.index(matches[index])
         variable_name_end = variable_name_start + matches[index].length
-        string_text = @fill_string[previous_string_end..variable_name_start - 1]
+        string_text = @fill_string[previous_string_end...variable_name_start]
         previous_string_end = variable_name_end
         in_between_strings << string_text unless string_text.empty?
       end
