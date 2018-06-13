@@ -77,11 +77,11 @@ module Pact
       end
     end
 
-    def find_default_values
-      var_names = parse_fill_string
+    def find_strings_between_variables(var_names)
       in_between_strings = []
       previous_string_end = 0
       matches = @fill_string.scan(param_name_regex)
+
       matches.size.times do |index|
         # get the locations of the string in between the matched variable names
         variable_name_start = @fill_string.index(matches[index])
@@ -90,20 +90,34 @@ module Pact
         previous_string_end = variable_name_end
         in_between_strings << string_text unless string_text.empty?
       end
-      last_bit = @fill_string[previous_string_end..@fill_string.length - 1]
-      in_between_strings << last_bit unless last_bit.empty?
+      last_part = @fill_string[previous_string_end...@fill_string.length]
+      in_between_strings << last_part unless last_part.empty?
 
+      in_between_strings
+    end
+
+    def find_variable_values_in_default_string(in_between_strings)
       previous_value_end = 0
       values = []
+
       in_between_strings.each do |string|
         string_start = @default_string.index(string)
-        value = @default_string[previous_value_end..string_start - 1]
+        value = @default_string[previous_value_end...string_start]
         values << value unless string_start == 0
         previous_value_end = string_start + string.length
       end
 
       last_string = @default_string[previous_value_end..@default_string.length - 1]
       values << last_string unless last_string.empty?
+
+      values
+    end
+
+    def find_default_values
+      var_names = parse_fill_string
+      in_between_strings = find_strings_between_variables(var_names)
+
+      values = find_variable_values_in_default_string(in_between_strings)
 
       param_hash = {}
       new_params_arr = var_names.zip(values)
