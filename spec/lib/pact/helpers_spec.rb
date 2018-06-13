@@ -5,6 +5,22 @@ module Pact
 
     include Pact::Helpers
 
+    describe "#provider_param" do
+      pp = Pact::ProviderParam.new('some/:{var}/here', {var: 'url'})
+
+      context 'with a hash argument' do
+        it "creates a Pact::ProviderParam" do
+          expect(provider_param('some/:{var}/here', {var: 'url'})).to eq(pp)
+        end
+      end
+
+      context 'with two string argumnets' do
+        it 'creates a Pact::ProviderParam' do
+          expect(provider_param('some/:{var}/here', 'some/url/here').params).to eq({'var' => 'url'})
+        end
+      end
+    end
+
     describe "#term" do
 
       context "with a Hash argument" do

@@ -34,8 +34,8 @@ module Pact
         "#{method.upcase} #{full_path}"
       end
 
-      def full_path
-        display_path + display_query
+      def full_path(provider_params = {})
+        display_path(provider_params) + display_query(provider_params)
       end
 
       def content_type
@@ -83,13 +83,13 @@ module Pact
         hash
       end
 
-      def display_path
-        reified_path = Pact::Reification.from_term(path)
+      def display_path(provider_params)
+        reified_path = Pact::Reification.from_term(path, provider_params)
         reified_path.empty? ? "/" : reified_path
       end
 
-      def display_query
-        (query.nil? || query.empty?) ? '' : "?#{Pact::Reification.from_term(query)}"
+      def display_query(provider_params)
+        (query.nil? || query.empty?) ? '' : "?#{Pact::Reification.from_term(query, provider_params)}"
       end
 
     end

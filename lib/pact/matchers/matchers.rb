@@ -1,4 +1,5 @@
 require 'pact/term'
+require 'pact/provider_param'
 require 'pact/something_like'
 require 'pact/array_like'
 require 'pact/shared/null_expectation'
@@ -46,6 +47,7 @@ module Pact
       when Pact::SomethingLike then calculate_diff(expected.contents, actual, options.merge(:type => true))
       when Pact::ArrayLike then array_like_diff(expected, actual, options)
       when Pact::Term then term_diff(expected, actual, options)
+      when Pact::ProviderParam then provider_param_diff(expected, actual)
       else object_diff(expected, actual, options)
       end
     end
@@ -57,6 +59,14 @@ module Pact
         actual_term_diff term, actual, options
       else
         RegexpDifference.new term.matcher, actual, "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{class_name_with_value_in_brackets(actual)} at <path>"
+      end
+    end
+
+    def provider_param_diff provider_param, actual
+      if provider_param.matches_string actual
+        return NO_DIFF
+      else
+        return Difference.new provider_param.default_string, actual, 'Given string did not match default string for provider param.'
       end
     end
 
