@@ -82,6 +82,20 @@ module Pact
     end
 
     describe "#to_json" do
+      context "when the query contains an ArrayLike" do
+        let(:query) { { foo: Pact.each_like("1"), bar: "2" } }
+        let(:expected_json) do
+          {
+            foo: Pact.each_like("1"),
+            bar: ["2"]
+          }.to_json
+        end
+
+        it "serialises the ArrayLike without wrapping an array around it" do
+          expect(subject.to_json).to eq expected_json
+        end
+      end
+
       context "when the query contains a Pact::Term" do
         let(:term) { Pact::Term.new(generate: "thing", matcher: /th/) }
         let(:query) { { param: term } }

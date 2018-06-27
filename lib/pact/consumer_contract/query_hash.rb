@@ -56,6 +56,8 @@ module Pact
     def insert(hash, k, v)
       if Hash === v
         v.each {|k2, v2| insert(hash, :"#{k}[#{k2}]", v2) }
+      elsif Pact::ArrayLike === v
+        hash[k.to_sym] = v
       else
         hash[k.to_sym] = [*v]
       end
