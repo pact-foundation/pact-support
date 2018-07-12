@@ -47,14 +47,14 @@ module Pact
       end
 
       def recurse_array array, path
-        parent_match_rule = @matching_rules[path] && @matching_rules[path]['match']
+        parent_match_rule = find_rule(path, 'match')
         log_used_rule(path, 'match', parent_match_rule) if parent_match_rule
 
         array_like_children_path = "#{path}[*]*"
-        children_match_rule = @matching_rules[array_like_children_path] && @matching_rules[array_like_children_path]['match']
+        children_match_rule = find_rule(array_like_children_path, 'match')
         log_used_rule(array_like_children_path, 'match', children_match_rule) if children_match_rule
 
-        min = @matching_rules[path] && @matching_rules[path]['min']
+        min = find_rule(path, 'min')
         log_used_rule(path, 'min', min) if min
 
         if min && (children_match_rule == 'type' || (children_match_rule.nil? && parent_match_rule == 'type'))
@@ -112,6 +112,10 @@ module Pact
             $stderr.puts "WARN: Ignoring unsupported matching rules #{rules} for path #{path}" if rules.any?
           end
         end
+      end
+
+      def find_rule(path, key)
+        @matching_rules[path] && @matching_rules[path][key]
       end
 
       def log_used_rule path, key, value
