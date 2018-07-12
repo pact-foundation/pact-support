@@ -1,3 +1,13 @@
+<a name="v1.6.3"></a>
+### v1.6.3 (2018-07-12)
+
+
+#### Bug Fixes
+
+* remove incorrect warning about ignoring unsupported matching rules for min => x	 ([50d5f6d](/../../commit/50d5f6d))
+* serialize ArrayLike in query params without wrapping another array around it	 ([b4a9ec7](/../../commit/b4a9ec7))
+
+
 <a name="v1.6.2"></a>
 ### v1.6.2 (2018-05-31)
 
