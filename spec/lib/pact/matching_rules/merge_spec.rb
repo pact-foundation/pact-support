@@ -7,10 +7,16 @@ module Pact
       subject { Merge.(expected, matching_rules, "$.body") }
 
       before do
-        allow($stderr).to receive(:puts)
+        allow($stderr).to receive(:puts) do | message |
+          raise "Was not expecting stderr to receive #{message.inspect} in this spec. This may be because of a missed call to log_used_rule in Merge."
+        end
       end
 
       describe "no recognised rules" do
+        before do
+          allow($stderr).to receive(:puts)
+        end
+
         let(:expected) do
           {
             "_links" => {
@@ -63,6 +69,10 @@ module Pact
       end
 
       describe "type based matching" do
+        before do
+          allow($stderr).to receive(:puts)
+        end
+
         let(:expected) do
           {
             "name" => "Mary"
@@ -89,6 +99,10 @@ module Pact
       describe "regular expressions" do
 
         describe "in a hash" do
+          before do
+            allow($stderr).to receive(:puts)
+          end
+
           let(:expected) do
             {
               "_links" => {
@@ -178,6 +192,7 @@ module Pact
               "$.body.alligators[*].*" => { 'match' => 'type'}
             }
           end
+
           it "creates a Pact::ArrayLike at the appropriate path" do
             expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
             expect(subject["alligators"].contents).to eq 'name' => 'Mary'
@@ -259,6 +274,10 @@ module Pact
         end
 
         describe "with an example array with more than one item" do
+          before do
+            allow(Pact.configuration.error_stream).to receive(:puts)
+          end
+
           let(:expected) do
             {
 
@@ -277,13 +296,7 @@ module Pact
             }
           end
 
-          xit "doesn't warn about the min size being ignored" do
-            expect(Pact.configuration.error_stream).to receive(:puts).once
-            subject
-          end
-
           it "warns that the other items will be ignored" do
-            allow(Pact.configuration.error_stream).to receive(:puts)
             expect(Pact.configuration.error_stream).to receive(:puts).with(/WARN: Only the first item/)
             subject
           end

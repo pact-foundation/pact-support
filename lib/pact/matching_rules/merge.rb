@@ -13,11 +13,12 @@ module Pact
         @expected = expected
         @matching_rules = standardise_paths(matching_rules)
         @root_path = JsonPath.new(root_path).to_s
+        @used_rules = []
       end
 
       def call
         return @expected if @matching_rules.nil? || @matching_rules.empty?
-        recurse @expected, @root_path
+        recurse(@expected, @root_path).tap { log_ignored_rules }
       end
 
       private
@@ -46,14 +47,18 @@ module Pact
       end
 
       def recurse_array array, path
-        array_like_children_path = "#{path}[*]*"
         parent_match_rule = @matching_rules[path] && @matching_rules[path]['match']
+        log_used_rule(path, 'match', parent_match_rule) if parent_match_rule
+
+        array_like_children_path = "#{path}[*]*"
         children_match_rule = @matching_rules[array_like_children_path] && @matching_rules[array_like_children_path]['match']
+        log_used_rule(array_like_children_path, 'match', children_match_rule) if children_match_rule
+
         min = @matching_rules[path] && @matching_rules[path]['min']
+        log_used_rule(path, 'min', min) if min
 
         if min && (children_match_rule == 'type' || (children_match_rule.nil? && parent_match_rule == 'type'))
           warn_when_not_one_example_item(array, path)
-          # log_ignored_rules(path, @matching_rules[path], {'min' => min})
           Pact::ArrayLike.new(recurse(array.first, "#{path}[*]"), min: min)
         else
           new_array = []
@@ -81,29 +86,36 @@ module Pact
         elsif rules['regex']
           handle_regex(object, path, rules)
         else
-          log_ignored_rules(path, rules, {})
           object
         end
       end
 
       def handle_match_type object, path, rules
-        log_ignored_rules(path, rules, {'match' => 'type'})
+        log_used_rule(path, 'match', 'type')
         Pact::SomethingLike.new(object)
       end
 
       def handle_regex object, path, rules
-        log_ignored_rules(path, rules, {'match' => 'regex', 'regex' => rules['regex']})
+        log_used_rule(path, 'match', 'regex') # assumed to be present
+        log_used_rule(path, 'regex', rules['regex'])
         Pact::Term.new(generate: object, matcher: Regexp.new(rules['regex']))
       end
 
-      def log_ignored_rules path, rules, used_rules
-        dup_rules = rules.dup
-        used_rules.each_pair do | used_key, used_value |
-          dup_rules.delete(used_key) if dup_rules[used_key] == used_value
+      def log_ignored_rules
+        dup_rules = @matching_rules.dup
+        @used_rules.each do | (path, key, value) |
+          dup_rules[path].delete(key) if dup_rules[path][key] == value
         end
+
         if dup_rules.any?
-          $stderr.puts "WARN: Ignoring unsupported matching rules #{dup_rules} for path #{path}"
+          dup_rules.each do | path, rules |
+            $stderr.puts "WARN: Ignoring unsupported matching rules #{rules} for path #{path}" if rules.any?
+          end
         end
+      end
+
+      def log_used_rule path, key, value
+        @used_rules << [path, key, value]
       end
     end
   end
