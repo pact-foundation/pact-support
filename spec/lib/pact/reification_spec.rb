@@ -122,10 +122,9 @@ module Pact
     end
 
     context "when Hash Query with UTF-8 string" do
-
       subject { Reification.from_term(query)}
 
-      let(:query) { QueryHash.new( {param: 'ILove', extra: '寿司'})}
+      let(:query) { QueryHash.new(param: 'ILove', extra: '寿司') }
 
       it "returns the hash with escaping UTF-8 string" do
         expect(subject).to eq("param=ILove&extra=%E5%AF%BF%E5%8F%B8")
@@ -133,7 +132,6 @@ module Pact
     end
 
     context "when Hash Query with embeded terms" do
-
       subject { Reification.from_term(query)}
 
       let(:query) { QueryHash.new( {param: 'hello', extra: Pact::Term.new(generate: "wonderworld", matcher: /\w+world/)})}
@@ -141,10 +139,9 @@ module Pact
       it "returns the hash in the natural order, and fills in Terms appropriately" do
         expect(subject).to eq("param=hello&extra=wonderworld")
       end
-
     end
-    context "when Hash Query with Arrays and multiple params with the same name" do
 
+    context "when Hash Query with Arrays and multiple params with the same name" do
       subject { Reification.from_term(query)}
 
       let(:query) { QueryHash.new( {param: 'hello', double: [Pact::Term.new(generate: "wonder", matcher: /\w+/), 'world'], simple: 'bye'})}
@@ -152,8 +149,16 @@ module Pact
       it "returns the hash in the natural order, and fills in Terms appropriately" do
         expect(subject).to eq("param=hello&double=wonder&double=world&simple=bye")
       end
-
     end
 
+    context "when Hash Query with an ArrayLike" do
+      subject { Reification.from_term(query)}
+
+      let(:query) { QueryHash.new(param: Pact.each_like("1", min: 2)) }
+
+      it "turns the hash into a string with the right number of params" do
+        expect(subject).to eq("param=1&param=1")
+      end
+    end
   end
 end

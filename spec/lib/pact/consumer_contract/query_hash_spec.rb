@@ -72,6 +72,15 @@ module Pact
             expect(subject.difference(other).keys).to contain_exactly(:"param[a]", :"param[a][aa]", :"param[a][bb]")
           end
         end
+
+        context "when there is an ArrayLike" do
+          let(:query) { { param: Pact.each_like("1") } }
+          let(:other) { QueryString.new('param=1&param=2') }
+
+          it 'returns an empty diff' do
+            expect(subject.difference(other)).to be_empty
+          end
+        end
       end
     end
 
