@@ -1,3 +1,12 @@
+<a name="v1.6.4"></a>
+### v1.6.4 (2018-07-14)
+
+
+#### Bug Fixes
+
+* correctly serialize query params that use a Pact.each_like in pact file	 ([b3414dd](/../../commit/b3414dd))
+
+
 <a name="v1.6.3"></a>
 ### v1.6.3 (2018-07-12)
 
