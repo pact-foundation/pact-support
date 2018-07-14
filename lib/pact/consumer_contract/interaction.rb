@@ -54,7 +54,7 @@ module Pact
       def self.parse_v3_request request_hash, options
         request_matching_rules = request_hash['matchingRules'] || {}
         if request_hash['body'].is_a?(String)
-          parse_request_with_string_body(request_hash, request_matching_rules, options)
+          parse_request_with_string_body(request_hash, request_matching_rules['body'] || {}, options)
         else
           parse_v3_request_with_non_string_body(request_hash, request_matching_rules, options)
         end
@@ -68,7 +68,7 @@ module Pact
       def self.parse_v3_response response_hash, options
         response_matching_rules = response_hash['matchingRules'] || {}
         if response_hash['body'].is_a?(String)
-          parse_response_with_string_body(response_hash, response_matching_rules, options)
+          parse_response_with_string_body(response_hash, response_matching_rules['body'] || {}, options)
         else
           parse_v3_response_with_non_string_body(response_hash, response_matching_rules, options)
         end

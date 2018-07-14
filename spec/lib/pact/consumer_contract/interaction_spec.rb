@@ -76,11 +76,11 @@ module Pact
           end
         end
 
-        context "when the request body is XML" do
+        context "when the request body is a String" do
           let(:hash) { { 'request' => request, 'response' => response } }
           subject { Interaction.from_hash hash, pact_specification_version: Pact::SpecificationVersion.new("3") }
 
-          let(:request) { { 'method' => 'get', 'path' => 'path' , 'body' => "<xml></xml>", 'matchingRules' => {"foo" => "bar" } } }
+          let(:request) { { 'method' => 'get', 'path' => 'path' , 'body' => "<xml></xml>", 'matchingRules' => {"body" => {"foo" => "bar"} } } }
 
           it "returns an interaction with an StringWithMatchingRules in the request" do
             expect(subject.request.body).to be_a(Pact::StringWithMatchingRules)
@@ -90,11 +90,11 @@ module Pact
           end
         end
 
-        context "when the response body is XML" do
+        context "when the response body is a String" do
           let(:hash) { { 'request' => request, 'response' => response } }
           subject { Interaction.from_hash hash, pact_specification_version: Pact::SpecificationVersion.new("3") }
 
-          let(:response) { { 'status' => '200', 'body' => "<xml></xml>", 'matchingRules' => {"foo" => "bar" } } }
+          let(:response) { { 'status' => '200', 'body' => "<xml></xml>", 'matchingRules' => {"body" => {"foo" => "bar"} } } }
 
           it "returns an interaction with an StringWithMatchingRules in the response" do
             expect(subject.response.body).to be_a(Pact::StringWithMatchingRules)
