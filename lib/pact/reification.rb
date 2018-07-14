@@ -5,6 +5,7 @@ require 'pact/array_like'
 require 'pact/shared/request'
 require 'pact/consumer_contract/query_hash'
 require 'pact/consumer_contract/query_string'
+require 'pact/consumer_contract/string_with_matching_rules'
 
 module Pact
   module Reification
@@ -35,6 +36,8 @@ module Pact
             "#{k}=#{escape(v)}"
           end
         }.join('&')
+      when Pact::StringWithMatchingRules
+        String.new(term)
       else
         term
       end

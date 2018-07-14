@@ -160,5 +160,13 @@ module Pact
         expect(subject).to eq("param=1&param=1")
       end
     end
+
+    context "with a StringWithMatchingRules" do
+      subject { Reification.from_term(StringWithMatchingRules.new("foo", Pact::SpecificationVersion.new("3"), {}))}
+
+      it "returns a String" do
+        expect(subject.class).to be String
+      end
+    end
   end
 end
