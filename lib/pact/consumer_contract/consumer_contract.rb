@@ -13,6 +13,7 @@ require 'pact/consumer_contract/pact_file'
 require 'pact/consumer_contract/http_consumer_contract_parser'
 
 module Pact
+
   class ConsumerContract
 
     include SymbolizeKeys
@@ -30,7 +31,7 @@ module Pact
     end
 
     def self.add_parser consumer_contract_parser
-      parsers << consumer_contract_parser
+      parsers.unshift(consumer_contract_parser)
     end
 
     def self.parsers
