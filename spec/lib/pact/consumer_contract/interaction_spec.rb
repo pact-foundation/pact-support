@@ -75,6 +75,34 @@ module Pact
             expect(subject.response.body['_links']['self']['href']).to be_instance_of(Pact::Term)
           end
         end
+
+        context "when the request body is XML" do
+          let(:hash) { { 'request' => request, 'response' => response } }
+          subject { Interaction.from_hash hash, pact_specification_version: Pact::SpecificationVersion.new("3") }
+
+          let(:request) { { 'method' => 'get', 'path' => 'path' , 'body' => "<xml></xml>", 'matchingRules' => {"foo" => "bar" } } }
+
+          it "returns an interaction with an StringWithMatchingRules in the request" do
+            expect(subject.request.body).to be_a(Pact::StringWithMatchingRules)
+            expect(subject.request.body).to eq "<xml></xml>"
+            expect(subject.request.body.matching_rules).to eq "foo" => "bar"
+            expect(subject.request.body.pact_specification_version).to eq Pact::SpecificationVersion.new("3")
+          end
+        end
+
+        context "when the response body is XML" do
+          let(:hash) { { 'request' => request, 'response' => response } }
+          subject { Interaction.from_hash hash, pact_specification_version: Pact::SpecificationVersion.new("3") }
+
+          let(:response) { { 'status' => '200', 'body' => "<xml></xml>", 'matchingRules' => {"foo" => "bar" } } }
+
+          it "returns an interaction with an StringWithMatchingRules in the response" do
+            expect(subject.response.body).to be_a(Pact::StringWithMatchingRules)
+            expect(subject.response.body).to eq "<xml></xml>"
+            expect(subject.response.body.matching_rules).to eq "foo" => "bar"
+            expect(subject.response.body.pact_specification_version).to eq Pact::SpecificationVersion.new("3")
+          end
+        end
       end
 
       describe "request_modifies_resource_without_checking_response_body?" do
