@@ -2,7 +2,6 @@ require 'pact/consumer_contract/interaction_parser'
 
 module Pact
   describe InteractionParser do
-
     describe ".call" do
 
       let(:request) { {method: 'get', path: 'path'} }
