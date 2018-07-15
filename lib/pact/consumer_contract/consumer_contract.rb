@@ -14,6 +14,8 @@ require 'pact/consumer_contract/http_consumer_contract_parser'
 
 module Pact
 
+  class UnrecognizePactFormatError < ::Pact::Error; end
+
   class ConsumerContract
 
     include SymbolizeKeys
@@ -42,7 +44,7 @@ module Pact
       parsers.each do | parser |
         return parser.call(hash) if parser.can_parse?(hash)
       end
-      raise Pact::Error.new("No consumer contract parser found for hash: #{hash}")
+      raise Pact::UnrecognizePactFormatError.new("This document does not use a recognised Pact format: #{hash}")
     end
 
     def self.from_json string
@@ -52,6 +54,8 @@ module Pact
 
     def self.from_uri uri, options = {}
       from_json(Pact::PactFile.read(uri, options))
+    rescue UnrecognizePactFormatError
+      raise Pact::UnrecognizePactFormatError.new("This document does not use a recognised Pact format. Please check that #{uri} is a valid pact file.")
     end
 
     def self.maintain_backwards_compatiblity_with_producer_keys string

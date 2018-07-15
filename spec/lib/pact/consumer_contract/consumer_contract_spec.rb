@@ -3,6 +3,26 @@ require 'pact/consumer_contract'
 
 module Pact
   describe ConsumerContract do
+    describe "from_uri" do
+      context "when the URL does not point to a valid pact" do
+        subject { ConsumerContract.from_uri('spec/fixtures/not-a-pact.json') }
+
+        it "raises a helpful error" do
+          expect { subject }.to raise_error UnrecognizePactFormatError, /Please check that spec/
+        end
+      end
+    end
+
+    describe "from_hash" do
+      context "when the hash is not a valid pact" do
+        subject { ConsumerContract.from_hash({'foo' => 'bar'}) }
+
+        it "raises a helpful error" do
+          expect { subject }.to raise_error UnrecognizePactFormatError, 'This document does not use a recognised Pact format: {"foo"=>"bar"}'
+        end
+      end
+    end
+
     describe ".from_json" do
 
       let(:loaded_pact) { ConsumerContract.from_json(string) }

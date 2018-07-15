@@ -40,7 +40,7 @@ module Pact
     end
 
     private
-    
+
     def local? uri
       !uri.start_with?("http://", "https://")
     end
@@ -74,7 +74,7 @@ module Pact
         end
       end
     end
-    
+
     def get_remote(uri, options)
       request = Net::HTTP::Get.new(uri)
       request.basic_auth(options[:username], options[:password]) if options[:username]
