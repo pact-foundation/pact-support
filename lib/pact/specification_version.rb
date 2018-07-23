@@ -14,5 +14,5 @@ module Pact
     end
   end
 
-  SpecificationVersion::NIL_VERSION = Pact::SpecificationVersion.new('')
+  SpecificationVersion::NIL_VERSION = Pact::SpecificationVersion.new('0')
 end
