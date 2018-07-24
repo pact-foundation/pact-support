@@ -1,3 +1,20 @@
+<a name="v1.6.5"></a>
+### v1.6.5 (2018-07-23)
+
+
+#### Features
+
+* use 0 as the nil pact specification version	 ([88e4750](/../../commit/88e4750))
+* reify StringWithMatchingRules to a String	 ([a025dd3](/../../commit/a025dd3))
+* parse String response and request bodies to StringWithMatchingRules to support pact-xml	 ([a9fbb58](/../../commit/a9fbb58))
+* add custom contract parsers to front of pact parsers list so that customised parsers are tried first	 ([babc319](/../../commit/babc319))
+
+
+#### Bug Fixes
+
+* show a more helpful error when attempting to parse a URI that is not a pact	 ([a8ba1ed](/../../commit/a8ba1ed))
+
+
 <a name="v1.6.4"></a>
 ### v1.6.4 (2018-07-14)
 
