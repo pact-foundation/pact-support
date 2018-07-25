@@ -1,3 +1,12 @@
+<a name="v1.6.6"></a>
+### v1.6.6 (2018-07-25)
+
+
+#### Bug Fixes
+
+* correctly handle an 'each like' inside a 'like'	 ([7dc76dc](/../../commit/7dc76dc))
+
+
 <a name="v1.6.5"></a>
 ### v1.6.5 (2018-07-23)
 
