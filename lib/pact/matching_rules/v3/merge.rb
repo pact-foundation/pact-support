@@ -18,15 +18,15 @@ module Pact
 
         def call
           return @expected if @matching_rules.nil? || @matching_rules.empty?
-          recurse @expected, @root_path
+          recurse(@expected, @root_path).tap { log_ignored_rules }
         end
 
         private
 
         def standardise_paths matching_rules
           return matching_rules if matching_rules.nil? || matching_rules.empty?
-          matching_rules.each_with_object({}) do | (path, rule), new_matching_rules |
-            new_matching_rules[JsonPath.new(path).to_s] = rule
+          matching_rules.each_with_object({}) do | (path, rules), new_matching_rules |
+            new_matching_rules[JsonPath.new(path).to_s] = Marshal.load(Marshal.dump(rules)) # simplest way to deep clone
           end
         end
 
@@ -47,14 +47,14 @@ module Pact
         end
 
         def recurse_array array, path
+
+          parent_match_rule = @matching_rules[path] && @matching_rules[path]['matchers'] && @matching_rules[path]['matchers'].first && @matching_rules[path]['matchers'].first.delete('match')
           array_like_children_path = "#{path}[*]*"
-          parent_match_rule = @matching_rules[path] && @matching_rules[path]['matchers'] && @matching_rules[path]['matchers'].first && @matching_rules[path]['matchers'].first['match']
-          children_match_rule = @matching_rules[array_like_children_path] && @matching_rules[array_like_children_path]['matchers'] && @matching_rules[array_like_children_path]['matchers'].first && @matching_rules[array_like_children_path]['matchers'].first['match']
-          min = @matching_rules[path] && @matching_rules[path]['matchers'] && @matching_rules[path]['matchers'].first && @matching_rules[path]['matchers'].first['min']
+          children_match_rule = @matching_rules[array_like_children_path] && @matching_rules[array_like_children_path]['matchers'] && @matching_rules[array_like_children_path]['matchers'].first && @matching_rules[array_like_children_path]['matchers'].first.delete('match')
+          min = @matching_rules[path] && @matching_rules[path]['matchers'] && @matching_rules[path]['matchers'].first && @matching_rules[path]['matchers'].first.delete('min')
 
           if min && (children_match_rule == 'type' || (children_match_rule.nil? && parent_match_rule == 'type'))
             warn_when_not_one_example_item(array, path)
-            # log_ignored_rules(path, @matching_rules[path], {'min' => min})
             Pact::ArrayLike.new(recurse(array.first, "#{path}[*]"), min: min)
           else
             new_array = []
@@ -82,29 +82,45 @@ module Pact
           elsif rules['regex']
             handle_regex(object, path, rules)
           else
-            log_ignored_rules(path, rules, {})
+            #log_ignored_rules(path, rules, {})
             object
           end
         end
 
         def handle_match_type object, path, rules
-          log_ignored_rules(path, rules, {'match' => 'type'})
-          Pact::SomethingLike.new(object)
+          rules.delete('match')
+          Pact::SomethingLike.new(recurse(object, path))
         end
 
         def handle_regex object, path, rules
-          log_ignored_rules(path, rules, {'match' => 'regex', 'regex' => rules['regex']})
-          Pact::Term.new(generate: object, matcher: Regexp.new(rules['regex']))
+          rules.delete('match')
+          regex = rules.delete('regex')
+          Pact::Term.new(generate: object, matcher: Regexp.new(regex))
         end
 
-        def log_ignored_rules path, rules, used_rules
-          dup_rules = rules.dup
-          used_rules.each_pair do | used_key, used_value |
-            dup_rules.delete(used_key) if dup_rules[used_key] == used_value
+        def log_ignored_rules
+          @matching_rules.each do | jsonpath, rules_hash |
+            rules_array = rules_hash["matchers"]
+            ((rules_array.length - 1)..0).each do | index |
+              rules_array.delete_at(index) if rules_array[index].empty?
+            end
           end
-          if dup_rules.any?
-            $stderr.puts "WARN: Ignoring unsupported matching rules #{dup_rules} for path #{path}"
+
+          if @matching_rules.any?
+            @matching_rules.each do | path, rules_hash |
+              rules_hash.each do | key, value |
+                $stderr.puts "WARN: Ignoring unsupported #{key} #{value} for path #{path}" if value.any?
+              end
+            end
           end
+        end
+
+        def find_rule(path, key)
+          @matching_rules[path] && @matching_rules[path][key]
+        end
+
+        def log_used_rule path, key, value
+          @used_rules << [path, key, value]
         end
       end
     end

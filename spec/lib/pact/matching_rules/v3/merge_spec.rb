@@ -7,10 +7,16 @@ module Pact
         subject { Merge.(expected, matching_rules) }
 
         before do
-          allow($stderr).to receive(:puts)
+          allow($stderr).to receive(:puts) do | message |
+            raise "Was not expecting stderr to receive #{message.inspect} in this spec. This may be because of a missed rule deletion in Merge."
+          end
         end
 
         describe "no recognised rules" do
+          before do
+            allow($stderr).to receive(:puts)
+          end
+
           let(:expected) do
             {
               "_links" => {
@@ -65,6 +71,10 @@ module Pact
         end
 
         describe "type based matching" do
+          before do
+            allow($stderr).to receive(:puts)
+          end
+
           let(:expected) do
             {
               "name" => "Mary"
@@ -88,11 +98,19 @@ module Pact
             subject
           end
 
+          it "does not alter the passed in rules hash" do
+            original_matching_rules = JSON.parse(matching_rules.to_json)
+            subject
+            expect(matching_rules).to eq original_matching_rules
+          end
         end
 
         describe "regular expressions" do
-
           describe "in a hash" do
+            before do
+              allow($stderr).to receive(:puts)
+            end
+
             let(:expected) do
               {
                 "_links" => {
@@ -275,6 +293,10 @@ module Pact
           end
 
           describe "with an example array with more than one item" do
+            before do
+              allow($stderr).to receive(:puts)
+            end
+
             let(:expected) do
               {
 
@@ -292,7 +314,7 @@ module Pact
               }
             end
 
-            xit "doesn't warn about the min size being ignored" do
+            it "doesn't warn about the min size being ignored" do
               expect(Pact.configuration.error_stream).to receive(:puts).once
               subject
             end

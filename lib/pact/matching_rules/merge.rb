@@ -92,7 +92,7 @@ module Pact
 
       def handle_match_type object, path, rules
         log_used_rule(path, 'match', 'type')
-        Pact::SomethingLike.new(object)
+        Pact::SomethingLike.new(recurse(object, path))
       end
 
       def handle_regex object, path, rules
