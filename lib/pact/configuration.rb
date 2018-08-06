@@ -1,9 +1,11 @@
 require 'pact/matchers/embedded_diff_formatter'
 require 'pact/matchers/unix_diff_formatter'
 require 'pact/matchers/list_diff_formatter'
+require 'pact/matchers/multipart_form_diff_formatter'
 require 'pact/shared/json_differ'
 require 'pact/shared/text_differ'
 require 'pact/shared/form_differ'
+require 'pact/shared/multipart_form_differ'
 
 
 module Pact
@@ -24,6 +26,7 @@ module Pact
     end
 
     DIFF_FORMATTER_REGISTRATIONS = [
+      [/multipart\/form-data/, Pact::Matchers::MultipartFormDiffFormatter],
       [/.*/, Pact::Matchers::UnixDiffFormatter],
       [NilMatcher, Pact::Matchers::UnixDiffFormatter]
     ]
@@ -31,6 +34,7 @@ module Pact
     DIFFERS = [
       [/json/, Pact::JsonDiffer],
       [/application\/x\-www\-form\-urlencoded/, Pact::FormDiffer],
+      [/multipart\/form-data/, Pact::MultipartFormDiffer],
       [NilMatcher, Pact::TextDiffer],
       [/.*/, Pact::TextDiffer]
     ]

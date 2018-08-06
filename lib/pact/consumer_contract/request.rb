@@ -2,9 +2,7 @@ require 'pact/shared/request'
 require 'pact/shared/null_expectation'
 
 module Pact
-
   module Request
-
     class Expected < Pact::Request::Base
 
       DEFAULT_OPTIONS = {:allow_unexpected_keys => false}.freeze
@@ -80,8 +78,6 @@ module Pact
       def body_differ
         Pact.configuration.body_differ_for_content_type content_type
       end
-
     end
-
   end
 end

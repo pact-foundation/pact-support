@@ -1,0 +1,9 @@
+
+
+Description of differences
+--------------------------------------
+* Wrong header
+
+@@ -1,2 +1,2 @@
+-bar
++foo
