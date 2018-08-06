@@ -1,3 +1,12 @@
+<a name="v1.7.0"></a>
+### v1.7.0 (2018-08-07)
+
+
+#### Features
+
+* add support for multipart/form	 ([8ed4332](/../../commit/8ed4332))
+
+
 <a name="v1.6.6"></a>
 ### v1.6.6 (2018-07-25)
 
