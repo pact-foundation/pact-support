@@ -94,7 +94,7 @@ module Pact
           end
 
           it "it logs the rules it has ignored" do
-            expect($stderr).to receive(:puts).with(/ignored.*matchingrule/)
+            expect($stderr).to receive(:puts).once.with(/ignored.*matchingrule/)
             subject
           end
 
@@ -102,6 +102,61 @@ module Pact
             original_matching_rules = JSON.parse(matching_rules.to_json)
             subject
             expect(matching_rules).to eq original_matching_rules
+          end
+        end
+
+        describe "when a Pact.like is nested inside a Pact.each_like which is nested inside a Pact.like" do
+          let(:original_definition) do
+            Pact.like('foos' => Pact.each_like(Pact.like('name' => "foo1")))
+          end
+
+          let(:expected) do
+            Pact::Reification.from_term(original_definition)
+          end
+
+          let(:matching_rules) do
+            Extract.call(original_definition)
+          end
+
+          it "creates a Pact::SomethingLike containing a Pact::ArrayLike containing a Pact::SomethingLike" do
+            expect(subject.to_hash).to eq original_definition.to_hash
+          end
+        end
+
+        describe "when a Pact.array_like is the top level object" do
+          let(:original_definition) do
+            Pact.each_like('foos')
+          end
+
+          let(:expected) do
+            Pact::Reification.from_term(original_definition)
+          end
+
+          let(:matching_rules) do
+            Extract.call(original_definition)
+          end
+
+          it "creates a Pact::ArrayLike" do
+            expect(subject.to_hash).to eq original_definition.to_hash
+          end
+        end
+
+        describe "when a Pact.like containing an array is the top level object" do
+          let(:original_definition) do
+            Pact.like(['foos'])
+          end
+
+          let(:expected) do
+            Pact::Reification.from_term(original_definition).tap { |it| puts it }
+          end
+
+          let(:matching_rules) do
+            Extract.call(original_definition).tap { |it| puts it }
+          end
+
+          it "creates a Pact::SomethingLike" do
+            expect(subject).to be_a(Pact::SomethingLike)
+            expect(subject.to_hash).to eq original_definition.to_hash
           end
         end
 
@@ -203,7 +258,7 @@ module Pact
             let(:matching_rules) do
               {
                 "$.alligators" => {
-                  "matchers" => [{ 'min' => 2, 'match' => 'type' }]
+                  "matchers" => [{ 'min' => 2}]
                 },
                 "$.alligators[*].*" => {
                   "matchers" => [{ 'match' => 'type'}]
@@ -236,9 +291,10 @@ module Pact
             end
 
             it "creates a Pact::ArrayLike at the appropriate path" do
-              expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
-              expect(subject["alligators"].contents).to eq 'name' => 'Mary'
-              expect(subject["alligators"].min).to eq 2
+              expect(subject["alligators"]).to be_instance_of(Pact::SomethingLike)
+              expect(subject["alligators"].contents).to be_instance_of(Pact::ArrayLike)
+              expect(subject["alligators"].contents.contents).to eq 'name' => 'Mary'
+              expect(subject["alligators"].contents.min).to eq 2
             end
           end
 
@@ -380,6 +436,7 @@ module Pact
             expect(subject['@name']).to be_instance_of(Pact::SomethingLike)
           end
         end
+
       end
     end
   end

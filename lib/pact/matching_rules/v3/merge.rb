@@ -31,36 +31,44 @@ module Pact
         end
 
         def recurse expected, path
-          case expected
+          recursed = case expected
           when Hash then recurse_hash(expected, path)
           when Array then recurse_array(expected, path)
           else
             expected
           end
+          wrap(recursed, path)
         end
 
         def recurse_hash hash, path
           hash.each_with_object({}) do | (k, v), new_hash |
             new_path = path + "['#{k}']"
-            new_hash[k] = recurse(wrap(v, new_path), new_path)
+            new_hash[k] = recurse(v, new_path)
           end
         end
 
         def recurse_array array, path
-
-          parent_match_rule = @matching_rules[path] && @matching_rules[path]['matchers'] && @matching_rules[path]['matchers'].first && @matching_rules[path]['matchers'].first.delete('match')
+          # This assumes there is only one rule! TODO make this find the appropriate rule.
+          parent_match_rule = @matching_rules[path]['matchers'].first['match'] rescue nil
           array_like_children_path = "#{path}[*]*"
-          children_match_rule = @matching_rules[array_like_children_path] && @matching_rules[array_like_children_path]['matchers'] && @matching_rules[array_like_children_path]['matchers'].first && @matching_rules[array_like_children_path]['matchers'].first.delete('match')
-          min = @matching_rules[path] && @matching_rules[path]['matchers'] && @matching_rules[path]['matchers'].first && @matching_rules[path]['matchers'].first.delete('min')
+          children_match_rule = @matching_rules[array_like_children_path]['matchers'].first['match'] rescue nil
+          min = @matching_rules[path]['matchers'].first['min'] rescue nil
 
-          if min && (children_match_rule == 'type' || (children_match_rule.nil? && parent_match_rule == 'type'))
+          if min && children_match_rule == 'type'
+            @matching_rules[path]['matchers'].first.delete('min')
+            @matching_rules[array_like_children_path]['matchers'].first.delete('match')
+            warn_when_not_one_example_item(array, path)
+            Pact::ArrayLike.new(recurse(array.first, "#{path}[*]"), min: min)
+          elsif min && parent_match_rule == 'type'
+            @matching_rules[path]['matchers'].first.delete('min')
+            @matching_rules[path]['matchers'].first.delete('match')
             warn_when_not_one_example_item(array, path)
             Pact::ArrayLike.new(recurse(array.first, "#{path}[*]"), min: min)
           else
             new_array = []
             array.each_with_index do | item, index |
               new_path = path + "[#{index}]"
-              new_array << recurse(wrap(item, new_path), new_path)
+              new_array << recurse(item, new_path)
             end
             new_array
           end
@@ -82,14 +90,13 @@ module Pact
           elsif rules['regex']
             handle_regex(object, path, rules)
           else
-            #log_ignored_rules(path, rules, {})
             object
           end
         end
 
         def handle_match_type object, path, rules
           rules.delete('match')
-          Pact::SomethingLike.new(recurse(object, path))
+          Pact::SomethingLike.new(object)
         end
 
         def handle_regex object, path, rules
