@@ -70,7 +70,7 @@ module Pact
 
       describe "type based matching" do
         before do
-          allow($stderr).to receive(:puts)
+          allow($stderr).to receive(:puts).and_call_original
         end
 
         let(:expected) do
@@ -90,7 +90,7 @@ module Pact
         end
 
         it "it logs the rules it has ignored" do
-          expect($stderr).to receive(:puts).with(/ignored.*matchingrule/)
+          expect($stderr).to receive(:puts).once.with(/ignored.*matchingrule/)
           subject
         end
 
@@ -354,6 +354,61 @@ module Pact
 
         it "applies the rule" do
           expect(subject['@name']).to be_instance_of(Pact::SomethingLike)
+        end
+      end
+
+      describe "when a Pact.like is nested inside a Pact.each_like which is nested inside a Pact.like" do
+        let(:original_definition) do
+          Pact.like('foos' => Pact.each_like(Pact.like('name' => "foo1")))
+        end
+
+        let(:expected) do
+          Pact::Reification.from_term(original_definition)
+        end
+
+        let(:matching_rules) do
+          Extract.call(body: original_definition)
+        end
+
+        it "creates a Pact::SomethingLike containing a Pact::ArrayLike containing a Pact::SomethingLike" do
+          expect(subject.to_hash).to eq original_definition.to_hash
+        end
+      end
+
+      describe "when a Pact.array_like is the top level object" do
+        let(:original_definition) do
+          Pact.each_like('foos')
+        end
+
+        let(:expected) do
+          Pact::Reification.from_term(original_definition)
+        end
+
+        let(:matching_rules) do
+          Extract.call(body: original_definition)
+        end
+
+        it "creates a Pact::ArrayLike" do
+          expect(subject.to_hash).to eq original_definition.to_hash
+        end
+      end
+
+      describe "when a Pact.like containing an array is the top level object" do
+        let(:original_definition) do
+          Pact.like(['foos'])
+        end
+
+        let(:expected) do
+          Pact::Reification.from_term(original_definition)
+        end
+
+        let(:matching_rules) do
+          Extract.call(body: original_definition)
+        end
+
+        it "creates a Pact::SomethingLike" do
+          expect(subject).to be_a(Pact::SomethingLike)
+          expect(subject.to_hash).to eq original_definition.to_hash
         end
       end
     end

@@ -31,18 +31,20 @@ module Pact
       end
 
       def recurse expected, path
-        case expected
+        recursed = case expected
         when Hash then recurse_hash(expected, path)
         when Array then recurse_array(expected, path)
         else
           expected
         end
+
+        wrap(recursed, path)
       end
 
       def recurse_hash hash, path
-        hash.each_with_object({}) do | (k, v), new_hash |
+        recursed =  hash.each_with_object({}) do | (k, v), new_hash |
           new_path = path + "['#{k}']"
-          new_hash[k] = recurse(wrap(v, new_path), new_path)
+          new_hash[k] = recurse(v, new_path)
         end
       end
 
@@ -64,7 +66,7 @@ module Pact
           new_array = []
           array.each_with_index do | item, index |
             new_path = path + "[#{index}]"
-            new_array << recurse(wrap(item, new_path), new_path)
+            new_array << recurse(item, new_path)
           end
           new_array
         end
@@ -77,28 +79,25 @@ module Pact
       end
 
       def wrap object, path
-        rules = @matching_rules[path]
-        array_rules = @matching_rules["#{path}[*]*"]
-        return object unless rules || array_rules
-
-        if rules['match'] == 'type' && !rules.has_key?('min')
-          handle_match_type(object, path, rules)
-        elsif rules['regex']
-          handle_regex(object, path, rules)
+        if find_rule(path, 'match') == 'type' && !find_rule(path, 'min')
+          handle_match_type(object, path)
+        elsif find_rule(path, 'regex')
+          handle_regex(object, path)
         else
           object
         end
       end
 
-      def handle_match_type object, path, rules
+      def handle_match_type object, path
         log_used_rule(path, 'match', 'type')
-        Pact::SomethingLike.new(recurse(object, path))
+        Pact::SomethingLike.new(object)
       end
 
-      def handle_regex object, path, rules
+      def handle_regex object, path
+        regex = find_rule(path, 'regex')
         log_used_rule(path, 'match', 'regex') # assumed to be present
-        log_used_rule(path, 'regex', rules['regex'])
-        Pact::Term.new(generate: object, matcher: Regexp.new(rules['regex']))
+        log_used_rule(path, 'regex', regex)
+        Pact::Term.new(generate: object, matcher: Regexp.new(regex))
       end
 
       def log_ignored_rules
