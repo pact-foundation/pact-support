@@ -159,6 +159,25 @@ module Pact
             expect(subject["_links"]["self"][0]["href"].matcher.inspect).to eq "/http:\\/\\/.*\\/thing/"
           end
         end
+
+        describe "with an ArrayLike containing a Term" do
+          let(:expected) do
+            ["foo"]
+          end
+
+          let(:matching_rules) do
+            {
+              "$.body" => {"min" => 1},
+              "$.body[*].*" => {"match" => "type"},
+              "$.body[*]" => {"match" => "regex", "regex"=>"f"}
+            }
+          end
+
+          it "it creates an ArrayLike with a Pact::Term as the contents" do
+            expect(subject).to be_a(Pact::ArrayLike)
+            expect(subject.contents).to be_a(Pact::Term)
+          end
+        end
       end
 
       describe "with an array where all elements should match by type and the rule is specified on the parent element and there is no min specified" do
