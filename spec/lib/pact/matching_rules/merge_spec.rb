@@ -159,149 +159,150 @@ module Pact
             expect(subject["_links"]["self"][0]["href"].matcher.inspect).to eq "/http:\\/\\/.*\\/thing/"
           end
         end
+      end
 
-        describe "with an array where all elements should match by type and the rule is specified on the parent element and there is no min specified" do
-          let(:expected) do
-            {
-              'alligators' => [{'name' => 'Mary'}]
-            }
-          end
-
-          let(:matching_rules) do
-            {
-              "$.body.alligators" => { 'match' => 'type' }
-            }
-          end
-
-          it "creates a Pact::SomethingLike at the appropriate path" do
-            expect(subject["alligators"]).to be_instance_of(Pact::SomethingLike)
-            expect(subject["alligators"].contents).to eq ['name' => 'Mary']
-          end
+      describe "with an array where all elements should match by type and the rule is specified on the parent element and there is no min specified" do
+        let(:expected) do
+          {
+            'alligators' => [{'name' => 'Mary'}]
+          }
         end
 
-        describe "with an array where all elements should match by type and the rule is specified on the child elements" do
-          let(:expected) do
-            {
-              'alligators' => [{'name' => 'Mary'}]
-            }
-          end
-
-          let(:matching_rules) do
-            {
-              "$.body.alligators" => { 'min' => 2 },
-              "$.body.alligators[*].*" => { 'match' => 'type'}
-            }
-          end
-
-          it "creates a Pact::ArrayLike at the appropriate path" do
-            expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
-            expect(subject["alligators"].contents).to eq 'name' => 'Mary'
-            expect(subject["alligators"].min).to eq 2
-          end
+        let(:matching_rules) do
+          {
+            "$.body.alligators" => { 'match' => 'type' }
+          }
         end
 
-        describe "with an array where all elements should match by type and the rule is specified on both the parent element and the child elements" do
-          let(:expected) do
-            {
-              'alligators' => [{'name' => 'Mary'}]
-            }
-          end
-
-          let(:matching_rules) do
-            {
-              "$.body.alligators" => { 'min' => 2, 'match' => 'type' },
-              "$.body.alligators[*].*" => { 'match' => 'type'}
-            }
-          end
-
-          it "creates a Pact::ArrayLike at the appropriate path" do
-            expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
-            expect(subject["alligators"].contents).to eq 'name' => 'Mary'
-            expect(subject["alligators"].min).to eq 2
-          end
-        end
-
-        describe "with an array where all elements should match by type and there is only a match:type on the parent element" do
-          let(:expected) do
-            {
-              'alligators' => [{'name' => 'Mary'}]
-            }
-          end
-
-          let(:matching_rules) do
-            {
-              "$.body.alligators" => { 'min' => 2, 'match' => 'type' },
-            }
-          end
-
-          it "creates a Pact::ArrayLike at the appropriate path" do
-            expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
-            expect(subject["alligators"].contents).to eq 'name' => 'Mary'
-            expect(subject["alligators"].min).to eq 2
-          end
-        end
-
-        describe "with an array where all elements should match by type nested inside another array where all elements should match by type" do
-          let(:expected) do
-            {
-
-              'alligators' => [
-                {
-                  'name' => 'Mary',
-                  'children' => [
-                    'age' => 9
-                  ]
-                }
-              ]
-
-            }
-          end
-
-          let(:matching_rules) do
-            {
-              "$.body.alligators" => { 'min' => 2 },
-              "$.body.alligators[*].*" => { 'match' => 'type'},
-              "$.body.alligators[*].children" => { 'min' => 1 },
-              "$.body.alligators[*].children[*].*" => { 'match' => 'type'}
-            }
-          end
-
-          it "creates a Pact::ArrayLike at the appropriate path" do
-            expect(subject["alligators"].contents['children']).to be_instance_of(Pact::ArrayLike)
-            expect(subject["alligators"].contents['children'].contents).to eq 'age' => 9
-            expect(subject["alligators"].contents['children'].min).to eq 1
-          end
-        end
-
-        describe "with an example array with more than one item" do
-          before do
-            allow(Pact.configuration.error_stream).to receive(:puts)
-          end
-
-          let(:expected) do
-            {
-
-              'alligators' => [
-                {'name' => 'Mary'},
-                {'name' => 'Joe'}
-              ]
-
-            }
-          end
-
-          let(:matching_rules) do
-            {
-              "$.body.alligators" => { 'min' => 2 },
-              "$.body.alligators[*].*" => { 'match' => 'type'}
-            }
-          end
-
-          it "warns that the other items will be ignored" do
-            expect(Pact.configuration.error_stream).to receive(:puts).with(/WARN: Only the first item/)
-            subject
-          end
+        it "creates a Pact::SomethingLike at the appropriate path" do
+          expect(subject["alligators"]).to be_instance_of(Pact::SomethingLike)
+          expect(subject["alligators"].contents).to eq ['name' => 'Mary']
         end
       end
+
+      describe "with an array where all elements should match by type and the rule is specified on the child elements" do
+        let(:expected) do
+          {
+            'alligators' => [{'name' => 'Mary'}]
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body.alligators" => { 'min' => 2 },
+            "$.body.alligators[*].*" => { 'match' => 'type'}
+          }
+        end
+
+        it "creates a Pact::ArrayLike at the appropriate path" do
+          expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
+          expect(subject["alligators"].contents).to eq 'name' => 'Mary'
+          expect(subject["alligators"].min).to eq 2
+        end
+      end
+
+      describe "with an array where all elements should match by type and the rule is specified on both the parent element and the child elements" do
+        let(:expected) do
+          {
+            'alligators' => [{'name' => 'Mary'}]
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body.alligators" => { 'min' => 2, 'match' => 'type' },
+            "$.body.alligators[*].*" => { 'match' => 'type'}
+          }
+        end
+
+        it "creates a Pact::ArrayLike at the appropriate path" do
+          expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
+          expect(subject["alligators"].contents).to eq 'name' => 'Mary'
+          expect(subject["alligators"].min).to eq 2
+        end
+      end
+
+      describe "with an array where all elements should match by type and there is only a match:type on the parent element" do
+        let(:expected) do
+          {
+            'alligators' => [{'name' => 'Mary'}]
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body.alligators" => { 'min' => 2, 'match' => 'type' },
+          }
+        end
+
+        it "creates a Pact::ArrayLike at the appropriate path" do
+          expect(subject["alligators"]).to be_instance_of(Pact::ArrayLike)
+          expect(subject["alligators"].contents).to eq 'name' => 'Mary'
+          expect(subject["alligators"].min).to eq 2
+        end
+      end
+
+      describe "with an array where all elements should match by type nested inside another array where all elements should match by type" do
+        let(:expected) do
+          {
+
+            'alligators' => [
+              {
+                'name' => 'Mary',
+                'children' => [
+                  'age' => 9
+                ]
+              }
+            ]
+
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body.alligators" => { 'min' => 2 },
+            "$.body.alligators[*].*" => { 'match' => 'type'},
+            "$.body.alligators[*].children" => { 'min' => 1 },
+            "$.body.alligators[*].children[*].*" => { 'match' => 'type'}
+          }
+        end
+
+        it "creates a Pact::ArrayLike at the appropriate path" do
+          expect(subject["alligators"].contents['children']).to be_instance_of(Pact::ArrayLike)
+          expect(subject["alligators"].contents['children'].contents).to eq 'age' => 9
+          expect(subject["alligators"].contents['children'].min).to eq 1
+        end
+      end
+
+      describe "with an example array with more than one item" do
+        before do
+          allow(Pact.configuration.error_stream).to receive(:puts)
+        end
+
+        let(:expected) do
+          {
+
+            'alligators' => [
+              {'name' => 'Mary'},
+              {'name' => 'Joe'}
+            ]
+
+          }
+        end
+
+        let(:matching_rules) do
+          {
+            "$.body.alligators" => { 'min' => 2 },
+            "$.body.alligators[*].*" => { 'match' => 'type'}
+          }
+        end
+
+        it "warns that the other items will be ignored" do
+          expect(Pact.configuration.error_stream).to receive(:puts).with(/WARN: Only the first item/)
+          subject
+        end
+      end
+
 
       describe "using bracket notation for a Hash" do
         let(:expected) do
