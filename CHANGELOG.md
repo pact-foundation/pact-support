@@ -1,3 +1,12 @@
+<a name="v1.7.2"></a>
+### v1.7.2 (2018-08-09)
+
+
+#### Bug Fixes
+
+* correctly handle Pact.like and Pact.each_like at top level of body	 ([f37c283](/../../commit/f37c283))
+
+
 <a name="v1.7.1"></a>
 ### v1.7.1 (2018-08-09)
 
