@@ -5,13 +5,14 @@ module Pact
   class Interaction
     include ActiveSupportSupport
 
-    attr_accessor :description, :request, :response, :provider_state
+    attr_accessor :description, :request, :response, :provider_state, :provider_states
 
     def initialize attributes = {}
       @description = attributes[:description]
       @request = attributes[:request]
       @response = attributes[:response]
       @provider_state = attributes[:provider_state] || attributes[:providerState]
+      @provider_states = attributes[:provider_states]
     end
 
     def self.from_hash hash, options = {}
@@ -19,12 +20,17 @@ module Pact
     end
 
     def to_hash
-      {
-        description: description,
-        provider_state: provider_state,
-        request: request.to_hash,
-        response: response.to_hash
-      }
+      h = { description: description }
+
+      if provider_states
+        h[:provider_states] = provider_states.collect(&:to_hash)
+      else
+        h[:provider_state] = provider_state
+      end
+
+      h[:request] = request.to_hash
+      h[:response] = response.to_hash
+      h
     end
 
     def http?

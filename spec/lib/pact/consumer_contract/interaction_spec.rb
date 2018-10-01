@@ -38,12 +38,14 @@ module Pact
 
       describe "matches_criteria?" do
         subject { InteractionFactory.create(:description => 'a request for food') }
+
         context "by description" do
           context "when the interaction matches" do
             it "returns true" do
               expect(subject.matches_criteria?(:description => /request.*food/)).to be true
             end
           end
+
           context "when the interaction does not match" do
             it "returns false" do
               expect(subject.matches_criteria?(:description => /blah/)).to be false
@@ -52,10 +54,7 @@ module Pact
         end
       end
 
-
-
       describe "request_modifies_resource_without_checking_response_body?" do
-
         let(:interaction) { Interaction.new(request: request, response: response)}
 
         subject { interaction.request_modifies_resource_without_checking_response_body?}

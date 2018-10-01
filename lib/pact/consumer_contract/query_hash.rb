@@ -47,6 +47,10 @@ module Pact
       @hash && @hash.empty?
     end
 
+    def to_hash
+      @hash
+    end
+
     private
 
     def convert_to_hash_of_arrays(query)

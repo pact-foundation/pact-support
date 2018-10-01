@@ -1,5 +1,6 @@
 require 'pact/consumer_contract/request'
 require 'pact/consumer_contract/response'
+require 'pact/consumer_contract/provider_state'
 require 'pact/symbolize_keys'
 require 'pact/matching_rules'
 require 'pact/errors'
@@ -13,7 +14,12 @@ module Pact
     def self.call hash, options
       request = parse_request(hash['request'], options)
       response = parse_response(hash['response'], options)
-      Interaction.new(symbolize_keys(hash).merge(request: request, response: response))
+      provider_states = parse_provider_states(hash['providerStates'])
+      provider_state = provider_states.any? ? provider_states.first.name : nil
+      if provider_states && provider_states.size > 1
+        Pact.configuration.error_stream.puts("WARN: Currently only 1 provider state is supported. Ignoring ")
+      end
+      Interaction.new(symbolize_keys(hash).merge(request: request, response: response, provider_states: provider_states, provider_state: provider_state))
     end
 
     def self.parse_request request_hash, options
@@ -56,6 +62,12 @@ module Pact
     def self.parse_response_with_string_body response_hash, response_matching_rules, options
       string_with_matching_rules = StringWithMatchingRules.new(response_hash['body'], options[:pact_specification_version], response_matching_rules)
       Pact::Response.from_hash(response_hash.merge('body' => string_with_matching_rules))
+    end
+
+    def self.parse_provider_states provider_states
+      (provider_states || []).collect do | provider_state_hash |
+        Pact::ProviderState.new(provider_state_hash['name'], provider_state_hash['params'])
+      end
     end
   end
 end

@@ -3,7 +3,6 @@ require 'pact/consumer_contract/query_string'
 
 module Pact
   class Query
-
     def self.create query
       if query.is_a? Hash
         Pact::QueryHash.new(query)
@@ -11,6 +10,5 @@ module Pact
         Pact::QueryString.new(query)
       end
     end
-
   end
 end

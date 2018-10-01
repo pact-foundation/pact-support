@@ -40,6 +40,11 @@ class InteractionFactory
             'body' => {a: 'response body'}
         }
     }
+
+    if hash.key?(:provider_states) || hash.key?('provider_states')
+      defaults.delete('provider_state')
+    end
+
     Pact::Interaction.from_hash(stringify_keys(deep_merge(defaults, stringify_keys(hash))))
   end
 end
