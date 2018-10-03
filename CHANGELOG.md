@@ -1,3 +1,13 @@
+<a name="v1.8.0"></a>
+### v1.8.0 (2018-10-01)
+
+
+#### Features
+
+* **v3**
+  * parse array of provider states with params	 ([4471df3](/../../commit/4471df3))
+
+
 <a name="v1.7.2"></a>
 ### v1.7.2 (2018-08-09)
 
