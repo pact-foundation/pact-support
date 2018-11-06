@@ -111,6 +111,7 @@ module Pact
             ((rules_array.length - 1)..0).each do | index |
               rules_array.delete_at(index) if rules_array[index].empty?
             end
+            rules_hash.tap{ |hs| hs.delete("combine") }
           end
 
           if @matching_rules.any?

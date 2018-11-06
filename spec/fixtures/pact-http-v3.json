@@ -17,7 +17,8 @@
         "matchingRules": {
           "body": {
             "$.foo": {
-              "matchers": [{ "match": "type" }]
+              "matchers": [{ "match": "type" }],
+              "combine": "AND"
             }
           }
         },
