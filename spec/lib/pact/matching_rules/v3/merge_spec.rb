@@ -456,6 +456,29 @@ module Pact
           end
         end
 
+        describe "with a combine key" do
+          let(:expected) do
+            {
+              "foo" => "bar"
+            }
+          end
+
+          let(:matching_rules) do
+            {
+              "$.foo" => {
+                "matchers" => [{ "match" => "type" }],
+                "combine" => "AND"
+              }
+            }
+
+          end
+
+          it "logs the ignored rule" do
+            allow(Pact.configuration.error_stream).to receive(:puts)
+            expect(Pact.configuration.error_stream).to receive(:puts).with("WARN: Ignoring unsupported combine AND for path $['foo']")
+            subject
+          end
+        end
       end
     end
   end

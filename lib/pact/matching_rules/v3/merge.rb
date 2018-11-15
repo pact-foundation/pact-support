@@ -116,7 +116,7 @@ module Pact
           if @matching_rules.any?
             @matching_rules.each do | path, rules_hash |
               rules_hash.each do | key, value |
-                $stderr.puts "WARN: Ignoring unsupported #{key} #{value} for path #{path}" if value.any?
+                $stderr.puts "WARN: Ignoring unsupported #{key} #{value} for path #{path}" if value_present?(value)
               end
             end
           end
@@ -128,6 +128,10 @@ module Pact
 
         def log_used_rule path, key, value
           @used_rules << [path, key, value]
+        end
+
+        def value_present? value
+          value.respond_to?(:any?) ? value.any? : true
         end
       end
     end
