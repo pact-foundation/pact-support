@@ -1,3 +1,12 @@
+<a name="v1.8.1"></a>
+### v1.8.1 (2018-11-15)
+
+
+#### Bug Fixes
+
+* correctly handle ignored 'combine' rule	 ([cd52108](/../../commit/cd52108))
+
+
 <a name="v1.8.0"></a>
 ### v1.8.0 (2018-10-01)
 
