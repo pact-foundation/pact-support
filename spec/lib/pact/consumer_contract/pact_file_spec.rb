@@ -75,6 +75,21 @@ module Pact
         end
       end
 
+      context 'with a token' do
+        let(:token) { 'askfjlksjf'}
+        let(:options) { { token: token } }
+
+        let!(:request) do
+          stub_request(:get, uri_without_userinfo).with(headers: {'Authorization' => 'Bearer askfjlksjf'}).to_return(body: pact_content)
+        end
+
+        it 'sets the Bearer Authorization header' do
+          PactFile.render_pact(uri_without_userinfo, options)
+          expect(request).to have_been_made
+        end
+
+      end
+
       describe 'retry feature' do
         before { allow(PactFile).to receive(:delay_retry).with(kind_of(Integer)) }
 

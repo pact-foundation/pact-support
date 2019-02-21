@@ -78,6 +78,7 @@ module Pact
     def get_remote(uri, options)
       request = Net::HTTP::Get.new(uri)
       request.basic_auth(options[:username], options[:password]) if options[:username]
+      request['Authorization'] = "Bearer #{options[:token]}" if options[:token]
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
         http.open_timeout = options[:open_timeout] || OPEN_TIMEOUT
         http.read_timeout = options[:read_timeout] || READ_TIMEOUT
