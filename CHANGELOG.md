@@ -1,3 +1,12 @@
+<a name="v1.9.0"></a>
+### v1.9.0 (2019-02-22)
+
+
+#### Features
+
+* allow bearer token to be used to retrieve a pact	 ([ab997c5](/../../commit/ab997c5))
+
+
 <a name="v1.8.1"></a>
 ### v1.8.1 (2018-11-15)
 
