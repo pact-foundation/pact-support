@@ -59,7 +59,7 @@ module Pact
     end
 
     def self.maintain_backwards_compatiblity_with_producer_keys string
-      string.gsub('"producer":', '"provider":').gsub('"producer_state":', '"provider_state":')
+      string.gsub('"producer":', '"provider":').gsub('"producer_state":', '"provider_state":') if string
     end
 
     def find_interaction criteria
