@@ -1,3 +1,12 @@
+<a name="v1.10.0"></a>
+### v1.10.0 (2019-03-15)
+
+
+#### Bug Fixes
+
+* don't try and fix producer keys for a nil string	 ([94245c7](/../../commit/94245c7))
+
+
 <a name="v1.9.0"></a>
 ### v1.9.0 (2019-02-22)
 
