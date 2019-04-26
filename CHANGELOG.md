@@ -1,3 +1,12 @@
+<a name="v1.10.1"></a>
+### v1.10.1 (2019-04-26)
+
+
+#### Bug Fixes
+
+* gracefully handle read only file system (eg RunKit)	 ([eeee528](/../../commit/eeee528))
+
+
 <a name="v1.10.0"></a>
 ### v1.10.0 (2019-03-15)
 
