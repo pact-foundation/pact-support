@@ -33,6 +33,8 @@ module Pact
     def save_pactfile_to_tmp pact, name
       ::FileUtils.mkdir_p Pact.configuration.tmp_dir
       ::File.open(Pact.configuration.tmp_dir + "/#{name}", "w") { |file|  file << pact}
+    rescue Errno::EROFS => e
+      # do nothing, probably on RunKit
     end
 
     def render_pact(uri_string, options)

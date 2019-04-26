@@ -169,6 +169,11 @@ module Pact
       logger = ::Logger.new(log_path)
       logger.level = ::Logger::DEBUG
       logger
+    rescue Errno::EROFS
+      # So we can run on RunKit
+      logger = ::Logger.new($stdout)
+      logger.level = ::Logger::DEBUG
+      logger
     end
   end
 
