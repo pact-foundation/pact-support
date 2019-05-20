@@ -1,3 +1,12 @@
+<a name="v1.10.2"></a>
+### v1.10.2 (2019-05-20)
+
+
+#### Bug Fixes
+
+* allow proxy env var to be used when fetching pacts	 ([ebce481](/../../commit/ebce481))
+
+
 <a name="v1.10.1"></a>
 ### v1.10.1 (2019-04-26)
 
