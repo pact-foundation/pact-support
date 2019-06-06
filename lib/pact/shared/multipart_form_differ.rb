@@ -9,6 +9,8 @@ module Pact
       actual_boundary = actual.split.first
       actual_with_hardcoded_boundary = actual.gsub(actual_boundary, expected_boundary)
       TextDiffer.call(expected, actual_with_hardcoded_boundary, options)
+    rescue StandardError
+      TextDiffer.call(expected, actual, options)
     end
   end
 end
