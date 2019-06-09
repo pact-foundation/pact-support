@@ -4,6 +4,7 @@ require 'pact/consumer_contract/provider_state'
 require 'pact/symbolize_keys'
 require 'pact/matching_rules'
 require 'pact/errors'
+require 'rack/utils'
 
 module Pact
   class InteractionV2Parser
@@ -11,6 +12,11 @@ module Pact
     include SymbolizeKeys
 
     def self.call hash, options
+      if hash['request'].has_key? 'query'
+      params = Rack::Utils.parse_nested_query(hash['request']['query'])
+      query = URI.encode_www_form(params)
+      hash['request']['path'] = hash['request']['path'] << '?' << query
+      end
       request = parse_request(hash['request'], options)
       response = parse_response(hash['response'], options)
       provider_states = parse_provider_states(hash['providerState'] || hash['provider_state'])
