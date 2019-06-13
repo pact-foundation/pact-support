@@ -14,8 +14,7 @@ module Pact
     def self.call hash, options
       if hash['request'].has_key? 'query'
       params = Rack::Utils.parse_nested_query(hash['request']['query'])
-      query = URI.encode_www_form(params)
-      hash['request']['path'] = hash['request']['path'] << '?' << query
+      hash['request']['query'] = params
       end
       request = parse_request(hash['request'], options)
       response = parse_response(hash['response'], options)
