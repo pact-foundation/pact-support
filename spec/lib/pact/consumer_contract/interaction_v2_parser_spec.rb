@@ -61,7 +61,7 @@ module Pact
         {
           "description" => "description",
           "request" => { "method" => "GET", "path" => "/" ,
-            "query" => 'param1=thing1&param2=thing2'},
+          "query" => 'param1=thing1&param2=thing2'},
           "response" => { "status" => 200 },
           "providerState" => "foo"
         }
@@ -79,6 +79,32 @@ module Pact
         it "encodes them as a hash" do
           expect(subject.request.query).to include :param1 => ["thing1"]
           expect(subject.request.query).to include :param2 => ["thing2"]
+        end
+      end
+    end
+    describe ".call with 2 of the same query params but with diff values" do
+      let(:interaction_hash) do
+        {
+          "description" => "description",
+          "request" => { "method" => "GET", "path" => "/" ,
+          "query" => 'param1=thing1&param1=thing2'},
+          "response" => { "status" => 200 },
+          "providerState" => "foo"
+        }
+      end
+
+      let(:options) do
+        {
+          pact_specification_version: Pact::SpecificationVersion.new("3.0")
+        }
+      end
+
+      subject { InteractionV2Parser.call(interaction_hash, options) }
+
+      describe "query params" do
+        it "encodes them as a hash" do
+          expect(subject.request.query).to include :param1 => ["thing1"]
+          expect(subject.request.query).to include :param1 => ["thing2"]
         end
       end
     end
