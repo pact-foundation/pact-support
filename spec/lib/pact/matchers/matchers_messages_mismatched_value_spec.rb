@@ -32,13 +32,14 @@ module Pact::Matchers
         [INT, 2, "Expected 1 but got 2 at <path>"],
         [INT, nil, "Expected 1 but got nil at <path>"],
         [INT, STRING, "Expected 1 but got \"foo\" at <path>"],
-        [INT, FLOAT, "Expected 1 but got \"foo\" at <path>", {pending: true}],
+        [INT, FLOAT, nil],
         [INT, HASH, "Expected 1 but got a Hash at <path>"],
         [INT, ARRAY, "Expected 1 but got an Array at <path>"],
         [Pact.like(INT), 2, nil],
         [Pact.like(INT), nil, "Expected #{a_numeric} (like 1) but got nil at <path>"],
         [Pact.like(INT), STRING, "Expected #{a_numeric} (like 1) but got a String (\"foo\") at <path>"],
-        [Pact.like(INT), FLOAT, "Expected #{a_numeric} (like 1) but got a Float (1.0) at <path>"],
+        [Pact.like(INT), FLOAT, "Expected #{a_numeric} (like 1) but got a Float (1.0) at <path>", { treat_all_number_classes_as_equivalent: false }],
+        [Pact.like(INT), FLOAT, nil, { treat_all_number_classes_as_equivalent: true }],
         [Pact.like(INT), HASH, "Expected #{a_numeric} (like 1) but got a Hash at <path>"],
         [Pact.like(INT), ARRAY, "Expected #{a_numeric} (like 1) but got an Array at <path>"],
         [HASH, HASH, nil],
@@ -56,9 +57,9 @@ module Pact::Matchers
         [ARRAY, HASH, "Expected an Array but got a Hash at <path>"]
       ]
 
-      COMBINATIONS.each do | expected, actual, expected_message, options |
-        context "when expected is #{expected.inspect} and actual is #{actual.inspect}", options || {} do
-          let(:difference) { diff({thing: expected}, {thing: actual}) }
+      COMBINATIONS.each do | expected, actual, expected_message, diff_options |
+        context "when expected is #{expected.inspect} and actual is #{actual.inspect}" do
+          let(:difference) { diff({thing: expected}, {thing: actual}, diff_options || {}) }
           let(:message) { difference[:thing] ? difference[:thing].message : nil }
 
           it "returns the message '#{expected_message}'" do

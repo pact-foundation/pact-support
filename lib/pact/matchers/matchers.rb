@@ -20,22 +20,29 @@ module Pact
   # maintain backwards compatibility
 
   module Matchers
-
     NO_DIFF_AT_INDEX = NoDiffAtIndex.new
-    DEFAULT_OPTIONS = {allow_unexpected_keys: true, type: false}.freeze
     NO_DIFF = {}.freeze
+    NUMERIC_TYPES = %w[Integer Float Fixnum Bignum BigDecimal].freeze
+    DEFAULT_OPTIONS = {
+      allow_unexpected_keys: true,
+      type: false
+    }.freeze
 
     extend self
 
     def diff expected, actual, opts = {}
-      calculate_diff(expected, actual, DEFAULT_OPTIONS.merge(opts))
+      calculate_diff(expected, actual, DEFAULT_OPTIONS.merge(configurable_options).merge(opts))
     end
 
     def type_diff expected, actual, opts = {}
-      calculate_diff expected, actual, DEFAULT_OPTIONS.merge(opts).merge(type: true)
+      calculate_diff expected, actual, DEFAULT_OPTIONS.merge(configurable_options).merge(opts).merge(type: true)
     end
 
     private
+
+    def configurable_options
+      { treat_all_number_classes_as_equivalent: Pact.configuration.treat_all_number_classes_as_equivalent }
+    end
 
     def calculate_diff expected, actual, opts = {}
       options = DEFAULT_OPTIONS.merge(opts)
@@ -156,22 +163,22 @@ module Pact
 
     def object_diff expected, actual, options
       if options[:type]
-        type_difference expected, actual
+        type_difference expected, actual, options
       else
         exact_value_diff expected, actual, options
       end
     end
 
     def exact_value_diff expected, actual, options
-      if expected != actual
-        Difference.new expected, actual, value_difference_message(expected, actual, options)
-      else
+      if expected == actual
         NO_DIFF
+      else
+        Difference.new expected, actual, value_difference_message(expected, actual, options)
       end
     end
 
-    def type_difference expected, actual
-      if types_match? expected, actual
+    def type_difference expected, actual, options
+      if types_match? expected, actual, options
         NO_DIFF
       else
         TypeDifference.new type_diff_expected_display(expected), type_diff_actual_display(actual), type_difference_message(expected, actual)
@@ -186,8 +193,16 @@ module Pact
       actual.is_a?(KeyNotFound) ?  actual : ActualType.new(actual)
     end
 
-    def types_match? expected, actual
-      expected.class == actual.class || (is_boolean(expected) && is_boolean(actual))
+    # Make options optional to support existing monkey patches
+    def types_match? expected, actual, options = {}
+      expected.class == actual.class ||
+        (is_boolean(expected) && is_boolean(actual)) ||
+        (options.fetch(:treat_all_number_classes_as_equivalent, false) && is_number?(expected) && is_number?(actual))
+    end
+
+    def is_number? object
+      # deal with Fixnum and Integer without warnings by using string class names
+      NUMERIC_TYPES.include?(object.class.to_s)
     end
 
     def is_boolean object

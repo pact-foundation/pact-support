@@ -30,19 +30,60 @@ module Pact::Matchers
       end
 
       context "when the headers do not match" do
-
         let(:actual) { Pact::Headers.new('Content-Length' => '1')}
         let(:difference) { {"Content-Type" => Difference.new('application/hippo', Pact::KeyNotFound.new)} }
         it "returns a diff" do
           expect(diff(expected, actual)).to eq difference
         end
+      end
+    end
 
+
+    context 'when treat_all_number_classes_as_equivalent is true' do
+      let(:options) { { treat_all_number_classes_as_equivalent: true } }
+
+      describe 'matching numbers with something like' do
+        let(:expected) { Pact::SomethingLike.new( { a: 1.1 } ) }
+        let(:actual)   { { a: 2 } }
+
+        it 'returns an empty diff' do
+          expect(diff(expected, actual, options)).to eq({})
+        end
       end
 
+      describe 'with exact matching' do
+        let(:expected) { { a: 1 } }
+        let(:actual) { { a: 1.0 } }
+
+        it 'returns an empty diff' do
+          expect(diff(expected, actual, options)).to eq({})
+        end
+      end
+    end
+
+    context 'when treat_all_number_classes_as_equivalent is false' do
+      let(:options) { { treat_all_number_classes_as_equivalent: false } }
+
+      describe 'matching numbers with something like' do
+        let(:expected) { Pact::SomethingLike.new( { a: 1.1 } ) }
+        let(:actual)   { { a: 2 } }
+
+        it 'returns a diff' do
+          expect(diff(expected, actual, options)).to_not eq({})
+        end
+      end
+
+      describe 'with exact matching' do
+        let(:expected) { { a: 1 } }
+        let(:actual) { { a: 1.0 } }
+
+        it 'returns an empty diff because in Ruby 1.0 == 1' do
+          expect(diff(expected, actual)).to eq({})
+        end
+      end
     end
 
     describe 'matching with something like' do
-
       context 'when the actual is something like the expected' do
         let(:expected) { Pact::SomethingLike.new( { a: 1 } ) }
         let(:actual)   { { a: 2 } }
@@ -50,7 +91,6 @@ module Pact::Matchers
         it 'returns an empty diff' do
           expect(diff(expected, actual)).to eq({})
         end
-
       end
 
       context 'when the there is a mismatch of a parent, and a child contains a SomethingLike' do

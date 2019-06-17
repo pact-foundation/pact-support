@@ -51,6 +51,7 @@ module Pact
     attr_accessor :error_stream
     attr_accessor :output_stream
     attr_accessor :pactfile_write_order
+    attr_accessor :treat_all_number_classes_as_equivalent # when using type based matching
 
     def self.default_configuration
       c = Configuration.new
@@ -61,6 +62,7 @@ module Pact
       c.output_stream = $stdout
       c.error_stream = $stderr
       c.pactfile_write_order = :chronological
+      c.treat_all_number_classes_as_equivalent = true
 
       c
     end
