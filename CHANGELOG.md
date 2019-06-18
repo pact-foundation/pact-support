@@ -1,3 +1,12 @@
+<a name="v1.11.0"></a>
+### v1.11.0 (2019-06-18)
+
+
+#### Features
+
+* allow Integers and Floats to be considered equivalent when using type based matching.	 ([d8a70a1](/../../commit/d8a70a1))
+
+
 <a name="v1.10.3"></a>
 ### v1.10.3 (2019-06-07)
 
