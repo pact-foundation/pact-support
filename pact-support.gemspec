@@ -24,10 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "randexp", "~> 0.1.7"
   spec.add_runtime_dependency "rspec", ">= 2.14"
-  spec.add_runtime_dependency "json"
   spec.add_runtime_dependency "term-ansicolor", "~> 1.0"
-  spec.add_runtime_dependency "find_a_port", "~> 1.0.1"
-  spec.add_runtime_dependency "thor"
   spec.add_runtime_dependency "awesome_print", "~> 1.1"
 
   spec.add_development_dependency "rake", "~> 10.0.3"
