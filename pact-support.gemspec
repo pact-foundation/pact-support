@@ -1,39 +1,36 @@
-# -*- encoding: utf-8 -*-
-lib = File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'pact/support/version'
+require "pact/support/version"
 
-Gem::Specification.new do |gem|
-  gem.name          = "pact-support"
-  gem.version       = Pact::Support::VERSION
-  gem.authors       = ["James Fraser", "Sergei Matheson", "Brent Snook", "Ronald Holshausen", "Beth Skurrie"]
-  gem.email         = ["james.fraser@alumni.swinburne.edu", "sergei.matheson@gmail.com", "brent@fuglylogic.com", "uglyog@gmail.com", "bskurrie@dius.com.au"]
-  gem.summary       = %q{Shared code for Pact gems}
-  gem.homepage      = "https://github.com/bethesque/pact-support"
+Gem::Specification.new do |spec|
+  spec.name          = "pact-support"
+  spec.version       = Pact::Support::VERSION
+  spec.authors       = ["James Fraser", "Sergei Matheson", "Brent Snook", "Ronald Holshausen", "Beth Skurrie"]
+  spec.email         = ["james.fraser@alumni.swinburne.edu", "sergei.matheson@gmail.com", "brent@fuglylogic.com", "uglyog@gmail.com", "bskurrie@dius.com.au"]
 
-  gem.required_ruby_version = '>= 2.0'
+  spec.summary       = "Shared code for Pact gems"
+  spec.homepage      = "https://github.com/pact-foundation/pact-support"
+  spec.license       = "MIT"
 
-  gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.require_paths = ["lib"]
-  gem.license       = 'MIT'
+  spec.required_ruby_version = ">= 2.0"
 
-  gem.add_runtime_dependency 'randexp', '~> 0.1.7'
-  gem.add_runtime_dependency 'rspec', '>=2.14'
-  gem.add_runtime_dependency 'json'
-  gem.add_runtime_dependency 'term-ansicolor', '~> 1.0'
-  gem.add_runtime_dependency 'find_a_port', '~> 1.0.1'
-  gem.add_runtime_dependency 'thor'
-  gem.add_runtime_dependency 'awesome_print', '~> 1.1'
+  spec.files         = `git ls-files lib LICENSE.txt README.md`.split($RS)
+  spec.require_paths = ["lib"]
 
-  gem.add_development_dependency 'rake', '~> 10.0.3'
-  gem.add_development_dependency 'webmock', '~> 3.3'
-  gem.add_development_dependency 'pry'
-  gem.add_development_dependency 'fakefs', '~> 0.11.2'
-  gem.add_development_dependency 'hashie', '~> 2.0'
-  gem.add_development_dependency 'activesupport'
-  gem.add_development_dependency 'appraisal'
-  gem.add_development_dependency 'conventional-changelog', '~>1.3'
-  gem.add_development_dependency 'bump', '~> 0.5'
+  spec.add_runtime_dependency "randexp", "~> 0.1.7"
+  spec.add_runtime_dependency "rspec", ">= 2.14"
+  spec.add_runtime_dependency "term-ansicolor", "~> 1.0"
+  spec.add_runtime_dependency "awesome_print", "~> 1.1"
+
+  spec.add_development_dependency "rake", "~> 10.0.3"
+  spec.add_development_dependency "webmock", "~> 3.3"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "fakefs", "~> 0.11.2"
+  spec.add_development_dependency "hashie", "~> 2.0"
+  spec.add_development_dependency "activesupport"
+  spec.add_development_dependency "appraisal"
+  spec.add_development_dependency "conventional-changelog", "~> 1.3"
+  spec.add_development_dependency "bump", "~> 0.5"
 end
