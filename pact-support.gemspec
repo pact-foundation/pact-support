@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.0"
 
-  spec.files         = `git ls-files lib LICENSE.txt README.md`.split($RS)
+  spec.files         = `git ls-files lib CHANGELOG.md LICENSE.txt README.md`.split($RS)
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "randexp", "~> 0.1.7"
