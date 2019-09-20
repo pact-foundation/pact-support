@@ -86,7 +86,10 @@ module Pact
       interactions.reject do |interaction|
         # For the sake of backwards compatibility, only reject interactions where 
         # write_to_pact is explicitly set to false
-        interaction&.metadata&.[](:write_to_pact) == false
+        interaction.respond_to?(:metadata) && 
+          !interaction.metadata.nil? && 
+          interaction.metadata.key?(:write_to_pact) &&
+          interaction.metadata[:write_to_pact] == false
       end
     end
 

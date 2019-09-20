@@ -147,10 +147,10 @@ module Pact
       let(:interaction4) { double('Pact::Interaction') }
       
       before do
-        expect(interaction1).to receive(:metadata).and_return(write_to_pact: false)
-        expect(interaction2).to receive(:metadata).and_return(write_to_pact: true)
-        expect(interaction3).to receive(:metadata).and_return(some_other_key: :some_value)
-        expect(interaction4).to receive(:metadata).and_return(nil)
+        allow(interaction1).to receive(:metadata).and_return(write_to_pact: false)
+        allow(interaction2).to receive(:metadata).and_return(write_to_pact: true)
+        allow(interaction3).to receive(:metadata).and_return(some_other_key: :some_value)
+        allow(interaction4).to receive(:metadata).and_return(nil)
       end
 
       subject { ConsumerContract.new(:interactions => [interaction1, interaction2, interaction3, interaction4], :consumer => consumer, :provider => provider) }
