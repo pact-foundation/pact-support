@@ -19,7 +19,12 @@ module Pact
       if provider_states && provider_states.size > 1
         Pact.configuration.error_stream.puts("WARN: Currently only 1 provider state is supported. Ignoring ")
       end
-      Interaction.new(symbolize_keys(hash).merge(request: request, response: response, provider_states: provider_states, provider_state: provider_state))
+      metadata = parse_metadata(hash['metadata'])
+      Interaction.new(symbolize_keys(hash).merge(request: request, 
+                                                 response: response, 
+                                                 provider_states: provider_states, 
+                                                 provider_state: provider_state,
+                                                 metadata: metadata))
     end
 
     def self.parse_request request_hash, options
@@ -68,6 +73,10 @@ module Pact
       (provider_states || []).collect do | provider_state_hash |
         Pact::ProviderState.new(provider_state_hash['name'], provider_state_hash['params'])
       end
+    end
+
+    def self.parse_metadata metadata_hash
+      symbolize_keys(metadata_hash)
     end
   end
 end

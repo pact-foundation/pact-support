@@ -138,5 +138,27 @@ module Pact
       end
     end
 
+    describe "#writable_interactions" do
+      let(:consumer) { double('Pact::ServiceConsumer', :name => 'Consumer')}
+      let(:provider) { double('Pact::ServiceProvider', :name => 'Provider')}
+      let(:interaction1) { double('Pact::Interaction') }
+      let(:interaction2) { double('Pact::Interaction') }
+      let(:interaction3) { double('Pact::Interaction') }
+      let(:interaction4) { double('Pact::Interaction') }
+      
+      before do
+        allow(interaction1).to receive(:metadata).and_return(write_to_pact: false)
+        allow(interaction2).to receive(:metadata).and_return(write_to_pact: true)
+        allow(interaction3).to receive(:metadata).and_return(some_other_key: :some_value)
+        allow(interaction4).to receive(:metadata).and_return(nil)
+      end
+
+      subject { ConsumerContract.new(:interactions => [interaction1, interaction2, interaction3, interaction4], :consumer => consumer, :provider => provider) }
+      context "when one interaction is not writable" do
+        it "returns only the writable interactions" do
+          expect(subject.writable_interactions.size).to eql 3
+        end
+      end
+    end
   end
 end

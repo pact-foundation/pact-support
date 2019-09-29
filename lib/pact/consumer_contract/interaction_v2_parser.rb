@@ -14,7 +14,11 @@ module Pact
       request = parse_request(hash['request'], options)
       response = parse_response(hash['response'], options)
       provider_states = parse_provider_states(hash['providerState'] || hash['provider_state'])
-      Interaction.new(symbolize_keys(hash).merge(request: request, response: response, provider_states: provider_states))
+      metadata = parse_metadata(hash['metadata'])
+      Interaction.new(symbolize_keys(hash).merge(request: request, 
+                                                 response: response, 
+                                                 provider_states: provider_states,
+                                                 metadata: metadata))
     end
 
     def self.parse_request request_hash, options
@@ -29,6 +33,10 @@ module Pact
 
     def self.parse_provider_states provider_state_name
       provider_state_name ? [Pact::ProviderState.new(provider_state_name)] : []
+    end
+
+    def self.parse_metadata metadata_hash
+      symbolize_keys(metadata_hash)
     end
   end
 end
