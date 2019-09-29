@@ -1,3 +1,19 @@
+<a name="v1.12.0"></a>
+### v1.12.0 (2019-09-26)
+
+
+#### Features
+
+* parse interaction _id from Pact Broker	 ([8d66a84](/../../commit/8d66a84))
+* support marking an interaction as writable/not writable (#75)	 ([e1fc347](/../../commit/e1fc347))
+* modernise gemspec	 ([c941d02](/../../commit/c941d02))
+
+
+#### Bug Fixes
+
+* add CHANGELOG to gem distribution	 ([35c9c48](/../../commit/35c9c48))
+
+
 <a name="v1.11.0"></a>
 ### v1.11.0 (2019-06-18)
 
