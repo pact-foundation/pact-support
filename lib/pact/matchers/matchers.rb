@@ -1,3 +1,4 @@
+require 'pact/configuration'
 require 'pact/term'
 require 'pact/something_like'
 require 'pact/array_like'
