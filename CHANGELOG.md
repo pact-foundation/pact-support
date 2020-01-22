@@ -1,3 +1,12 @@
+<a name="v1.12.1"></a>
+### v1.12.1 (2020-01-22)
+
+
+#### Bug Fixes
+
+* add missing require for pact/configuration	 ([bc4bbb5](/../../commit/bc4bbb5))
+
+
 <a name="v1.12.0"></a>
 ### v1.12.0 (2019-09-26)
 
