@@ -11,6 +11,10 @@ module Pact
         it "correctly parses the pact" do
           expect(subject.interactions.first.response.headers['Content-Type']).to be_a(Pact::Term)
         end
+
+        it "sets the index of each interaction" do
+          expect(subject.interactions.first.index).to eq 0
+        end
       end
 
       context "with a v3 pact" do
@@ -18,6 +22,10 @@ module Pact
 
         it "correctly parses the pact" do
           expect(subject.interactions.first.response.body['foo']).to be_a(Pact::SomethingLike)
+        end
+
+        it "sets the index of each interaction" do
+          expect(subject.interactions.first.index).to eq 0
         end
       end
     end

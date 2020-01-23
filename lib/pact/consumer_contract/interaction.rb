@@ -5,7 +5,7 @@ module Pact
   class Interaction
     include ActiveSupportSupport
 
-    attr_accessor :description, :request, :response, :provider_state, :provider_states, :metadata, :_id
+    attr_accessor :description, :request, :response, :provider_state, :provider_states, :metadata, :_id, :index
 
     def initialize attributes = {}
       @description = attributes[:description]
@@ -15,6 +15,7 @@ module Pact
       @provider_states = attributes[:provider_states]
       @metadata = attributes[:metadata]
       @_id = attributes[:_id]
+      @index = attributes[:index]
     end
 
     def self.from_hash hash, options = {}

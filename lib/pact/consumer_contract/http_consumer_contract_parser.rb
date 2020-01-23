@@ -13,7 +13,7 @@ module Pact
         Pact.configuration.error_stream.puts "WARN: This code only knows how to parse v3 pacts, attempting to parse v#{options[:pact_specification_version]} pact using v3 code."
       end
 
-      interactions = hash[:interactions].collect { |hash| Interaction.from_hash(hash, options) }
+      interactions = hash[:interactions].each_with_index.collect { |hash, index| Interaction.from_hash({ index: index }.merge(hash), options) }
       ConsumerContract.new(
         :consumer => ServiceConsumer.from_hash(hash[:consumer]),
         :provider => ServiceProvider.from_hash(hash[:provider]),
