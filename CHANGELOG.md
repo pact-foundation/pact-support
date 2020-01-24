@@ -1,3 +1,12 @@
+<a name="v1.13.0"></a>
+### v1.13.0 (2020-01-24)
+
+
+#### Features
+
+* give each interaction an index when parsing the contract	 ([74e9568](/../../commit/74e9568))
+
+
 <a name="v1.12.1"></a>
 ### v1.12.1 (2020-01-22)
 
