@@ -81,7 +81,11 @@ module Pact
       request = Net::HTTP::Get.new(uri)
       request.basic_auth(options[:username], options[:password]) if options[:username]
       request['Authorization'] = "Bearer #{options[:token]}" if options[:token]
-      Net::HTTP.start(uri.host, uri.port, :ENV, use_ssl: uri.scheme == 'https') do |http|
+      http = Net::HTTP.new(uri.host, uri.port, :ENV)
+      http.use_ssl = (uri.scheme == 'https')
+      http.ca_file = ENV['SSL_CERT_FILE'] if ENV['SSL_CERT_FILE'] && ENV['SSL_CERT_FILE'] != ''
+      http.ca_path = ENV['SSL_CERT_DIR'] if ENV['SSL_CERT_DIR'] && ENV['SSL_CERT_DIR'] != ''
+      http.start do |http|
         http.open_timeout = options[:open_timeout] || OPEN_TIMEOUT
         http.read_timeout = options[:read_timeout] || READ_TIMEOUT
         http.request(request)
