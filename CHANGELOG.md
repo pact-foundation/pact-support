@@ -1,3 +1,12 @@
+<a name="v1.14.0"></a>
+### v1.14.0 (2020-02-13)
+
+
+#### Features
+
+* use certificates from SSL_CERT_FILE and SSL_CERT_DIR environment variables in HTTP connections	 ([bf1333d](/../../commit/bf1333d))
+
+
 <a name="v1.13.0"></a>
 ### v1.13.0 (2020-01-24)
 
