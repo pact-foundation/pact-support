@@ -490,5 +490,28 @@ describe Pact::MatchingRules::V3::Merge do
           .with("WARN: Ignoring unsupported combine AND for path $['foo']")
       end
     end
+
+    context "when the top level object is a string" do
+      before do
+        allow(Pact.configuration.error_stream).to receive(:puts)
+      end
+
+      let(:expected) do
+        "/some/path"
+      end
+
+      let(:matching_rules) do
+        {
+          "$." => {
+            "matchers" => [{ "match" => "type" }],
+            "combine" => "AND"
+          }
+        }
+      end
+
+      it "returns a SomethingLike" do
+        expect(subject).to eq Pact::SomethingLike.new("/some/path")
+      end
+    end
   end
 end

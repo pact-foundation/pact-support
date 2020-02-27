@@ -145,7 +145,7 @@ module Pact
       let(:interaction2) { double('Pact::Interaction') }
       let(:interaction3) { double('Pact::Interaction') }
       let(:interaction4) { double('Pact::Interaction') }
-      
+
       before do
         allow(interaction1).to receive(:metadata).and_return(write_to_pact: false)
         allow(interaction2).to receive(:metadata).and_return(write_to_pact: true)

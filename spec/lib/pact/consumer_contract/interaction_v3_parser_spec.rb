@@ -43,6 +43,33 @@ module Pact
           expect(subject.provider_state).to eq "foo"
         end
       end
+
+      describe "parsing an interaction with matching rules for the path" do
+        let(:interaction_hash) do
+          JSON.parse('{
+            "request": {
+              "method": "GET",
+              "path": "/path",
+              "matchingRules": {
+                "path": {
+                  "matchers": [
+                    {
+                      "match": "type"
+                    }
+                  ]
+                }
+              }
+            },
+            "response": {
+              "status": 200
+            }
+          }')
+        end
+
+        it "correctly merges the rules and the path" do
+          expect(subject.request.path).to eq Pact::SomethingLike.new("/path")
+        end
+      end
     end
   end
 end

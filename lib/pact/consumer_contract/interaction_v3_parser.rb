@@ -20,9 +20,9 @@ module Pact
         Pact.configuration.error_stream.puts("WARN: Currently only 1 provider state is supported. Ignoring ")
       end
       metadata = parse_metadata(hash['metadata'])
-      Interaction.new(symbolize_keys(hash).merge(request: request, 
-                                                 response: response, 
-                                                 provider_states: provider_states, 
+      Interaction.new(symbolize_keys(hash).merge(request: request,
+                                                 response: response,
+                                                 provider_states: provider_states,
                                                  provider_state: provider_state,
                                                  metadata: metadata))
     end
@@ -47,14 +47,14 @@ module Pact
 
     def self.parse_request_with_non_string_body request_hash, request_matching_rules, options
       request_hash = request_hash.keys.each_with_object({}) do | key, new_hash |
-        new_hash[key] = Pact::MatchingRules.merge(request_hash[key], request_matching_rules[key], options)
+        new_hash[key] = Pact::MatchingRules.merge(request_hash[key], look_up_matching_rules(key, request_matching_rules), options)
       end
       Pact::Request::Expected.from_hash(request_hash)
     end
 
     def self.parse_response_with_non_string_body response_hash, response_matching_rules, options
       response_hash = response_hash.keys.each_with_object({}) do | key, new_hash |
-        new_hash[key] = Pact::MatchingRules.merge(response_hash[key], response_matching_rules[key], options)
+        new_hash[key] = Pact::MatchingRules.merge(response_hash[key], look_up_matching_rules(key, response_matching_rules), options)
       end
       Pact::Response.from_hash(response_hash)
     end
@@ -77,6 +77,16 @@ module Pact
 
     def self.parse_metadata metadata_hash
       symbolize_keys(metadata_hash)
+    end
+
+    def self.look_up_matching_rules(key, matching_rules)
+      # The matching rules for the path operate on the object itself and don't have sub paths
+      # Convert it into the format that Merge expects.
+      if key == 'path'
+        matching_rules[key] ? { '$.' => matching_rules[key] } : nil
+      else
+        matching_rules[key]
+      end
     end
   end
 end
