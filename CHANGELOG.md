@@ -1,3 +1,12 @@
+<a name="v1.14.1"></a>
+### v1.14.1 (2020-02-27)
+
+
+#### Bug Fixes
+
+* correctly parse matching rules for request paths	 ([cc15a72](/../../commit/cc15a72))
+
+
 <a name="v1.14.0"></a>
 ### v1.14.0 (2020-02-13)
 
