@@ -1,3 +1,12 @@
+<a name="v1.14.2"></a>
+### v1.14.2 (2020-03-25)
+
+
+#### Bug Fixes
+
+* don't blow up when there is a term inside an each like	 ([a565a56](/../../commit/a565a56))
+
+
 <a name="v1.14.1"></a>
 ### v1.14.1 (2020-02-27)
 
