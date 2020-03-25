@@ -569,6 +569,24 @@ module Pact::Matchers
           expect(diff(subject, actual)).to eq({})
         end
       end
+
+      context "when there is a term inside an each like and the expected array is empty" do
+        subject do
+          {
+            data: Pact.each_like({ href: Pact.term('https://example.com/path/to/2019document.pdf', /http.*/ ) })
+          }
+        end
+
+        let(:actual) { { data: [] } }
+
+        it 'should not blow up' do
+          expect(diff(subject, actual)).to eq ({
+            data: [
+              Difference.new({ href: 'https://example.com/path/to/2019document.pdf' }, Pact::IndexNotFound.new)
+            ]
+          })
+        end
+      end
     end
   end
 end

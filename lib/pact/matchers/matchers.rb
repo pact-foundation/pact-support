@@ -120,7 +120,11 @@ module Pact
     def array_like_diff array_like, actual, options
       if actual.is_a? Array
         expected_size = [array_like.min, actual.size].max
-        expected_array = expected_size.times.collect{ Pact::Term.unpack_regexps(array_like.contents) }
+        # I know changing this is going to break something, but I don't know what it is, as there's no
+        # test that fails when I make this change. I know the unpack regexps was there for a reason however.
+        # Guess we'll have to change it and see!
+        # expected_array = expected_size.times.collect{ Pact::Term.unpack_regexps(array_like.contents) }
+        expected_array = expected_size.times.collect{ array_like.contents }
         actual_array_diff expected_array, actual, options.merge(:type => true)
       else
         Difference.new array_like.generate, actual, type_difference_message(array_like.generate, actual)
