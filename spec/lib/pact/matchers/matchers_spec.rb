@@ -260,7 +260,6 @@ module Pact::Matchers
     end
 
     describe 'diffing' do
-
       context "when expected is longer than the actual" do
         subject { [1, 2, 3] }
         let(:actual) { [1, 2] }
@@ -289,19 +288,15 @@ module Pact::Matchers
       end
 
       context 'where an expected value is a non-empty string' do
-
         subject { {:a => 'a', :b => 'b'} }
 
         context 'and the actual value is an empty string' do
-
           let(:actual) { {:a => 'a', :b => ''} }
 
           it 'includes this in the diff' do
             expect(diff(subject, actual)).to eq({:b => Difference.new('b', '')})
           end
-
         end
-
       end
 
       context "when the expected value is a hash" do
@@ -331,6 +326,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is an number" do
           let(:actual) { 1 }
           let(:difference) { Difference.new({a: "b"}, 1)  }
@@ -338,6 +334,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is a string" do
           let(:actual) { "Thing" }
           let(:difference) { Difference.new(subject, actual) }
@@ -345,6 +342,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is the same" do
           let (:actual) { {a: 'b'} }
           it "should return an empty hash" do
@@ -362,6 +360,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq difference
           end
         end
+
         context "when the actual value is an hash" do
           let(:actual) { {b: 'c'} }
           let(:difference) { Difference.new(subject, actual) }
@@ -369,6 +368,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is an number" do
           let(:actual) { 1 }
           let(:difference) { Difference.new(subject, actual) }
@@ -376,6 +376,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is a string" do
           let(:actual) { "Thing" }
           let(:difference) { Difference.new(subject, actual) }
@@ -383,6 +384,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is the same" do
           let (:actual) { [1] }
           it "should return an empty hash" do
@@ -393,6 +395,7 @@ module Pact::Matchers
 
       context "when the expected value is a string" do
         subject { "Thing"}
+
         context "when the actual value is an array" do
           let(:actual) { [2] }
           let(:difference) { Difference.new(subject, actual) }
@@ -400,6 +403,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is an hash" do
           let(:actual) { {b: 'c'} }
           let(:difference) { Difference.new(subject, actual) }
@@ -407,6 +411,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is an number" do
           let(:actual) { 1 }
           let(:difference) { Difference.new(subject, actual) }
@@ -414,6 +419,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is a string" do
           let(:actual) { "Another Thing" }
           let(:difference) { Difference.new(subject, actual) }
@@ -421,6 +427,7 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is the same" do
           let (:actual) { "Thing" }
           it "should return an empty hash" do
@@ -438,24 +445,28 @@ module Pact::Matchers
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is an hash" do
           let(:actual) { {b: 'c'} }
           it "should return the diff" do
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is an number" do
           let(:actual) { 2 }
           it "should return the diff" do
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is a string" do
           let(:actual) { "Another Thing" }
           it "should return the diff" do
             expect(diff(subject, actual)).to eq(difference)
           end
         end
+
         context "when the actual value is the same" do
           let (:actual) { 1 }
           it "should return an empty hash" do
@@ -554,8 +565,6 @@ module Pact::Matchers
           expect(diff(subject, actual)).to eq({})
         end
       end
-
     end
-
   end
 end
