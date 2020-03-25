@@ -531,6 +531,7 @@ module Pact::Matchers
 
       context "where an array is expected, but a hash is found" do
         subject { {:a => :b} }
+
         let(:actual) { [4, 5, 6] }
 
         it 'includes this in the diff' do
@@ -540,6 +541,7 @@ module Pact::Matchers
 
       context "where a hash is expected, but array is found" do
         subject { [4,5,6] }
+
         let(:actual) { {:a => :b} }
 
         it 'includes this in the diff' do
@@ -549,6 +551,7 @@ module Pact::Matchers
 
       context "when two different arrays are found" do
         subject { [4,5,6] }
+
         let(:actual) { [4, 6, 7] }
         let(:difference) { [NoDiffAtIndex.new, Difference.new(5, 6), Difference.new(6, 7)] }
 
@@ -559,6 +562,7 @@ module Pact::Matchers
 
       context "when an array that matches the Pact::Term is found" do
         subject { [Pact::Term.new(:matcher => /4/, :generate => '4'),"5","6"] }
+
         let(:actual) { ["4", "5", "6"] }
 
         it 'includes this in the diff' do

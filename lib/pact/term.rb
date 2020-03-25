@@ -80,6 +80,5 @@ module Pact
         destination[key] = unpack_regexps source[key]
       end
     end
-
   end
 end

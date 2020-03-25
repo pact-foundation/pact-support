@@ -82,8 +82,6 @@ module Pact
       it "returns a structure with the Pact::Terms replaced by their regexps" do
         expect(Term.unpack_regexps(body)).to eq expected
       end
-
     end
-
   end
 end
