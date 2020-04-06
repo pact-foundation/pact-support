@@ -1,3 +1,12 @@
+<a name="v1.14.3"></a>
+### v1.14.3 (2020-04-06)
+
+
+#### Bug Fixes
+
+* do not blow up when there are no matchers	 ([ac70846](/../../commit/ac70846))
+
+
 <a name="v1.14.2"></a>
 ### v1.14.2 (2020-03-25)
 
