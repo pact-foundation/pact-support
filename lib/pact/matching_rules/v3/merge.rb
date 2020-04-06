@@ -108,8 +108,10 @@ module Pact
         def log_ignored_rules
           @matching_rules.each do | jsonpath, rules_hash |
             rules_array = rules_hash["matchers"]
-            ((rules_array.length - 1)..0).each do | index |
-              rules_array.delete_at(index) if rules_array[index].empty?
+            if rules_array
+              ((rules_array.length - 1)..0).each do | index |
+                rules_array.delete_at(index) if rules_array[index].empty?
+              end
             end
           end
 

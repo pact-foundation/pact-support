@@ -513,5 +513,23 @@ describe Pact::MatchingRules::V3::Merge do
         expect(subject).to eq Pact::SomethingLike.new("/some/path")
       end
     end
+
+    context "when there are no matchers" do
+      let(:expected) do
+        {
+          "name" => "Mary"
+        }
+      end
+
+      let(:matching_rules) do
+        {
+          "$.name" => {}
+        }
+      end
+
+      it "does not blow up" do
+        subject
+      end
+    end
   end
 end
