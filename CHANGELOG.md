@@ -1,3 +1,12 @@
+<a name="v1.15.0"></a>
+### v1.15.0 (2020-04-30)
+
+
+#### Bug Fixes
+
+* follow first redirect when fetching remote pact artifacts. (#80)	 ([c1df6dd](/../../commit/c1df6dd))
+
+
 <a name="v1.14.3"></a>
 ### v1.14.3 (2020-04-06)
 
