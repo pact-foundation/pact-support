@@ -7,6 +7,7 @@ module Pact
   describe PactFile do
     describe 'render_pact' do
       let(:uri_without_userinfo) { 'http://pactbroker.com'}
+      let(:redirect_uri_without_userinfo) { 'http://alternate-pactbroker.com'}
       let(:pact_content) { 'api contract'}
 
       describe 'from a local file URI' do
@@ -103,6 +104,18 @@ module Pact
           it 'raises client error without retrying' do
             expect(PactFile).not_to receive(:delay_retry)
             expect { render_pact }.to raise_error(PactFile::HttpError, /status=400/)
+          end
+        end
+
+        context 'with redirect' do
+          before do
+            stub_request(:get, uri_without_userinfo).to_return(status: 302, headers: {"location" => redirect_uri_without_userinfo})
+            stub_request(:get, redirect_uri_without_userinfo).to_return(status: 200, body: pact_content)
+          end
+
+          it 'succeeds' do
+            expect(PactFile).not_to receive(:delay_retry)
+            expect(render_pact).to eq(pact_content)
           end
         end
 

@@ -79,12 +79,37 @@ module Pact
 
     def get_remote(uri, options)
       request = Net::HTTP::Get.new(uri)
+      request = prepare_auth(request, options) if options[:username] || options[:token]
+
+      http = prepare_request(uri)
+      response = perform_http_request(http, request, options)
+
+      if response.is_a?(Net::HTTPRedirection)
+        uri = URI(response.header['location'])
+        req = Net::HTTP::Get.new(uri)
+        req = prepare_auth(req, options) if options[:username] || options[:token]
+
+        http = prepare_request(uri)
+        response = perform_http_request(http, req, options)
+      end
+      response
+    end
+
+    def prepare_auth(request, options)
       request.basic_auth(options[:username], options[:password]) if options[:username]
       request['Authorization'] = "Bearer #{options[:token]}" if options[:token]
+      request
+    end
+
+    def prepare_request(uri)
       http = Net::HTTP.new(uri.host, uri.port, :ENV)
       http.use_ssl = (uri.scheme == 'https')
       http.ca_file = ENV['SSL_CERT_FILE'] if ENV['SSL_CERT_FILE'] && ENV['SSL_CERT_FILE'] != ''
       http.ca_path = ENV['SSL_CERT_DIR'] if ENV['SSL_CERT_DIR'] && ENV['SSL_CERT_DIR'] != ''
+      http
+    end
+
+    def perform_http_request(http, request, options)
       http.start do |http|
         http.open_timeout = options[:open_timeout] || OPEN_TIMEOUT
         http.read_timeout = options[:read_timeout] || READ_TIMEOUT
