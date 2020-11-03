@@ -1,3 +1,12 @@
+<a name="v1.15.2"></a>
+### v1.15.2 (2020-11-04)
+
+
+#### Bug Fixes
+
+* parse query string to hash for v2 interactions	 ([faff17c](/../../commit/faff17c))
+
+
 <a name="v1.15.0"></a>
 ### v1.15.0 (2020-04-30)
 
