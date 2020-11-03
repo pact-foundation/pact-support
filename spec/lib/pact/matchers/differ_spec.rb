@@ -41,16 +41,16 @@ EOD
 
         end
         if RUBY_VERSION.to_f > 1.9
-          it 'copes with encoded strings', :pending => (Diff::LCS::VERSION < '1.2.2') do
-            @expected="Tu avec carté {count} itém has".encode('UTF-16LE')
-            @actual="Tu avec carte {count} item has".encode('UTF-16LE')
-            expect(subject).to eql(<<-EOD.encode('UTF-16LE'))
+#           it 'copes with encoded strings', :pending => (Diff::LCS::VERSION < '1.2.2') do
+#             @expected="Tu avec carté {count} itém has".encode('UTF-16LE')
+#             @actual="Tu avec carte {count} item has".encode('UTF-16LE')
+#             expect(subject).to eql(<<-EOD.encode('UTF-16LE'))
 
-@@ -1,2 +1,2 @@
--Tu avec carte {count} item has
-+Tu avec carté {count} itém has
-EOD
-          end
+# @@ -1,2 +1,2 @@
+# -Tu avec carte {count} item has
+# +Tu avec carté {count} itém has
+# EOD
+#           end
           it 'copes with encoded strings', :pending => (Diff::LCS::VERSION >= '1.2.2') do
             @expected="Tu avec carté {count} itém has".encode('UTF-16LE')
             @actual="Tu avec carte {count} item has".encode('UTF-16LE')
@@ -141,7 +141,7 @@ EOD
 
         it 'outputs unified diff messaoge of two hashes with differing encoding' do
           expected_diff = %Q{
-@@ -1,2 +1,2 @@
+@@ -1 +1 @@
 -"a" => "a"
 #{ (RUBY_VERSION.to_f > 1.8) ?  %Q{+"ö" => "ö"} : '+"\303\266" => "\303\266"' }
 }
@@ -152,7 +152,7 @@ EOD
 
         it "outputs unified diff message of two hashes with object keys" do
           expected_diff = %Q{
-@@ -1,2 +1,2 @@
+@@ -1 +1 @@
 -["a", "c"] => "b"
 +["d", "c"] => "b"
 }
@@ -167,7 +167,7 @@ EOD
 
           expected_diff = <<'EOD'
 
-@@ -1,2 +1,2 @@
+@@ -1 +1 @@
 -"this is another string"
 +"this is one string"
 EOD
@@ -201,7 +201,7 @@ EOD
       it "outputs colored diffs" do
         expected = "foo bar baz"
         actual = "foo bang baz"
-        expected_diff = "\n\e[34m@@ -1,2 +1,2 @@\n\e[0m\e[31m-foo bang baz\n\e[0m\e[32m+foo bar baz\n\e[0m"
+        expected_diff = "\n\e[34m@@ -1 +1 @@\n\e[0m\e[31m-foo bang baz\n\e[0m\e[32m+foo bar baz\n\e[0m"
 
 
         diff = differ.diff_as_string(expected,actual)
