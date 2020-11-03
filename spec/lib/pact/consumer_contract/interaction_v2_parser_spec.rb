@@ -49,6 +49,21 @@ module Pact
           expect(subject.provider_state).to eq "foo"
         end
       end
+
+      describe "query" do
+        let(:interaction_hash) do
+          {
+            "description" => "description",
+            "request" => { "method" => "GET", "path" => "/", "query" => "foo=bar1&foo=bar2"},
+            "response" => { "status" => 200 },
+            "providerState" => "foo"
+          }
+        end
+
+        it "parses a string query into a hash" do
+          expect(subject.request.query).to eq Pact::QueryHash.new("foo"=> [ "bar1", "bar2" ])
+        end
+      end
     end
   end
 end

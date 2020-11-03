@@ -1,6 +1,7 @@
 require 'pact/consumer_contract/request'
 require 'pact/consumer_contract/response'
 require 'pact/consumer_contract/provider_state'
+require 'pact/consumer_contract/query'
 require 'pact/symbolize_keys'
 require 'pact/matching_rules'
 require 'pact/errors'
@@ -15,13 +16,17 @@ module Pact
       response = parse_response(hash['response'], options)
       provider_states = parse_provider_states(hash['providerState'] || hash['provider_state'])
       metadata = parse_metadata(hash['metadata'])
-      Interaction.new(symbolize_keys(hash).merge(request: request, 
-                                                 response: response, 
+      Interaction.new(symbolize_keys(hash).merge(request: request,
+                                                 response: response,
                                                  provider_states: provider_states,
                                                  metadata: metadata))
     end
 
     def self.parse_request request_hash, options
+      if request_hash['query'].is_a?(String)
+        request_hash = request_hash.dup
+        request_hash['query'] = Pact::Query.parse_string(request_hash['query'])
+      end
       request_hash = Pact::MatchingRules.merge(request_hash, request_hash['matchingRules'], options)
       Pact::Request::Expected.from_hash(request_hash)
     end
