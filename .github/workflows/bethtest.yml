@@ -3,12 +3,12 @@ name: "Bethtest"
 
 on: [push]
 
-
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - runs: |
+    - name: "thing 1"
+      runs: |
           echo "::set-output name=foo::bar"
 
   notify-gem-released:
@@ -17,4 +17,5 @@ jobs:
     env:
       FOO: '${{ needs.release.outputs.foo }}'
     steps:
-      - runs: "echo $FOO"
+    - name: "thing 2"
+      runs: "echo $FOO"
