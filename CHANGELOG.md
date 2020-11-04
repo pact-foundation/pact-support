@@ -1,3 +1,10 @@
+<a name="v1.15.4"></a>
+### v1.15.4 (2020-11-04)
+
+#### Bug Fixes
+
+* update release gem action version	 ([9dead58](/../../commit/9dead58))
+
 <a name="v1.15.3"></a>
 ### v1.15.3 (2020-11-04)
 
