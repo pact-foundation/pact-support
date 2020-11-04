@@ -1,3 +1,13 @@
+<a name="v1.15.3"></a>
+### v1.15.3 (2020-11-04)
+
+
+#### Bug Fixes
+
+* release workflow	 ([4bdf8d8](/../../commit/4bdf8d8))
+* not actually a fix, just triggering new release	 ([74038a5](/../../commit/74038a5))
+
+
 <a name="v1.15.2"></a>
 ### v1.15.2 (2020-11-04)
 
