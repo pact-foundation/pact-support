@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: "thing 1"
-      runs: |
+      run: |
           echo "::set-output name=foo::bar"
 
   notify-gem-released:
@@ -18,4 +18,4 @@ jobs:
       FOO: '${{ needs.release.outputs.foo }}'
     steps:
     - name: "thing 2"
-      runs: "echo $FOO"
+      run: "echo $FOO"
