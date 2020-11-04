@@ -2,4 +2,4 @@
 
 Run
 
-    script/release.sh [major|minor|patch] # default is minor
+    GITHUB_ACCESS_TOKEN_FOR_PF_RELEASES=xxx script/trigger-release.sh
