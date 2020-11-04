@@ -1,3 +1,11 @@
+<a name="v1.15.5"></a>
+### v1.15.5 (2020-11-04)
+
+#### Bug Fixes
+
+* add missing outputs to release workflow	 ([d565d0f](/../../commit/d565d0f))
+* try different output syntax	 ([b11e8fb](/../../commit/b11e8fb))
+
 <a name="v1.15.4"></a>
 ### v1.15.4 (2020-11-04)
 
