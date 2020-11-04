@@ -18,7 +18,6 @@ module Pact
         require 'pact/provider/rspec/formatter_rspec_2'
         Pact::Provider::RSpec::Formatter2
       end
-
     end
 
     def self.full_description example
