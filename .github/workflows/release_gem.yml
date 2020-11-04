@@ -34,7 +34,7 @@ jobs:
           event-type: gem-released
           client-payload: |
               {
-                "name": "${{ needs.release.outputs.gem_name }}",
-                "version": "${{ needs.release.outputs.version }}",
-                "increment": "${{ needs.release.outputs.increment }}"
+                "name": "${{ jobs.release.outputs.gem_name }}",
+                "version": "${{ jobs.release.outputs.version }}",
+                "increment": "${{ jobs.release.outputs.increment }}"
               }
