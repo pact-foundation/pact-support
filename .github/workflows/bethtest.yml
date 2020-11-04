@@ -11,9 +11,6 @@ jobs:
       name: "thing 1"
       run: |
           echo "::set-output name=foo::bar"
-      outputs:
-        foo:
-          description: thing
     outputs:
       foo: '${{ steps.release.outputs.foo }}'
 
