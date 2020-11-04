@@ -1,4 +1,3 @@
-require 'rspec'
 # This is horrible, must work out a better way of doing this
 module Pact
   module RSpec
@@ -31,11 +30,11 @@ module Pact
     end
 
     def self.is_rspec_3
-      ::RSpec::Core::Formatters.respond_to?(:register)
+      defined?(::Rspec) && ::RSpec::Core::Formatters.respond_to?(:register)
     end
 
     def self.is_rspec_2
-      !is_rspec_3
+      defined?(::Rspec) && !is_rspec_3
     end
 
     def self.with_rspec_3
