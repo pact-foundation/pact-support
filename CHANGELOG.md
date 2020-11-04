@@ -1,3 +1,10 @@
+<a name="v1.16.0"></a>
+### v1.16.0 (2020-11-04)
+
+#### Features
+
+* remove runtime dependency on rspec	 ([aca30e2](/../../commit/aca30e2))
+
 <a name="v1.15.5"></a>
 ### v1.15.5 (2020-11-04)
 
