@@ -29,11 +29,11 @@ module Pact
     end
 
     def self.is_rspec_3
-      defined?(::Rspec) && ::RSpec::Core::Formatters.respond_to?(:register)
+      defined?(::RSpec) && ::RSpec::Core::Formatters.respond_to?(:register)
     end
 
     def self.is_rspec_2
-      defined?(::Rspec) && !is_rspec_3
+      defined?(::RSpec) && !is_rspec_3
     end
 
     def self.with_rspec_3
