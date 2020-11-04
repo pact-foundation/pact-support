@@ -13,11 +13,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: pact-foundation/release-gem@v0.0.11
+      - id: release-gem
+        uses: pact-foundation/release-gem@v0.0.11
         env:
           GEM_HOST_API_KEY: "${{ secrets.RUBYGEMS_API_KEY }}"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           INCREMENT: "${{ github.event.client_payload.increment }}"
+    outputs:
+      gem_name: "${{ steps.release-gem.outputs.gem_name }}"
+      version: "${{ steps.release-gem.outputs.version }}"
+      increment: "${{ steps.release-gem.outputs.increment }}"
 
   notify-gem-released:
     needs: release
@@ -34,7 +39,7 @@ jobs:
           event-type: gem-released
           client-payload: |
               {
-                "name": "${{ jobs.release.outputs.gem_name }}",
-                "version": "${{ jobs.release.outputs.version }}",
-                "increment": "${{ jobs.release.outputs.increment }}"
+                "name": "${{ needs.release.outputs.gem_name }}",
+                "version": "${{ needs.release.outputs.version }}",
+                "increment": "${{ needs.release.outputs.increment }}"
               }
