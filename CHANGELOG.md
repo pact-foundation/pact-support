@@ -1,3 +1,10 @@
+<a name="v1.16.1"></a>
+### v1.16.1 (2020-11-06)
+
+#### Bug Fixes
+
+* add missing params_hash_type? from Rack	 ([3195b0a](/../../commit/3195b0a))
+
 <a name="v1.16.0"></a>
 ### v1.16.0 (2020-11-04)
 
