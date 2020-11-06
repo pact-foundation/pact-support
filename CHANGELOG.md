@@ -1,3 +1,10 @@
+<a name="v1.16.2"></a>
+### v1.16.2 (2020-11-07)
+
+#### Bug Fixes
+
+* removed undefined depth from query	 ([53a373d](/../../commit/53a373d))
+
 <a name="v1.16.1"></a>
 ### v1.16.1 (2020-11-06)
 
