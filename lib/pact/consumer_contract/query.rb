@@ -99,7 +99,7 @@ module Pact
       else
         params[k] ||= {}
         raise ParameterTypeError, "expected Hash (got #{params[k].class.name}) for param `#{k}'" unless params_hash_type?(params[k])
-        params[k] = normalize_params(params[k], after, v, depth - 1)
+        params[k] = normalize_params(params[k], after, v)
       end
 
       params

@@ -27,6 +27,10 @@ module Pact
         it "returns a nested map" do
           expect(subject).to eq "foo" => "bar2", "baz" => ["thing1", "thing2"]
         end
+
+        it "handles arrays and hashes" do
+          expect(Query.parse_string("a[]=1&a[]=2&b[c]=3")).to eq "a" => ["1","2"], "b" => { "c" => "3" }
+        end
       end
     end
   end
