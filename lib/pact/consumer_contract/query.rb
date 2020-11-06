@@ -105,6 +105,10 @@ module Pact
       params
     end
 
+    def self.params_hash_type?(obj)
+      obj.is_a?(Hash)
+    end
+
     def self.unescape(s, encoding = Encoding::UTF_8)
       URI.decode_www_form_component(s, encoding)
     end
