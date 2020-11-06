@@ -5,6 +5,11 @@ module Pact
   class Query
     DEFAULT_SEP = /[&;] */n
     COMMON_SEP = { ";" => /[;] */n, ";," => /[;,] */n, "&" => /[&] */n }
+    # See https://github.com/rack/rack/pull/1686
+    DEFAULT_PARAM_DEPTH_LIMIT = 32
+
+    class ParameterTypeError < TypeError; end
+    class InvalidParameterError < ArgumentError; end
 
     def self.create query
       if query.is_a? Hash
@@ -28,7 +33,7 @@ module Pact
     end
 
     # Ripped from Rack to avoid adding an unnecessary dependency, thank you Rack
-    # https://github.com/rack/rack/blob/649c72bab9e7b50d657b5b432d0c205c95c2be07/lib/rack/utils.rb
+    # https://github.com/rack/rack/blob/2.2.3/lib/rack/utils.rb
     def self.parse_query(qs, d = nil, &unescaper)
       unescaper ||= method(:unescape)
 
@@ -50,6 +55,8 @@ module Pact
       end
 
       return params.to_h
+    rescue ArgumentError => e
+      raise InvalidParameterError, e.message, e.backtrace
     end
 
     def self.parse_nested_query(qs, d = nil)
@@ -59,14 +66,16 @@ module Pact
         (qs || '').split(d ? (COMMON_SEP[d] || /[#{d}] */n) : DEFAULT_SEP).each do |p|
           k, v = p.split('=', 2).map! { |s| unescape(s) }
 
-          normalize_params(params, k, v)
+          normalize_params(params, k, v, DEFAULT_PARAM_DEPTH_LIMIT)
         end
       end
 
       return params.to_h
     end
 
-    def self.normalize_params(params, name, v)
+    def self.normalize_params(params, name, v, depth)
+      raise RangeError if depth <= 0
+
       name =~ %r(\A[\[\]]*([^\[\]]+)\]*)
       k = $1 || ''
       after = $' || ''
@@ -92,9 +101,9 @@ module Pact
         params[k] ||= []
         raise ParameterTypeError, "expected Array (got #{params[k].class.name}) for param `#{k}'" unless params[k].is_a?(Array)
         if params_hash_type?(params[k].last) && !params_hash_has_key?(params[k].last, child_key)
-          normalize_params(params[k].last, child_key, v)
+          normalize_params(params[k].last, child_key, v, depth - 1)
         else
-          params[k] << normalize_params({}, child_key, v)
+          params[k] << normalize_params({}, child_key, v, depth - 1)
         end
       else
         params[k] ||= {}
