@@ -1,3 +1,10 @@
+<a name="v1.16.3"></a>
+### v1.16.3 (2020-11-10)
+
+#### Bug Fixes
+
+* add missing params_hash_has_key	 ([700efa7](/../../commit/700efa7))
+
 <a name="v1.16.2"></a>
 ### v1.16.2 (2020-11-07)
 
