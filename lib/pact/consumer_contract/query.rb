@@ -109,6 +109,18 @@ module Pact
       obj.is_a?(Hash)
     end
 
+    def self.params_hash_has_key?(hash, key)
+      return false if /\[\]/.match?(key)
+
+      key.split(/[\[\]]+/).inject(hash) do |h, part|
+        next h if part == ''
+        return false unless params_hash_type?(h) && h.key?(part)
+        h[part]
+      end
+
+      true
+    end
+
     def self.unescape(s, encoding = Encoding::UTF_8)
       URI.decode_www_form_component(s, encoding)
     end
