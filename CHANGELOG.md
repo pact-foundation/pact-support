@@ -1,3 +1,10 @@
+<a name="v1.16.4"></a>
+### v1.16.4 (2020-11-13)
+
+#### Bug Fixes
+
+* ensure expected and actual query strings are parsed consistently	 ([4e9ca9c](/../../commit/4e9ca9c))
+
 <a name="v1.16.3"></a>
 ### v1.16.3 (2020-11-10)
 
