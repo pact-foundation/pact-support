@@ -18,7 +18,7 @@ module Pact
       parsed_query = parse_query(query_string)
 
       # If Rails nested params...
-      if parsed_query.keys.any?{ | key| key.include?("[") }
+      if parsed_query.keys.any?{ | key| key =~ /\[.*\]/ }
         parse_nested_query(query_string)
       else
         parsed_query.each_with_object({}) do | (key, value), new_hash |

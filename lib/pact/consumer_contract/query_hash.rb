@@ -32,7 +32,7 @@ module Pact
     # from the actual query string.
     def difference(other)
       require 'pact/matchers' # avoid recursive loop between this file, pact/reification and pact/matchers
-      Pact::Matchers.diff(query, symbolize_keys(CGI::parse(other.query)), allow_unexpected_keys: false)
+      Pact::Matchers.diff(query, symbolize_keys(convert_to_hash_of_arrays(Query.parse_string(other.query))), allow_unexpected_keys: false)
     end
 
     def query

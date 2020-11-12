@@ -73,6 +73,32 @@ module Pact
           end
         end
 
+        context "with a real example" do
+          let(:other) { QueryString.new('q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=4.5.6&latestby=cvpv') }
+
+          let(:query) do
+            {
+              "q" => [
+                {
+                  "pacticipant" => "Foo",
+                  "version" => "1.2.3"
+                },
+                {
+                  "pacticipant" => "Bar",
+                  "version" => "4.5.6"
+                }
+              ],
+              "latestby" => [
+                "cvpv"
+              ]
+            }
+          end
+
+          it "matches" do
+            expect(subject.difference(other)).to be_empty
+          end
+        end
+
         context "when there is an ArrayLike" do
           let(:query) { { param: Pact.each_like("1") } }
           let(:other) { QueryString.new('param=1&param=2') }
@@ -149,6 +175,5 @@ module Pact
         expect(subject.to_json).to eq query_with_array.to_json
       end
     end
-
   end
 end

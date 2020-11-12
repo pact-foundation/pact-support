@@ -3,9 +3,7 @@ require 'pact/consumer_contract/headers'
 require 'pact/consumer_contract/query'
 
 module Pact
-
   module Request
-
     class Base
       include Pact::SymbolizeKeys
 
@@ -91,7 +89,6 @@ module Pact
       def display_query
         (query.nil? || query.empty?) ? '' : "?#{Pact::Reification.from_term(query)}"
       end
-
     end
   end
 end
