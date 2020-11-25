@@ -27,15 +27,19 @@ module Pact
       when Pact::QueryString
         from_term(term.query)
       when Pact::QueryHash
-        from_term(term.query).map { |k, v|
-          if v.nil?
-            k
-          elsif v.is_a?(Array) #For cases where there are multiple instance of the same parameter
-            v.map { |x| "#{k}=#{escape(x)}"}.join('&')
-          else
-            "#{k}=#{escape(v)}"
-          end
-        }.join('&')
+        if term.original_string
+          term.original_string
+        else
+          from_term(term.query).map { |k, v|
+            if v.nil?
+              k
+            elsif v.is_a?(Array) #For cases where there are multiple instance of the same parameter
+              v.map { |x| "#{k}=#{escape(x)}"}.join('&')
+            else
+              "#{k}=#{escape(v)}"
+            end
+          }.join('&')
+        end
       when Pact::StringWithMatchingRules
         String.new(term)
       else

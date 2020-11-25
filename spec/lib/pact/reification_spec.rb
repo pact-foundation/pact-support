@@ -108,6 +108,16 @@ module Pact
       end
     end
 
+    context "when Hash Query with an original_string" do
+      let(:query) { QueryHash.new( {param: 'hello', extra: 'world'}, "foo=bar")}
+
+      subject { Reification.from_term(query)}
+
+      it "returns the original string" do
+        expect(subject).to eq("foo=bar")
+      end
+    end
+
     context "when Hash Query with UTF-8 string" do
       subject { Reification.from_term(query)}
 

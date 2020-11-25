@@ -56,6 +56,14 @@ module Pact
             expect(subject).to eq("/something")
           end
         end
+
+        context "with a pre-parsed query that has an original_string" do
+          let(:query) { Pact::QueryHash.new({ "foo" => "bar", "meep" => "moop" }, "foo=bar") }
+
+          it "uses the original string" do
+            expect(subject).to eq ("/something?foo=bar")
+          end
+        end
       end
 
       describe "#method_and_path" do

@@ -14,7 +14,7 @@ module Pact
         @path = path
         @headers = Hash === headers ? Headers.new(headers) : headers # Could be a NullExpectation - TODO make this more elegant
         @body = body
-        @query = is_unspecified?(query) ? query : Pact::Query.create(query)
+        set_query(query)
       end
 
       def to_hash
@@ -88,6 +88,18 @@ module Pact
 
       def display_query
         (query.nil? || query.empty?) ? '' : "?#{Pact::Reification.from_term(query)}"
+      end
+
+      def set_query(query)
+        @query = if is_unspecified?(query)
+          query
+        else
+          if Pact::Query.is_a_query_object?(query)
+            query
+          else
+            Pact::Query.create(query)
+          end
+        end
       end
     end
   end

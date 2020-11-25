@@ -14,6 +14,10 @@ module Pact
       end
     end
 
+    def self.is_a_query_object?(object)
+      object.is_a?(Pact::QueryHash) || object.is_a?(Pact::QueryString)
+    end
+
     def self.parse_string query_string
       parsed_query = parse_query(query_string)
 

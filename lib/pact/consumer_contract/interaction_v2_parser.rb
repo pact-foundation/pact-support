@@ -23,12 +23,22 @@ module Pact
     end
 
     def self.parse_request request_hash, options
-      if request_hash['query'].is_a?(String)
+      original_query_string = request_hash['query']
+      query_is_string = original_query_string.is_a?(String)
+      if query_is_string
         request_hash = request_hash.dup
         request_hash['query'] = Pact::Query.parse_string(request_hash['query'])
       end
+      # The query has to be a hash at this stage for the matching rules to be applied
       request_hash = Pact::MatchingRules.merge(request_hash, request_hash['matchingRules'], options)
-      Pact::Request::Expected.from_hash(request_hash)
+      # The original query string needs to be passed in to the constructor so it can be used
+      # when the request is replayed. Otherwise, we loose the square brackets because they get lost
+      # in the translation between string => structured object, as we don't know/store which
+      # query string convention was used.
+      if query_is_string
+        request_hash['query'] = Pact::QueryHash.new(request_hash['query'], original_query_string)
+      end
+      request = Pact::Request::Expected.from_hash(request_hash)
     end
 
     def self.parse_response response_hash, options

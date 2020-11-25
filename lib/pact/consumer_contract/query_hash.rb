@@ -8,8 +8,11 @@ module Pact
     include ActiveSupportSupport
     include SymbolizeKeys
 
-    def initialize(query)
+    attr_reader :original_string
+
+    def initialize(query, original_string = nil)
       @hash = query.nil? ? query : convert_to_hash_of_arrays(query)
+      @original_string = original_string
     end
 
     def as_json(opts = {})
