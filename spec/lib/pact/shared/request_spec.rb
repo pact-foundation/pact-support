@@ -3,23 +3,17 @@ require 'pact/shared/request'
 require 'pact/shared/key_not_found'
 
 module Pact
-
   module Request
-
     describe Base do
-
       class TestRequest < Base
-
         def self.key_not_found
           Pact::KeyNotFound.new
         end
-
       end
 
       subject { TestRequest.new("get", "/", {some: "things"}, {some: "things"} , "some=things") }
 
       describe "#full_path" do
-
         subject { TestRequest.new("get", "/something", {}, {some: "things"} , query).full_path }
 
         context "with a query that is a Pact::Term" do
@@ -237,7 +231,6 @@ module Pact
           include_examples 'does not modify resource'
         end
       end
-
     end
   end
 end
