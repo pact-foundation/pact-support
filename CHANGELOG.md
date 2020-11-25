@@ -1,3 +1,10 @@
+<a name="v1.16.5"></a>
+### v1.16.5 (2020-11-25)
+
+#### Bug Fixes
+
+* maintain the original string query for the provider verification while also parsing the string query into a hash to allow the matching rules to be applied correctly for use in the mock service on the consumer side	 ([12105dd](/../../commit/12105dd))
+
 <a name="v1.16.4"></a>
 ### v1.16.4 (2020-11-13)
 
