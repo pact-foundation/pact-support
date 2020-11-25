@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "diff-lcs", "~> 1.4"
 
   spec.add_development_dependency "rspec", ">= 2.14", "< 4.0"
-  spec.add_development_dependency "rake", "~> 10.0.3"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "webmock", "~> 3.3"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "fakefs", "~> 0.11.2"
