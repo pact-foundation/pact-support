@@ -1,6 +1,7 @@
 require 'pact/configuration'
 require 'pact/term'
 require 'pact/something_like'
+require 'pact/combined_match'
 require 'pact/array_like'
 require 'pact/shared/null_expectation'
 require 'pact/shared/key_not_found'
@@ -54,6 +55,7 @@ module Pact
       when Pact::SomethingLike then calculate_diff(expected.contents, actual, options.merge(:type => true))
       when Pact::ArrayLike then array_like_diff(expected, actual, options)
       when Pact::Term then term_diff(expected, actual, options)
+      when Pact::CombinedMatch then combined_match_diff(expected, actual, options)
       else object_diff(expected, actual, options)
       end
     end
@@ -154,6 +156,31 @@ module Pact
         diff_at_key.message = key_not_found_message(key, actual)
       end
       diff_at_key
+    end
+
+    def combined_match_diff expected, actual, options
+      if expected.matchers.empty?
+        return NO_DIFF
+      end
+      case expected.combiner
+      when 'AND' then
+        expected.matchers.each do |e|
+          diff = calculate_diff(e, actual, options)
+          if diff.any?
+            return diff
+          end
+        end
+        return NO_DIFF
+      when 'OR' then
+        diff = nil
+        expected.matchers.each do |e|
+          diff = calculate_diff(e, actual, options)
+          if diff.empty?
+            return NO_DIFF
+          end
+        end
+        return diff
+      end
     end
 
     def check_for_unexpected_keys expected, actual, options
