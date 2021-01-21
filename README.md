@@ -1,5 +1,5 @@
 # Pact Support
 
-[![Build Status](https://travis-ci.com/pact-foundation/pact-support.svg?branch=master)](https://travis-ci.com/pact-foundation/pact-support)
+![Build status](https://github.com/pact-foundation/pact-support/workflows/Test/badge.svg)
 
 Provides shared code for the Pact gems
