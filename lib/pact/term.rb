@@ -31,7 +31,7 @@ module Pact
     end
 
     def to_hash
-      { json_class: self.class.name, data: { generate: generate, matcher: fix_regexp(matcher)} }
+      { json_class: self.class.name, data: { generate: generate, matcher: fix_regexp(matcher) } }
     end
 
     def as_json(options = {})
