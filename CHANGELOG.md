@@ -1,3 +1,10 @@
+<a name="v1.16.7"></a>
+### v1.16.7 (2021-01-28)
+
+#### Bug Fixes
+
+* dynamically parse actual query to match expected format	 ([a86a3e3](/../../commit/a86a3e3))
+
 <a name="v1.16.6"></a>
 ### v1.16.6 (2021-01-28)
 
