@@ -17,20 +17,20 @@ module Pact
         context "when the matcher does not match the generated value" do
           let(:generate) { 'banana' }
           it 'raises an exception' do
-            expect { subject }.to raise_error /does not match/
+            expect { subject }.to raise_error Pact::Error, /does not match/
           end
         end
       end
       context 'when a matcher is not specified' do
         let(:matcher) { nil }
         it 'raises an exception' do
-          expect { subject }.to raise_error /Please specify a matcher/
+          expect { subject }.to raise_error Pact::Error, /Please specify a matcher/
         end
       end
       context 'when a generate is not specified' do
         let(:generate) { nil }
         it 'raises an exception' do
-          expect { subject }.to raise_error /Please specify a value/
+          expect { subject }.to raise_error Pact::Error, /Please specify a value/
         end
       end
     end

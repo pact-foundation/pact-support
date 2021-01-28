@@ -1,5 +1,6 @@
 require 'pact/shared/active_support_support'
 require 'json/add/regexp'
+require 'pact/errors'
 
 module Pact
   class Term
@@ -25,9 +26,9 @@ module Pact
     def initialize(attributes = {})
       @generate = attributes[:generate]
       @matcher = attributes[:matcher]
-      raise "Please specify a matcher for the Term" unless @matcher != nil
-      raise "Please specify a value to generate for the Term" unless @generate != nil
-      raise "Value to generate \"#{@generate}\" does not match regular expression #{@matcher.inspect}" unless @generate =~ @matcher
+      raise Pact::Error.new("Please specify a matcher for the Term") unless @matcher != nil
+      raise Pact::Error.new("Please specify a value to generate for the Term") unless @generate != nil
+      raise Pact::Error.new("Value to generate \"#{@generate}\" does not match regular expression #{@matcher.inspect}") unless @generate =~ @matcher
     end
 
     def to_hash
