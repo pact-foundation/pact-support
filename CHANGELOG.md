@@ -1,3 +1,11 @@
+<a name="v1.16.6"></a>
+### v1.16.6 (2021-01-28)
+
+#### Bug Fixes
+
+* raise Pact::Error not RuntimeError when invalid constructor arguments are supplied to a Pact::Term	 ([d9fb8ea](/../../commit/d9fb8ea))
+* update active support support for Ruby 3.0	 ([6c30d42](/../../commit/6c30d42))
+
 <a name="v1.16.5"></a>
 ### v1.16.5 (2020-11-25)
 
