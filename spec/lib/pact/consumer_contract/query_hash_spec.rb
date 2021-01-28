@@ -99,6 +99,24 @@ module Pact
           end
         end
 
+        context "when the key in an expected hash contains [] and the actual query string also contains []" do
+          let(:query) { { "catId[]" => Pact.each_like("1") } }
+          let(:other) { QueryString.new("catId[]=1&catId[]=2")}
+
+          it "returns an empty diff" do
+            expect(subject.difference(other)).to be_empty
+          end
+        end
+
+        context "when the key in an expected hash does not contain [] and the actual query string contains [], GAH!!! something is going to get broken/bug missed no matter which way I code this." do
+          let(:query) { { "catId" => Pact.each_like("1") } }
+          let(:other) { QueryString.new("catId[]=1&catId[]=2")}
+
+          it "returns an empty diff and it probably shouldn't but if I change it now, all the Rails people are going to get mad at me" do
+            expect(subject.difference(other)).to be_empty
+          end
+        end
+
         context "when there is an ArrayLike" do
           let(:query) { { param: Pact.each_like("1") } }
           let(:other) { QueryString.new('param=1&param=2') }

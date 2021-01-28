@@ -10,11 +10,11 @@ module Pact::Matchers
     include RubyVersionHelpers
 
     describe "diff" do
-      STRING = "foo"
-      INT = 1
-      FLOAT = 1.0
-      HASH = {foo: "bar"}
-      ARRAY = ["foo"]
+      STRING ||= "foo"
+      INT ||= 1
+      FLOAT ||= 1.0
+      HASH ||= {foo: "bar"}
+      ARRAY ||= ["foo"]
 
 
       let(:term) { Pact.term(/foo/, "food") }

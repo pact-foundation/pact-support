@@ -6,6 +6,8 @@ module Pact
     DEFAULT_SEP = /[&;] */n
     COMMON_SEP = { ";" => /[;] */n, ";," => /[;,] */n, "&" => /[&] */n }
 
+    class NestedQuery < Hash; end
+
     def self.create query
       if query.is_a? Hash
         Pact::QueryHash.new(query)
@@ -18,12 +20,16 @@ module Pact
       object.is_a?(Pact::QueryHash) || object.is_a?(Pact::QueryString)
     end
 
+    def self.parsed_as_nested?(object)
+      object.is_a?(NestedQuery)
+    end
+
     def self.parse_string query_string
-      parsed_query = parse_query(query_string)
+      parsed_query = parse_string_as_non_nested_query(query_string)
 
       # If Rails nested params...
       if parsed_query.keys.any?{ | key| key =~ /\[.*\]/ }
-        parse_nested_query(query_string)
+        parse_string_as_nested_query(query_string)
       else
         parsed_query.each_with_object({}) do | (key, value), new_hash |
           new_hash[key] = [*value]
@@ -33,7 +39,7 @@ module Pact
 
     # Ripped from Rack to avoid adding an unnecessary dependency, thank you Rack
     # https://github.com/rack/rack/blob/649c72bab9e7b50d657b5b432d0c205c95c2be07/lib/rack/utils.rb
-    def self.parse_query(qs, d = nil, &unescaper)
+    def self.parse_string_as_non_nested_query(qs, d = nil, &unescaper)
       unescaper ||= method(:unescape)
 
       params = {}
@@ -56,7 +62,7 @@ module Pact
       return params.to_h
     end
 
-    def self.parse_nested_query(qs, d = nil)
+    def self.parse_string_as_nested_query(qs, d = nil)
       params = {}
 
       unless qs.nil? || qs.empty?
@@ -67,7 +73,7 @@ module Pact
         end
       end
 
-      return params.to_h
+      return NestedQuery[params.to_h]
     end
 
     def self.normalize_params(params, name, v)

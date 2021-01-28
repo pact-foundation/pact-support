@@ -36,7 +36,7 @@ module Pact
       # in the translation between string => structured object, as we don't know/store which
       # query string convention was used.
       if query_is_string
-        request_hash['query'] = Pact::QueryHash.new(request_hash['query'], original_query_string)
+        request_hash['query'] = Pact::QueryHash.new(request_hash['query'], original_query_string, Pact::Query.parsed_as_nested?(request_hash['query']))
       end
       request = Pact::Request::Expected.from_hash(request_hash)
     end

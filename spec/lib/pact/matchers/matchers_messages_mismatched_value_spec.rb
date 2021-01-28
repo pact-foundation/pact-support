@@ -10,11 +10,11 @@ module Pact::Matchers
     extend RubyVersionHelpers
 
     describe "diff" do
-      STRING = "foo"
-      INT = 1
-      FLOAT = 1.0
-      HASH = {foo: "bar"}
-      ARRAY = ["foo"]
+      STRING ||= "foo"
+      INT ||= 1
+      FLOAT ||= 1.0
+      HASH ||= {foo: "bar"}
+      ARRAY ||= ["foo"]
 
       COMBINATIONS = [
         [STRING, "bar", "Expected \"foo\" but got \"bar\" at <path>"],

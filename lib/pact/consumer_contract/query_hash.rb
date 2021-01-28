@@ -10,9 +10,18 @@ module Pact
 
     attr_reader :original_string
 
-    def initialize(query, original_string = nil)
+    def initialize(query, original_string = nil, nested = false)
       @hash = query.nil? ? query : convert_to_hash_of_arrays(query)
       @original_string = original_string
+      @nested = nested
+    end
+
+    def nested?
+      @nested
+    end
+
+    def any_key_contains_square_brackets?
+      query.keys.any?{ |key| key =~ /\[.*\]/ }
     end
 
     def as_json(opts = {})
@@ -35,7 +44,14 @@ module Pact
     # from the actual query string.
     def difference(other)
       require 'pact/matchers' # avoid recursive loop between this file, pact/reification and pact/matchers
-      Pact::Matchers.diff(query, symbolize_keys(convert_to_hash_of_arrays(Query.parse_string(other.query))), allow_unexpected_keys: false)
+
+      if any_key_contains_square_brackets?
+        other_query_hash_non_nested = Query.parse_string_as_non_nested_query(other.query)
+        Pact::Matchers.diff(query, convert_to_hash_of_arrays(other_query_hash_non_nested), allow_unexpected_keys: false)
+      else
+        other_query_hash = Query.parse_string(other.query)
+        Pact::Matchers.diff(query, symbolize_keys(convert_to_hash_of_arrays(other_query_hash)), allow_unexpected_keys: false)
+      end
     end
 
     def query
