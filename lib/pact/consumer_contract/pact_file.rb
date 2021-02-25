@@ -104,6 +104,7 @@ module Pact
     def prepare_request(uri)
       http = Net::HTTP.new(uri.host, uri.port, :ENV)
       http.use_ssl = (uri.scheme == 'https')
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE if ENV['SSL_VERIFY_MODE'] && ENV['SSL_VERIFY_MODE'] === 'VERIFY_NONE'
       http.ca_file = ENV['SSL_CERT_FILE'] if ENV['SSL_CERT_FILE'] && ENV['SSL_CERT_FILE'] != ''
       http.ca_path = ENV['SSL_CERT_DIR'] if ENV['SSL_CERT_DIR'] && ENV['SSL_CERT_DIR'] != ''
       http
