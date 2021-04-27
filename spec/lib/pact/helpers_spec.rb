@@ -57,10 +57,27 @@ module Pact
     end
 
     describe "#like_datetime" do
+
+      [
+        [:without_mills, '2015-08-06T16:53:10+01:00'],
+        [:with_millis, '2015-08-06T16:53:10.123+01:00']
+      ].each do |scenario, date_string|
+        let(:datetime) { date_string }
+
+        it "creates a Pact::Term with DateTime #{scenario} matcher" do
+          expect(like_datetime(datetime)).to eq Pact::Term.new(
+            generate: datetime,
+            matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)?([+-][0-2]\d:[0-5]\d|Z)$/
+          )
+        end
+      end
+    end
+
+    describe "#like_datetime_without_milliseconds" do
       let(:datetime) { '2015-08-06T16:53:10+01:00' }
 
-      it "creates a Pact::Term with DateTime matcher" do
-        expect(like_datetime(datetime)).to eq Pact::Term.new(
+      it "creates a Pact::Term with DateTime and Millisecond precision matcher" do
+        expect(like_datetime_without_milliseconds(datetime)).to eq Pact::Term.new(
           generate: datetime,
           matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)$/
         )
@@ -73,7 +90,7 @@ module Pact
       it "creates a Pact::Term with DateTime and Millisecond precision matcher" do
         expect(like_datetime_with_milliseconds(datetime)).to eq Pact::Term.new(
           generate: datetime,
-          matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d{3}([+-][0-2]\d:[0-5]\d|Z)$/
+          matcher: /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)$/
         )
       end
     end
