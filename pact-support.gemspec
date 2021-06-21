@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "randexp", "~> 0.1.7"
   spec.add_runtime_dependency "term-ansicolor", "~> 1.0"
-  spec.add_runtime_dependency "awesome_print", "~> 1.1"
+  spec.add_runtime_dependency "awesome_print", "~> 1.9"
   spec.add_runtime_dependency "diff-lcs", "~> 1.4"
 
   spec.add_development_dependency "rspec", ">= 2.14", "< 4.0"
