@@ -1,4 +1,6 @@
-require 'net/http'
+require "net/http"
+require "pact/configuration"
+require "pact/http/authorization_header_redactor"
 
 module Pact
   module PactFile
@@ -81,7 +83,7 @@ module Pact
       request = Net::HTTP::Get.new(uri)
       request = prepare_auth(request, options) if options[:username] || options[:token]
 
-      http = prepare_request(uri)
+      http = prepare_request(uri, options)
       response = perform_http_request(http, request, options)
 
       if response.is_a?(Net::HTTPRedirection)
@@ -89,7 +91,7 @@ module Pact
         req = Net::HTTP::Get.new(uri)
         req = prepare_auth(req, options) if options[:username] || options[:token]
 
-        http = prepare_request(uri)
+        http = prepare_request(uri, options)
         response = perform_http_request(http, req, options)
       end
       response
@@ -101,11 +103,12 @@ module Pact
       request
     end
 
-    def prepare_request(uri)
+    def prepare_request(uri, options)
       http = Net::HTTP.new(uri.host, uri.port, :ENV)
       http.use_ssl = (uri.scheme == 'https')
       http.ca_file = ENV['SSL_CERT_FILE'] if ENV['SSL_CERT_FILE'] && ENV['SSL_CERT_FILE'] != ''
       http.ca_path = ENV['SSL_CERT_DIR'] if ENV['SSL_CERT_DIR'] && ENV['SSL_CERT_DIR'] != ''
+      http.set_debug_output(Pact::Http::AuthorizationHeaderRedactor.new(Pact.configuration.output_stream)) if options[:verbose]
       http
     end
 
