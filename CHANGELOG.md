@@ -1,3 +1,10 @@
+<a name="v1.16.8"></a>
+### v1.16.8 (2021-07-27)
+
+#### Bug Fixes
+
+* log HTTP request for pacts retrieved by URL when requested with verbose=true	 ([3288b81](/../../commit/3288b81))
+
 <a name="v1.16.7"></a>
 ### v1.16.7 (2021-01-28)
 
