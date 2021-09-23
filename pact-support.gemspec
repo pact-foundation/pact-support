@@ -19,11 +19,11 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files lib CHANGELOG.md LICENSE.txt README.md`.split($RS)
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "randexp", "~> 0.1.7"
   spec.add_runtime_dependency "term-ansicolor", "~> 1.0"
   spec.add_runtime_dependency "awesome_print", "~> 1.9"
   spec.add_runtime_dependency "diff-lcs", "~> 1.4"
 
+  spec.add_development_dependency "rspec", ">= 2.14", "< 4.0"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "webmock", "~> 3.3"
   spec.add_development_dependency "pry"
