@@ -1,4 +1,4 @@
-require 'expgen'
+require 'randomexp'
 require 'pact/term'
 require 'pact/something_like'
 require 'pact/array_like'
@@ -14,7 +14,7 @@ module Pact
     def self.from_term(term)
       case term
       when Pact::Term, Regexp, Pact::SomethingLike, Pact::ArrayLike
-        from_term(Expgen.gen(term))
+        from_term(term.generate)
       when Hash
         term.inject({}) do |mem, (key,t)|
           mem[key] = from_term(t)
