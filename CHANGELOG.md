@@ -1,3 +1,10 @@
+<a name="v1.16.10"></a>
+### v1.16.10 (2021-10-01)
+
+#### Bug Fixes
+
+* change expgen to a runtime dependency	 ([da81634](/../../commit/da81634))
+
 <a name="v1.16.9"></a>
 ### v1.16.9 (2021-09-30)
 
