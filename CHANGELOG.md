@@ -1,3 +1,10 @@
+<a name="v1.16.9"></a>
+### v1.16.9 (2021-09-30)
+
+#### Bug Fixes
+
+* remove randexp dependency (#91)	 ([794fd4e](/../../commit/794fd4e))
+
 <a name="v1.16.8"></a>
 ### v1.16.8 (2021-07-27)
 
