@@ -108,7 +108,13 @@ module Pact
       http.use_ssl = (uri.scheme == 'https')
       http.ca_file = ENV['SSL_CERT_FILE'] if ENV['SSL_CERT_FILE'] && ENV['SSL_CERT_FILE'] != ''
       http.ca_path = ENV['SSL_CERT_DIR'] if ENV['SSL_CERT_DIR'] && ENV['SSL_CERT_DIR'] != ''
-      http.set_debug_output(Pact::Http::AuthorizationHeaderRedactor.new(Pact.configuration.output_stream)) if options[:verbose]
+      http.set_debug_output(Pact::Http::AuthorizationHeaderRedactor.new(Pact.configuration.output_stream)) if verbose?(options)
+      if disable_ssl_verification?
+        if verbose?(options)
+          Pact.configuration.output_stream.puts("SSL verification is disabled")
+        end
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
       http
     end
 
@@ -138,6 +144,14 @@ module Pact
 
     def windows_safe(uri)
       uri.start_with?("http") ? uri : uri.gsub("\\", File::SEPARATOR)
+    end
+
+    def verbose?(options)
+      options[:verbose] || ENV['VERBOSE'] == 'true'
+    end
+
+    def disable_ssl_verification?
+      ENV['PACT_DISABLE_SSL_VERIFICATION'] == 'true' || ENV['PACT_BROKER_DISABLE_SSL_VERIFICATION'] == 'true'
     end
   end
 end
