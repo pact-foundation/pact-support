@@ -1,3 +1,10 @@
+<a name="v1.17.0"></a>
+### v1.17.0 (2021-10-01)
+
+#### Features
+
+* allow SSL verification to be disabled by setting environment variable PACT_DISABLE_SSL_VERIFICATION=true	 ([dd39c04](/../../commit/dd39c04))
+
 <a name="v1.16.10"></a>
 ### v1.16.10 (2021-10-01)
 
