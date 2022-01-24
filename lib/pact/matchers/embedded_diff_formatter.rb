@@ -1,12 +1,11 @@
 require 'pact/shared/active_support_support'
-require 'term/ansicolor'
+require 'rainbow'
 
 module Pact
   module Matchers
     class EmbeddedDiffFormatter
 
       include Pact::ActiveSupportSupport
-      C = ::Term::ANSIColor
 
 
       EXPECTED = /"EXPECTED([A-Z_]*)":/
@@ -53,7 +52,7 @@ module Pact
       end
 
       def coloured_key match, colour
-        '"' + C.color(colour, match.downcase.gsub(/^"|":$/,'')) + '":'
+        '"' + Rainbow(match.downcase.gsub(/^"|":$/,'')).color(colour) + '":'
       end
 
     end
