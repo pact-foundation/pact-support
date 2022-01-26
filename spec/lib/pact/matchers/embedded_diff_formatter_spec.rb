@@ -17,8 +17,8 @@ module Pact
       subject { EmbeddedDiffFormatter.call(diff, options) }
 
       let(:options) { { colour: colour }}
-      let(:expected_coloured) { '"' + ::Term::ANSIColor.red("expected_type") + '":'}
-      let(:actual_coloured) { '"' + ::Term::ANSIColor.green("actual_type") + '":'}
+      let(:expected_coloured) { '"' + Rainbow("expected_type").red + '":'}
+      let(:actual_coloured) { '"' + Rainbow("actual_type").green + '":'}
 
       describe ".call" do
 
