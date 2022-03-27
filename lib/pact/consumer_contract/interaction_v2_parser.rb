@@ -38,7 +38,7 @@ module Pact
       if query_is_string
         request_hash['query'] = Pact::QueryHash.new(request_hash['query'], original_query_string, Pact::Query.parsed_as_nested?(request_hash['query']))
       end
-      request = Pact::Request::Expected.from_hash(request_hash)
+      Pact::Request::Expected.from_hash(request_hash)
     end
 
     def self.parse_response response_hash, options
