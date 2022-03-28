@@ -35,7 +35,7 @@ module Pact
     def save_pactfile_to_tmp pact, name
       ::FileUtils.mkdir_p Pact.configuration.tmp_dir
       ::File.open(Pact.configuration.tmp_dir + "/#{name}", "w") { |file|  file << pact}
-    rescue Errno::EROFS => e
+    rescue Errno::EROFS
       # do nothing, probably on RunKit
     end
 
@@ -56,9 +56,9 @@ module Pact
     def get_remote_with_retry(uri_string, options)
       uri = URI(uri_string)
       if uri.userinfo
-		options[:username] = uri.user unless options[:username]
-		options[:password] = uri.password unless options[:password]
-	  end
+        options[:username] = uri.user unless options[:username]
+        options[:password] = uri.password unless options[:password]
+      end
       ((options[:retry_limit] || RETRY_LIMIT) + 1).times do |i|
         begin
           response = get_remote(uri, options)
