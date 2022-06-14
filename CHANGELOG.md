@@ -1,3 +1,14 @@
+<a name="v1.18.0"></a>
+### v1.18.0 (2022-03-28)
+
+#### Features
+
+* replace term-ansicolor with rainbow	 ([e8b6ada](/../../commit/e8b6ada))
+
+#### Bug Fixes
+
+* Fixup ruby warnings (#96)	 ([cee7113](/../../commit/cee7113))
+
 <a name="v1.17.0"></a>
 ### v1.17.0 (2021-10-01)
 
