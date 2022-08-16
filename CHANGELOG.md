@@ -1,3 +1,10 @@
+<a name="v1.18.1"></a>
+### v1.18.1 (2022-08-17)
+
+#### Bug Fixes
+
+* use send to invoke remove_method when removing as_json from Regexp	 ([cb29cdd](/../../commit/cb29cdd))
+
 <a name="v1.18.0"></a>
 ### v1.18.0 (2022-03-28)
 
