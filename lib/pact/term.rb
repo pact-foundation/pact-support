@@ -1,5 +1,5 @@
 require 'pact/shared/active_support_support'
-Regexp.remove_method(:as_json) if Regexp.method_defined?(:as_json)
+Regexp.send(:remove_method, :as_json) if Regexp.method_defined?(:as_json)
 require 'json/add/regexp'
 require 'pact/errors'
 
