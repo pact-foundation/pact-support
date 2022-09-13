@@ -6,7 +6,8 @@ module Pact
     class Expected < Pact::Request::Base
 
       DEFAULT_OPTIONS = {:allow_unexpected_keys => false}.freeze
-      attr_accessor :options #Temporary hack
+      attr_accessor :options, :generators #Temporary hack
+      
 
       def self.from_hash(hash)
         sym_hash = symbolize_keys hash
@@ -16,11 +17,13 @@ module Pact
         headers = sym_hash.fetch(:headers, key_not_found)
         body = sym_hash.fetch(:body, key_not_found)
         options = sym_hash.fetch(:options, {})
-        new(method, path, headers, body, query, options)
+        generators = sym_hash.fetch(:generators, {})
+        new(method, path, headers, body, query, options, generators)
       end
 
-      def initialize(method, path, headers, body, query, options = {})
+      def initialize(method, path, headers, body, query, options = {}, generators = {})
         super(method, path, headers, body, query)
+        @generators = generators
         @options = options
       end
 
