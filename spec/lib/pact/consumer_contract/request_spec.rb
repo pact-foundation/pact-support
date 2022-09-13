@@ -48,8 +48,9 @@ module Pact
 
     describe "matching to actual requests" do
 
-      subject { Request::Expected.new(expected_method, expected_path, expected_headers, expected_body, expected_query, options) }
+      subject { Request::Expected.new(expected_method, expected_path, expected_headers, expected_body, expected_query, options, generators) }
       let(:options) { {} }
+      let(:generators) { {} }
 
       let(:expected_method) { 'get' }
       let(:expected_path) { '/foo' }

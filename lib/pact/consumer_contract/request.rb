@@ -6,8 +6,7 @@ module Pact
     class Expected < Pact::Request::Base
 
       DEFAULT_OPTIONS = {:allow_unexpected_keys => false}.freeze
-      attr_accessor :options, :generators #Temporary hack
-      
+      attr_accessor :options, :generators
 
       def self.from_hash(hash)
         sym_hash = symbolize_keys hash
