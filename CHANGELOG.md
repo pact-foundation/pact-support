@@ -1,3 +1,11 @@
+<a name="v1.19.0"></a>
+### v1.19.0 (2022-11-15)
+
+#### Features
+
+* **generators**
+  * add generators to a consumer contract request (#97)	 ([fbce4cb](/../../commit/fbce4cb))
+
 <a name="v1.18.1"></a>
 ### v1.18.1 (2022-08-17)
 
