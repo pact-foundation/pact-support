@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'tempfile'
 require 'pact/consumer_contract/pact_file'
 require 'base64' # XXX: https://github.com/bblimke/webmock/pull/611
+require "faraday"
+require "faraday/retry"
 
 module Pact
   describe PactFile do
@@ -210,6 +212,80 @@ module Pact
           it 'retries and succeeds' do
             expect(render_pact(retry_limit: 4)).to eq(pact_content)
           end
+        end
+      end
+
+      describe "x509 certificate" do
+        FAKE_SERVER_URL = 'https://localhost:4444'
+        X509_CERT_FILE_PATH = './spec/fixtures/certificates/client_cert.pem'
+        X509_KEY_FILE_PATH = './spec/fixtures/certificates/key.pem'
+        UNSIGNED_X509_CERT_FILE_PATH = './spec/fixtures/certificates/unsigned_cert.pem'
+        UNSIGNED_X509_KEY_FILE_PATH = './spec/fixtures/certificates/unsigned_key.pem'
+
+        def wait_for_server_to_start
+          Faraday.new(
+            url: FAKE_SERVER_URL,
+            ssl: {
+              verify: false,
+              client_cert: OpenSSL::X509::Certificate.new(File.read(X509_CERT_FILE_PATH)),
+              client_key: OpenSSL::PKey::RSA.new(File.read(X509_KEY_FILE_PATH))
+            }
+          ) do |builder|
+            builder.request :retry, max: 20, interval: 0.5, exceptions: [StandardError]
+            builder.adapter :net_http
+          end.get
+        end
+
+        let(:render_pact) { PactFile.render_pact(FAKE_SERVER_URL, {}) }
+
+        before(:all) do
+          @pipe = IO.popen("bundle exec ruby ./spec/support/ssl_server.rb")
+          ENV['SSL_CERT_FILE'] = "./spec/fixtures/certificates/ca_cert.pem"
+
+          wait_for_server_to_start()
+        end
+
+        context "with valid x509 client certificates" do
+          before do
+            ENV['X509_CLIENT_CERT_FILE'] = X509_CERT_FILE_PATH
+            ENV['X509_CLIENT_KEY_FILE'] = X509_KEY_FILE_PATH
+          end
+
+          it "succeeds" do
+            expect(render_pact).to eq("Fake SSL server\n")
+          end
+        end
+
+        context "when invalid x509 certificates are set" do
+          before do
+            ENV['X509_CLIENT_CERT_FILE'] = UNSIGNED_X509_CERT_FILE_PATH
+            ENV['X509_CLIENT_KEY_FILE'] = UNSIGNED_X509_KEY_FILE_PATH
+          end
+
+          it "fails raising SSL error" do
+            expect { render_pact }
+              .to raise_error { |error|
+                expect([OpenSSL::SSL::SSLError, Errno::ECONNRESET]).to include(error.class)
+              }
+          end
+        end
+
+        context "when no x509 certificates are set" do
+          before do
+            ENV['X509_CLIENT_CERT_FILE'] = nil
+            ENV['X509_CLIENT_KEY_FILE'] = nil
+          end
+
+          it "fails raising SSL error" do
+            expect { render_pact }
+              .to raise_error { |error|
+                expect([OpenSSL::SSL::SSLError, Errno::ECONNRESET]).to include(error.class)
+              }
+          end
+        end
+
+        after(:all) do
+          Process.kill "KILL", @pipe.pid
         end
       end
     end
