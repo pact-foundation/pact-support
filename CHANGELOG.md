@@ -1,3 +1,10 @@
+<a name="v1.20.0"></a>
+### v1.20.0 (2023-10-19)
+
+#### Features
+
+* handle x509 certs in HTTP Client (#99)	 ([6a36a48](/../../commit/6a36a48))
+
 <a name="v1.19.0"></a>
 ### v1.19.0 (2022-11-15)
 
