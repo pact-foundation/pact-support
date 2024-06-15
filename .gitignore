@@ -31,3 +31,5 @@ Gemfile.lock
 gemfiles/*.lock
 spec/examples.txt
 .byebug_history
+
+.DS_Store

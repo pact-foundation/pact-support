@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "appraisal"
   spec.add_development_dependency "conventional-changelog", "~> 1.3"
   spec.add_development_dependency "bump", "~> 0.5"
+  spec.add_development_dependency "base64", "~> 0.2"
 end
