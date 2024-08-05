@@ -6,7 +6,7 @@ require 'pact/shared/json_differ'
 require 'pact/shared/text_differ'
 require 'pact/shared/form_differ'
 require 'pact/shared/multipart_form_differ'
-
+# require 'pact/ffi/logger'
 
 module Pact
 
@@ -45,6 +45,7 @@ module Pact
     attr_accessor :pact_dir
     attr_accessor :log_dir
     attr_accessor :tmp_dir
+    # attr_accessor :rust_log_level
 
     attr_writer :logger
 
@@ -58,7 +59,7 @@ module Pact
       c.pact_dir = File.expand_path('./spec/pacts')
       c.tmp_dir = File.expand_path('./tmp/pacts')
       c.log_dir = default_log_dir
-
+      # c.rust_log_level = 0
       c.output_stream = $stdout
       c.error_stream = $stderr
       c.pactfile_write_order = :chronological
@@ -167,6 +168,7 @@ module Pact
     end
 
     def create_logger
+      # PactFfi::Logger.log_to_stdout(rust_log_level)
       FileUtils::mkdir_p log_dir
       logger = ::Logger.new(log_path)
       logger.level = ::Logger::DEBUG

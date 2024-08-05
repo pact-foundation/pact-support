@@ -33,7 +33,12 @@ module Pact
     end
 
     def to_hash
-      { json_class: self.class.name, data: { generate: generate, matcher: fix_regexp(matcher) } }
+      # Pact-Ruby V2 Standard
+      # { json_class: self.class.name, data: { generate: generate, matcher: fix_regexp(matcher) } }
+      # Pact-Rust V2 Standard.
+      { "pact:matcher:type": 'regex', value: generate, regex: fix_regexp(matcher)['s'] } 
+      # Both
+      { "pact:matcher:type": 'regex', value: generate, regex: fix_regexp(matcher)['s'], json_class: self.class.name, data: { generate: generate, matcher: fix_regexp(matcher) }  }
     end
 
     def as_json(options = {})

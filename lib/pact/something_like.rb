@@ -15,8 +15,12 @@ module Pact
 
     def to_hash
       {
+        # pact ruby
         :json_class => self.class.name,
-        :contents => contents
+        :contents => contents,
+        # pact rust
+        'pact:matcher:type' => 'type',
+        'value' => contents
       }
     end
 

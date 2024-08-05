@@ -26,7 +26,9 @@ module Pact
       # metadata.pactSpecificationVersion
       maybe_pact_specification_version_1 = hash[:metadata] && hash[:metadata]['pactSpecification'] && hash[:metadata]['pactSpecification']['version']
       maybe_pact_specification_version_2 = hash[:metadata] && hash[:metadata]['pactSpecificationVersion']
-      pact_specification_version = maybe_pact_specification_version_1 || maybe_pact_specification_version_2
+      maybe_pact_specification_version_3 = hash[:metadata] && hash[:metadata]['pactSpecificationVersion']
+      maybe_pact_specification_version_4 = hash[:metadata] && hash[:metadata]['pactSpecificationVersion']
+      pact_specification_version = maybe_pact_specification_version_1 || maybe_pact_specification_version_2 || maybe_pact_specification_version_3  || maybe_pact_specification_version_4
       pact_specification_version ? Pact::SpecificationVersion.new(pact_specification_version) : Pact::SpecificationVersion::NIL_VERSION
     end
 

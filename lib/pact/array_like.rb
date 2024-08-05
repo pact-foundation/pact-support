@@ -15,6 +15,8 @@ module Pact
       {
         :json_class => self.class.name,
         :contents => contents,
+        'pact:matcher:type' => 'type',
+        :value => [contents],
         :min => min
       }
     end
