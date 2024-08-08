@@ -13,7 +13,7 @@ module Pact
         expect(subject.color_enabled).to be true
       end
 
-      it "allows configuration of colour_enabled" do
+      it "allows configuration of color_enabled" do
         subject.color_enabled = false
         expect(subject.color_enabled).to be false
       end
