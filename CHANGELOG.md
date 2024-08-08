@@ -1,3 +1,10 @@
+<a name="v1.20.1"></a>
+### v1.20.1 (2024-08-08)
+
+#### Bug Fixes
+
+* enable color on non-tty if color_enabled	 ([0585424](/../../commit/0585424))
+
 <a name="v1.20.0"></a>
 ### v1.20.0 (2023-10-19)
 
