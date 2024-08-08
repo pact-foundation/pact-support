@@ -6,6 +6,7 @@ require 'pact/shared/json_differ'
 require 'pact/shared/text_differ'
 require 'pact/shared/form_differ'
 require 'pact/shared/multipart_form_differ'
+require 'rainbow'
 
 
 module Pact
@@ -114,7 +115,9 @@ module Pact
 
     def color_enabled
       # Can't use ||= when the variable might be false, it will execute the expression if it's false
-      defined?(@color_enabled) ? @color_enabled : true
+      color_enabled = defined?(@color_enabled) ? @color_enabled : true
+      Rainbow.enabled = true if color_enabled
+      color_enabled
     end
 
     def color_enabled= color_enabled
