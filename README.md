@@ -4,7 +4,26 @@
 
 Provides shared code for the Pact gems
 
-## Supported matching rules
+## Compatibility
+
+<details><summary>Specification Compatibility</summary>
+
+| Version  | Stable | [Spec] Compatibility | 
+| -------  | ------ | -------------------- |
+| 1.x.x    | Yes    | 2, 3\*               |
+
+_\*_ v3 support is limited to the subset of functionality required to enable language inter-operable [Message support].
+
+- See V3 tracking [issue](https://github.com/pact-foundation/pact-ruby/issues/318).
+- See V4 tracking [issue](https://github.com/pact-foundation/pact-ruby/issues/319).
+
+Want V3/V4 support now? See the new standalone [pact-verifier](https://github.com/pact-foundation/pact-reference/tree/master/rust/pact_verifier_cli#standalone-pact-verifier)
+
+[message support]: https://github.com/pact-foundation/pact-specification/tree/version-3#introduces-messages-for-services-that-communicate-via-event-streams-and-message-queues
+
+</details>
+
+### Supported matching rules
 
 | matcher       | Spec Version | Implemented | Usage|
 |---------------|--------------|-------------|-------------|
@@ -32,9 +51,11 @@ Provides shared code for the Pact gems
 | EachKey       | V4           |   |    |
 | EachValue     | V4           |   |    |
 
-## Supported generators
+### Supported generators
 
-| matcher                | Spec Version | Implemented |
+Currently limited to provider verification only. No current way to set in consumer tests.
+
+| Generator                | Spec Version | Implemented |
 |------------------------|--------------|----|
 | RandomInt              | V3           | ✅ |
 | RandomDecimal          | V3           | ✅ |
