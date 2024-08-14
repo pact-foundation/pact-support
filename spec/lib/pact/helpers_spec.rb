@@ -146,7 +146,7 @@ module Pact
       it "creates a Pact::Term with regex matcher for integers" do
         expect(like_integer(integer)).to eq Pact::Term.new(
           generate: integer,
-          matcher: /[0-9]/
+          matcher: /^-?\d+$/
         )
       end
     end
@@ -156,7 +156,7 @@ module Pact
       it "creates a Pact::Term with regex matcher for decimals" do
         expect(like_decimal(10.2)).to eq Pact::Term.new(
           generate: float,
-          matcher: /[-+]?([0-9]*\.[0-9]+|[0-9]+)/
+          matcher: /^0|-?\d+\.\d*$/
         )
       end
     end

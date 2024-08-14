@@ -47,12 +47,14 @@ module Pact
       Pact::Term.new(generate: date, matcher: /^\d{4}-[01]\d-[0-3]\d$/)
     end
 
+    # regex matched with pact-jvm 
+    # https://github.com/pact-foundation/pact-jvm/blob/00442e6df51e5be906ed470b19859246312e5c83/core/matchers/src/main/kotlin/au/com/dius/pact/core/matchers/MatcherExecutor.kt#L56-L59
     def like_integer int
-      Pact::Term.new(generate: int, matcher: /[0-9]/)
+      Pact::Term.new(generate: int, matcher: /^-?\d+$/)
     end
 
     def like_decimal float
-      Pact::Term.new(generate: float, matcher: /[-+]?([0-9]*\.[0-9]+|[0-9]+)/)
+      Pact::Term.new(generate: float, matcher: /^0|-?\d+\.\d*$/)
     end
 
     def like_datetime_rfc822 datetime
