@@ -47,6 +47,14 @@ module Pact
       Pact::Term.new(generate: date, matcher: /^\d{4}-[01]\d-[0-3]\d$/)
     end
 
+    def like_integer int
+      Pact::Term.new(generate: int, matcher: /[0-9]/)
+    end
+
+    def like_decimal float
+      Pact::Term.new(generate: float, matcher: /[-+]?([0-9]*\.[0-9]+|[0-9]+)/)
+    end
+
     def like_datetime_rfc822 datetime
       Pact::Term.new(
         generate: datetime,

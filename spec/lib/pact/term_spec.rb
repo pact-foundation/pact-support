@@ -23,7 +23,7 @@ module Pact
         end
 
         context "when the generate is a float" do
-          let(:term) { Term.new(generate: 50.51, matcher: /\d(\.\d{1,2})/)}
+          let(:term) { Term.new(generate: 50.51, matcher: /[-+]?([0-9]*\.[0-9]+|[0-9]+)/)}
 
           it 'does not raise an exception' do
             term
