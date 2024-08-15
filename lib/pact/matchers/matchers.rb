@@ -78,7 +78,7 @@ module Pact
       if term.matcher.match(actual)
         NO_DIFF
       else
-        RegexpDifference.new term.matcher, options[:original] ||= actual, "Expected a #{options[:was_float] ? "Float" : options[:was_int] ? "Integer" : "String" } matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{options[:was_float] || options[:was_int] ? class_name_with_value_in_brackets(options[:original]) : actual.inspect} at <path>"
+        RegexpDifference.new term.matcher, options[:original] ||= actual, "Expected a Value matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{options[:was_float] || options[:was_int] ? class_name_with_value_in_brackets(options[:original]) : actual.inspect} at <path>"
       end
     end
 
