@@ -27,14 +27,21 @@ module Pact::Matchers
 
         context "when the Pact::Term does not match" do
           it "returns a message" do
-            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got \"drink\" at <path>"
+            expect(difference[:thing].message).to eq "Expected a Value matching /foo/ (like \"food\") but got \"drink\" at <path>"
           end
         end
 
         context "when the actual is a numeric" do
           let(:actual) { INT }
           it "returns a message" do
-            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got #{a_numeric} (1) at <path>"
+            expect(difference[:thing].message).to eq "Expected a Value matching /foo/ (like \"food\") but got #{a_numeric} (1) at <path>"
+          end
+        end
+
+        context "when the actual is a float" do
+          let(:actual) { FLOAT }
+          it "returns a message" do
+            expect(difference[:thing].message).to eq "Expected a Value matching /foo/ (like \"food\") but got #{a_float} (1.0) at <path>"
           end
         end
 
@@ -42,13 +49,6 @@ module Pact::Matchers
           let(:actual) { HASH }
           it "returns a message" do
             expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got a Hash at <path>"
-          end
-        end
-
-        context "when the actual is a numeric" do
-          let(:actual) { INT }
-          it "returns a message" do
-            expect(difference[:thing].message).to eq "Expected a String matching /foo/ (like \"food\") but got #{a_numeric} (1) at <path>"
           end
         end
 
