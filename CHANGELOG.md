@@ -1,3 +1,13 @@
+<a name="v1.20.2"></a>
+### v1.20.2 (2024-10-23)
+
+#### Bug Fixes
+
+* **test**
+  * explicitly require ostruct as non stdlib in ruby 3.5.x	 ([e06a057](/../../commit/e06a057))
+
+* use single quotes for pact term creation err msg	 ([d770791](/../../commit/d770791))
+
 <a name="v1.20.1"></a>
 ### v1.20.1 (2024-08-08)
 
