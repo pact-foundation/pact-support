@@ -61,12 +61,6 @@ module Pact
     alias_method :structure_diff, :type_diff # Backwards compatibility
 
     def term_diff term, actual, options
-      if actual.is_a?(Float) || actual.is_a?(Integer)
-        options[:original] = actual
-        options[:was_float] = actual.is_a?(Float)
-        options[:was_int] = actual.is_a?(Integer)
-        actual = actual.to_s
-      end
       if actual.is_a?(String)
         actual_term_diff term, actual, options
       else
@@ -78,7 +72,7 @@ module Pact
       if term.matcher.match(actual)
         NO_DIFF
       else
-        RegexpDifference.new term.matcher, options[:original] ||= actual, "Expected a Value matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{options[:was_float] || options[:was_int] ? class_name_with_value_in_brackets(options[:original]) : actual.inspect} at <path>"
+        RegexpDifference.new term.matcher, actual, "Expected a String matching #{term.matcher.inspect} (like #{term.generate.inspect}) but got #{actual.inspect} at <path>"
       end
     end
 

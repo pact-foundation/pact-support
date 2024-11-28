@@ -29,11 +29,7 @@ module Pact
       @matcher = attributes[:matcher]
       raise Pact::Error.new("Please specify a matcher for the Term") unless @matcher != nil
       raise Pact::Error.new("Please specify a value to generate for the Term") unless @generate != nil
-      if @generate.is_a?(Float) || @generate.is_a?(Integer)
-        raise Pact::Error.new("#{@generate.is_a?(Float) ? "Float" : "Integer"} Value to generate '#{@generate}' does not match regular expression #{@matcher.inspect} when converted to string") unless @generate.to_s =~ @matcher
-      else
-        raise Pact::Error.new("Value to generate '#{@generate}' does not match regular expression #{@matcher.inspect}") unless @generate =~ @matcher
-      end
+      raise Pact::Error.new("Value to generate '#{@generate}' does not match regular expression #{@matcher.inspect}") unless @generate =~ @matcher
     end
 
     def to_hash

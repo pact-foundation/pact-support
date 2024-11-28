@@ -20,8 +20,4 @@ module RubyVersionHelpers
     end
   end
   module_function :a_numeric
-  def a_float
-    "a #{Float}"
-  end
-  module_function :a_float
 end
