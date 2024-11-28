@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "awesome_print", "~> 1.9"
   spec.add_runtime_dependency "diff-lcs", "~> 1.5"
   spec.add_runtime_dependency "expgen", "~> 0.1"
+  spec.add_runtime_dependency "json", "< 2.8"
 
   spec.add_development_dependency "rspec", ">= 2.14", "< 4.0"
   spec.add_development_dependency "rake", "~> 13.0"
@@ -36,4 +37,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bump", "~> 0.5"
   spec.add_development_dependency "base64", "~> 0.2"
   spec.add_development_dependency "ostruct"
+
 end
