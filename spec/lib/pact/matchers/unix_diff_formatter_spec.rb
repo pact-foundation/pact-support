@@ -123,7 +123,8 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 7 + key_lines_count
+            expected_line_count = RUBY_VERSION < '3' ? 7 : 8
+            expect(line_count).to eq expected_line_count + key_lines_count
           end
         end
 
@@ -143,7 +144,8 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
-            expect(line_count).to eq 7 + key_lines_count
+            expected_line_count = RUBY_VERSION < '3' ? 7 : 8
+            expect(line_count).to eq expected_line_count + key_lines_count
           end
 
         end
