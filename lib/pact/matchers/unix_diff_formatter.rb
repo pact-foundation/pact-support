@@ -63,6 +63,7 @@ module Pact
           # Can't think of an elegant way to check if we can pretty generate other than to try it and maybe fail
           json = fix_blank_lines_in_empty_hashes JSON.pretty_generate(comparable)
           json = add_blank_lines_in_empty_hashes json
+          json = add_blank_lines_in_empty_arrays json
           add_comma_to_end_of_arrays json
         rescue JSON::GeneratorError
           comparable.to_s
