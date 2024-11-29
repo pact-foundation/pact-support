@@ -1,3 +1,10 @@
+<a name="v1.21.1"></a>
+### v1.21.1 (2024-11-29)
+
+#### Bug Fixes
+
+* add blank lines to empty hashs - json 2.8.x regression for pact-ruby	 ([f8cb384](/../../commit/f8cb384))
+
 <a name="v1.21.0"></a>
 ### v1.21.0 (2024-11-28)
 
