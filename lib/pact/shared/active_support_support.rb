@@ -42,10 +42,11 @@ module Pact
     # Oh ActiveSupport, why....
     def fix_json_formatting json
       if json =~ /\{".*?":"/
-        JSON.pretty_generate(JSON.parse(json, create_additions: false))
+        json = JSON.pretty_generate(JSON.parse(json, create_additions: false))
       else
         json
       end
+      fix_empty_hash_and_array json
     end
 
     def remove_unicode json
@@ -60,6 +61,14 @@ module Pact
           Pact.configuration.error_stream.puts("WARN: Instance variable #{iv_name} for class #{thing.class.name} is a Regexp and isn't been serialized properly. Please raise an issue at https://github.com/pact-foundation/pact-support/issues/new.")
         end
       end
+    end
+
+    private
+
+    def fix_empty_hash_and_array json
+      json = json.gsub(/({\s*})/, "{\n        }")
+      json.gsub(/\[\s*\]/, "[\n        ]")
+      json
     end
   end
 end
