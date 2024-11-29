@@ -14,5 +14,14 @@ module Pact
       json.gsub(/({\n)\n(\s*})/,'\1\2')
     end
 
+    # preserve pre json 2.8.x behaviour
+    # https://github.com/ruby/json/pull/626
+    def add_blank_lines_in_empty_hashes(json)
+      json.gsub(/({\s*})/, "{\n  }")
+    end
+
+    def add_blank_lines_in_empty_arrays(json)
+      json.gsub(/\[\s*\]/, "[\n  ]")
+    end
   end
 end

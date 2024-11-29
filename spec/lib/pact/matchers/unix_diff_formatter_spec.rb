@@ -123,6 +123,7 @@ EOF
           end
 
           it "generates the right number of lines, even with ActiveSupport loaded" do
+            puts subject
             expect(line_count).to eq 7 + key_lines_count
           end
         end
