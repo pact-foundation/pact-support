@@ -1,3 +1,15 @@
+<a name="v1.21.0"></a>
+### v1.21.0 (2024-11-28)
+
+#### Features
+
+* add like_integer / like_decimal helpers	 ([75a36cd](/../../commit/75a36cd))
+* add v3/v4 generators (thanks @slt)	 ([fe04975](/../../commit/fe04975))
+
+#### Bug Fixes
+
+* add blank lines to empty hashs - json 2.8.x regression	 ([66910bd](/../../commit/66910bd))
+
 <a name="v1.20.2"></a>
 ### v1.20.2 (2024-10-23)
 
