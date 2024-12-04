@@ -66,9 +66,9 @@ module Pact
     private
 
     def fix_empty_hash_and_array json
-      json = json.gsub(/({\s*})/, "{\n        }")
-      json.gsub(/\[\s*\]/, "[\n        ]")
       json
+        .gsub(/({\s*})(?=,?$)/, "{\n        }")
+        .gsub(/\[\s*\](?=,?$)/, "[\n        ]")
     end
   end
 end
