@@ -1,3 +1,10 @@
+<a name="v1.21.2"></a>
+### v1.21.2 (2024-12-04)
+
+#### Bug Fixes
+
+* prevent insertion of extra new lines in JSON	 ([50189f2](/../../commit/50189f2))
+
 <a name="v1.21.1"></a>
 ### v1.21.1 (2024-11-29)
 
