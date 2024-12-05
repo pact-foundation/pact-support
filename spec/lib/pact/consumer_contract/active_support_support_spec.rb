@@ -77,6 +77,41 @@ module Pact
       it "pretty formats the json that has been not pretty formatted because of ActiveSupport" do
         expect(fix_json_formatting(active_support_affected_pretty_generated_json)).to eq (pretty_generated_json.strip)
       end
+
+      context 'when the JSON includes empty arrays or hashes in a compact format' do
+        let(:active_support_affected_pretty_generated_json) do
+'{
+  "empty_hash": {},
+  "empty_array": []
+}'
+        end
+        let(:pretty_generated_json) do
+'{
+  "empty_hash": {
+        },
+  "empty_array": [
+        ]
+}'
+        end
+
+        it "expands the empty hash/array to be multiline" do
+          expect(fix_json_formatting(active_support_affected_pretty_generated_json)).to eq(pretty_generated_json.strip)
+        end
+      end
+
+      context 'when the JSON includes json-like strings inside' do
+        let(:pretty_generated_json) do
+'{
+  "not_really_an_empty_hash": "{}",
+  "not_really_an_empty_array": "[]"
+}'
+        end
+
+        it 'does not change the inner strings' do
+          expect(fix_json_formatting(pretty_generated_json)).to eq(pretty_generated_json)
+        end
+
+      end
     end
   end
 end
