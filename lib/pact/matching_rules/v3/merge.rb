@@ -1,4 +1,5 @@
 require 'pact/array_like'
+require 'pact/combined_match'
 require 'pact/matching_rules/jsonpath'
 
 module Pact
@@ -81,14 +82,36 @@ module Pact
         end
 
         def wrap object, path
-          rules = @matching_rules[path] && @matching_rules[path]['matchers'] && @matching_rules[path]['matchers'].first
-          array_rules = @matching_rules["#{path}[*]*"] && @matching_rules["#{path}[*]*"]['matchers'] && @matching_rules["#{path}[*]*"]['matchers'].first
-          return object unless rules || array_rules
+          rules = @matching_rules[path]
+          return object unless rules
 
-          if rules['match'] == 'type' && !rules.has_key?('min')
-            handle_match_type(object, path, rules)
-          elsif rules['regex']
-            handle_regex(object, path, rules)
+          combiner = rules['combine'] || 'AND'
+          if ['AND', 'OR'].include?(combiner) then
+            rules.delete('combine')
+          else
+            # unsupported combine will be reported
+            return object
+          end
+
+          matchers = rules['matchers']
+          # TODO make it work with array rules
+          # array_rules = @matching_rules["#{path}[*]*"] && @matching_rules["#{path}[*]*"]['matchers'] && @matching_rules["#{path}[*]*"]['matchers'].first
+
+          wrapped_matchers = matchers.map do |rule|
+            wrap_single(rule, object, path)
+          end
+          Pact::CombinedMatch.new(combiner, wrapped_matchers)
+        end
+
+        def wrap_single rule, object, path
+          if rule['match'] == 'type' && !rule.has_key?('min')
+            handle_match_type(object, path, rule)
+          elsif rule['match'] == 'null'
+            handle_null_type(object, path, rule)
+          elsif rule['match'] == 'timestamp' && rule.has_key?('timestamp')
+            handle_timestamp_type(object, path, rule)
+          elsif rule['regex']
+            handle_regex(object, path, rule)
           else
             object
           end
@@ -97,6 +120,26 @@ module Pact
         def handle_match_type object, path, rules
           rules.delete('match')
           Pact::SomethingLike.new(object)
+        end
+
+        def handle_null_type object, path, rule
+          rule.delete('match')
+          Pact::SomethingLike.new(nil)
+        end
+
+        def handle_timestamp_type object, path, rule
+          # barebone timestamp support
+          supported_formats = {
+            "yyyy-MM-dd" => /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/
+          }
+          regexp = supported_formats[rule['timestamp']]
+          if regexp then
+            rule.delete('match')
+            rule.delete('timestamp')
+            Pact::Term.new(generate: object, matcher: Regexp.new(regexp))
+          else
+            object
+          end
         end
 
         def handle_regex object, path, rules
@@ -109,9 +152,7 @@ module Pact
           @matching_rules.each do | jsonpath, rules_hash |
             rules_array = rules_hash["matchers"]
             if rules_array
-              ((rules_array.length - 1)..0).each do | index |
-                rules_array.delete_at(index) if rules_array[index].empty?
-              end
+              rules_hash["matchers"] = rules_array.select { | item | item.any? }
             end
           end
 
