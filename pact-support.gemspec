@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'string_pattern', '~> 2.0'
   spec.add_runtime_dependency 'jsonpath', '~> 1.0'
   spec.add_runtime_dependency 'json', '~> 2.12.2'
+  spec.add_development_dependency "stringio", "~> 3"
 
   spec.add_development_dependency "rspec", ">= 2.14", "< 4.0"
   spec.add_development_dependency "rake", "~> 13.0"
