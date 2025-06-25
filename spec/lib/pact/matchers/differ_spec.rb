@@ -31,7 +31,7 @@ module Pact
  this
  is
  soo
-@@ -9,6 +9,5 @@
+@@ -9,5 +9,4 @@
  equal
  insert
  a
@@ -86,7 +86,7 @@ EOD
 
           expected_diff = <<'EOD'
 
-@@ -1,5 +1,5 @@
+@@ -1,4 +1,4 @@
  <Animal
    name=bob,
 -  species=tortoise
@@ -105,7 +105,7 @@ EOD
           expected_diff = <<'EOD'
 
 
-@@ -5,7 +5,7 @@
+@@ -5,6 +5,6 @@
   :metasyntactic,
   "variable",
   :delta,
@@ -182,7 +182,7 @@ EOD
 
           expected_diff = <<'EOD'
 
-@@ -1,3 +1,3 @@
+@@ -1,2 +1,2 @@
  this is:
 -  another string
 +  one string
