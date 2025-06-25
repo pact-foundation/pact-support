@@ -48,7 +48,7 @@ module Pact
     end
 
     def self.from_json string
-      deserialised_object = JSON.load(maintain_backwards_compatiblity_with_producer_keys(string))
+      deserialised_object = JSON.unsafe_load(maintain_backwards_compatiblity_with_producer_keys(string))
       from_hash(deserialised_object)
     end
 
