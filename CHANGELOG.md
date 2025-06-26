@@ -1,3 +1,10 @@
+<a name="v1.21.3"></a>
+### v1.21.3 (2025-06-26)
+
+#### Bug Fixes
+
+* use the safe json load to fix deprecation warnings.	 ([5d12ac6](/../../commit/5d12ac6))
+
 <a name="v1.21.2"></a>
 ### v1.21.2 (2024-12-04)
 
