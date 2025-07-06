@@ -5,7 +5,7 @@ require 'support/ruby_version_helpers'
 
 # Needed to stop the ai printing in color
 # TODO: fix this!
-AwesomePrint.defaults = {
+AmazingPrint.defaults = {
   plain: true
 }
 
