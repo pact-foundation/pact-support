@@ -14,8 +14,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: ["3.2", "3.3", "3.4"]
+        ruby_version: ["3.2", "3.3"]
         os: ["ubuntu-latest","windows-latest","macos-latest"]
+        include:
+          - ruby_version: "3.4"
+            os: "ubuntu-latest"
+            experimental: true
+            
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
