@@ -18,11 +18,13 @@ jobs:
         ruby_version: ["3.2", "3.3"]
         os: ["ubuntu-latest","windows-latest","macos-latest"]
         experimental: [false]
+        rack_version: ["2", "3"]
         include:
           - ruby_version: "3.4"
             os: "ubuntu-latest"
             experimental: true
-            
+    env:
+      RACK_VERSION: ${{ matrix.rack_version }}            
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
