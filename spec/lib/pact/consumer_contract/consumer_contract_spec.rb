@@ -18,7 +18,12 @@ module Pact
         subject { ConsumerContract.from_hash({'foo' => 'bar'}) }
 
         it "raises a helpful error" do
-          expect { subject }.to raise_error UnrecognizePactFormatError, 'This document does not use a recognised Pact format: {"foo"=>"bar"}'
+            expected_message = if RUBY_VERSION >= "3.4"
+            'This document does not use a recognised Pact format: {"foo" => "bar"}'
+            else
+            'This document does not use a recognised Pact format: {"foo"=>"bar"}'
+            end
+            expect { subject }.to raise_error UnrecognizePactFormatError, expected_message
         end
       end
     end
@@ -125,14 +130,24 @@ module Pact
           let(:matches1) { true }
           let(:matches2) { true }
           it "raises an error" do
-            expect{ subject.find_interaction(criteria) }.to raise_error "Found more than 1 interaction matching {:description=>/blah/} in pact file between Consumer and Provider."
+            expected_message = if RUBY_VERSION >= "3.4"
+              "Found more than 1 interaction matching {description: /blah/} in pact file between Consumer and Provider."
+            else
+              "Found more than 1 interaction matching {:description=>/blah/} in pact file between Consumer and Provider."
+            end
+            expect{ subject.find_interaction(criteria) }.to raise_error expected_message
           end
         end
         context "when a match is not found" do
           let(:matches1) { false }
           let(:matches2) { false }
           it "raises an error" do
-            expect{ subject.find_interaction(criteria) }.to raise_error "Could not find interaction matching {:description=>/blah/} in pact file between Consumer and Provider."
+            expected_message = if RUBY_VERSION >= "3.4"
+              "Could not find interaction matching {description: /blah/} in pact file between Consumer and Provider."
+            else
+              "Could not find interaction matching {:description=>/blah/} in pact file between Consumer and Provider."
+            end
+            expect{ subject.find_interaction(criteria) }.to raise_error expected_message
           end
         end
       end
