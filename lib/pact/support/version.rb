@@ -1,5 +1,5 @@
 module Pact
   module Support
-    VERSION = "1.21.3"
+    VERSION = "1.21.4"
   end
 end

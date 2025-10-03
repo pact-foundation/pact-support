@@ -1,3 +1,16 @@
+<a name="v1.21.4"></a>
+### v1.21.4 (2025-10-03)
+
+#### Bug Fixes
+
+* **deps**
+  * Replace awesome_print with amazing_print #122 (#123)	 ([e894445](/../../commit/e894445))
+
+* **spec**
+  * workaround for diff formatted errors in ruby 3.4	 ([5627237](/../../commit/5627237))
+
+* json load diff regression downstream	 ([1ed2ce7](/../../commit/1ed2ce7))
+
 <a name="v1.21.3"></a>
 ### v1.21.3 (2025-06-26)
 
