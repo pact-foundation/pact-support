@@ -1,4 +1,4 @@
-require 'awesome_print' # The .ai method comes from awesome_print
+require 'amazing_print' # The .ai method comes from awesome_print
 
 module Pact
   module Matchers

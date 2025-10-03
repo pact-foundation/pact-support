@@ -14,13 +14,13 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/pact-foundation/pact-support"
   spec.license       = "MIT"
 
-  spec.required_ruby_version = ">= 2.0"
+  spec.required_ruby_version = ">= 3.1.0"
 
   spec.files         = `git ls-files lib CHANGELOG.md LICENSE.txt README.md`.split($RS)
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "rainbow", "~> 3.1.1"
-  spec.add_runtime_dependency "awesome_print", "~> 1.9"
+  spec.add_runtime_dependency "amazing_print", "~> 1.8"
   spec.add_runtime_dependency "diff-lcs", "~> 1.6"
   spec.add_runtime_dependency "expgen", "~> 0.1"
   spec.add_runtime_dependency 'string_pattern', '~> 2.0'
