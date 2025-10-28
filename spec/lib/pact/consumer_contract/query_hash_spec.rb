@@ -74,8 +74,7 @@ module Pact
         end
 
         context "with a real example using indexed notation" do
-          # Updated to use indexed notation (q[0], q[1]) instead of unindexed (q[][])
-          let(:other) { QueryString.new('q[0][pacticipant]=Foo&q[0][version]=1.2.3&q[1][pacticipant]=Bar&q[1][version]=4.5.6&latestby=cvpv') }
+          let(:other) { QueryString.new('q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=4.5.6&latestby=cvpv') }
 
           let(:query) do
             {
