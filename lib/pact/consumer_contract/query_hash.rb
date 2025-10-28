@@ -81,6 +81,11 @@ module Pact
         v.each {|k2, v2| insert(hash, :"#{k}[#{k2}]", v2) }
       elsif Pact::ArrayLike === v
         hash[k.to_sym] = v
+      elsif Array === v && v.all? { |item| Hash === item }
+        # Convert array-of-hashes to indexed notation for Rails compatibility
+        v.each_with_index do |item, index|
+          insert(hash, :"#{k}[#{index}]", item)
+        end
       else
         hash[k.to_sym] = [*v]
       end

@@ -73,8 +73,9 @@ module Pact
           end
         end
 
-        context "with a real example" do
-          let(:other) { QueryString.new('q%5B%5D%5Bpacticipant%5D=Foo&q%5B%5D%5Bversion%5D=1.2.3&q%5B%5D%5Bpacticipant%5D=Bar&q%5B%5D%5Bversion%5D=4.5.6&latestby=cvpv') }
+        context "with a real example using indexed notation" do
+          # Updated to use indexed notation (q[0], q[1]) instead of unindexed (q[][])
+          let(:other) { QueryString.new('q[0][pacticipant]=Foo&q[0][version]=1.2.3&q[1][pacticipant]=Bar&q[1][version]=4.5.6&latestby=cvpv') }
 
           let(:query) do
             {
@@ -96,6 +97,25 @@ module Pact
 
           it "matches" do
             expect(subject.difference(other)).to be_empty
+          end
+        end
+
+        context "with array-of-hashes converted to indexed notation for Rails compatibility" do
+          let(:query) do
+            {
+              "skus" => [
+                { "id" => "90", "qty" => "1" },
+                { "id" => "91", "qty" => "1" }
+              ]
+            }
+          end
+
+          describe "matching against indexed query string" do
+            let(:other) { QueryString.new('skus[0][id]=90&skus[0][qty]=1&skus[1][id]=91&skus[1][qty]=1') }
+
+            it "matches" do
+              expect(subject.difference(other)).to be_empty
+            end
           end
         end
 
