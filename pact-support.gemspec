@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "rainbow", "~> 3.1.1"
-  spec.add_runtime_dependency "amazing_print", "~> 1.8"
+  spec.add_runtime_dependency "amazing_print", "~> 2.0"
   spec.add_runtime_dependency "diff-lcs", "~> 1.6"
   spec.add_runtime_dependency "expgen", "~> 0.1"
   spec.add_runtime_dependency 'string_pattern', '~> 2.0'
