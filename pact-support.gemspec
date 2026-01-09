@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "expgen", "~> 0.1"
   spec.add_runtime_dependency 'string_pattern', '~> 2.0'
   spec.add_runtime_dependency 'json', '~> 2.12.2'
+  spec.add_runtime_dependency 'logger', '< 2.0'
   spec.add_development_dependency "stringio", "~> 3"
 
   spec.add_development_dependency "rspec", ">= 2.14", "< 4.0"
@@ -32,6 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "webmock", "~> 3.18.1"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "fakefs", "~> 2.4.0"
+  spec.add_development_dependency "irb"
+  spec.add_development_dependency "fiddle"
   spec.add_development_dependency "hashie", "~> 5.0"
   spec.add_development_dependency "activesupport"
   spec.add_development_dependency "appraisal"
