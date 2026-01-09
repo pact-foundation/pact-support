@@ -11,7 +11,6 @@ require 'pact/generator/time'
 require 'pact/generator/uuid'
 require 'pact/matching_rules/jsonpath'
 require 'pact/matching_rules/v3/extract'
-require 'jsonpath'
 
 module Pact
     class Generators
