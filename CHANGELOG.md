@@ -1,3 +1,11 @@
+<a name="v1.21.5"></a>
+### v1.21.5 (2026-01-09)
+
+#### Bug Fixes
+
+* **deps**
+  * explictly add logger & irb/fiddle - dev for fake fs for ruby 4.0.0 support	 ([b5d906e](/../../commit/b5d906e))
+
 <a name="v1.21.4"></a>
 ### v1.21.4 (2025-10-03)
 
