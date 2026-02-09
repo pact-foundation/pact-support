@@ -9,7 +9,7 @@ require 'pact/generator/random_string'
 require 'pact/generator/regex'
 require 'pact/generator/time'
 require 'pact/generator/uuid'
-require 'pact/matching_rules/jsonpath'
+require 'jsonpath'
 require 'pact/matching_rules/v3/extract'
 
 module Pact
