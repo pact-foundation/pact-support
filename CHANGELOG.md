@@ -1,3 +1,14 @@
+<a name="v1.21.6"></a>
+### v1.21.6 (2026-02-09)
+
+#### Bug Fixes
+
+* **deps**
+  * update fakefs for irb addition	 ([4ae866c](/../../commit/4ae866c))
+
+* add jsonpath gem for generator code	 ([d66170e](/../../commit/d66170e))
+* add jsonpath dependency	 ([81fa4e7](/../../commit/81fa4e7))
+
 <a name="v1.21.5"></a>
 ### v1.21.5 (2026-01-09)
 
