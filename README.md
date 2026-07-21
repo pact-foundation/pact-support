@@ -5,6 +5,8 @@
 
 Provides shared code for the Pact gems
 
+__Note:__ If you are using Pact-Ruby v2.x, you no longer need `pact-support`
+
 ## Compatibility
 
 <details><summary>Specification Compatibility</summary>
