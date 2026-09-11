@@ -1,3 +1,13 @@
+<a name="v2.0.0"></a>
+### v2.0.0 (2026-09-12)
+
+#### Bug Fixes
+
+* **deps**
+  * bump json dep	 ([7cd5e81](/../../commit/7cd5e81))
+
+* move pact/rspec to pact/support/rspec	 ([4745275](/../../commit/4745275))
+
 <a name="v1.21.7"></a>
 ### v1.21.7 (2026-07-21)
 
