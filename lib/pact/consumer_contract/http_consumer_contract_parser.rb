@@ -10,7 +10,7 @@ module Pact
       options = { pact_specification_version: v }
 
       if v.after? 3
-        Pact.configuration.error_stream.puts "WARN: This code only knows how to parse v3 pacts, attempting to parse v#{options[:pact_specification_version]} pact using v3 code."
+        Pact::Support.configuration.error_stream.puts "WARN: This code only knows how to parse v3 pacts, attempting to parse v#{options[:pact_specification_version]} pact using v3 code."
       end
 
       interactions = hash[:interactions].each_with_index.collect { |hash, index| Interaction.from_hash({ index: index }.merge(hash), options) }

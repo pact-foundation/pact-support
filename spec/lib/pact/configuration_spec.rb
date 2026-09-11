@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'pact/configuration'
+require 'pact/support/configuration'
 
 module Pact
 
-  describe Configuration do
+  describe Support::Configuration do
 
-    subject { Configuration.default_configuration }
+    subject { Support::Configuration.default_configuration }
 
     describe "#color_enabled" do
 
@@ -35,22 +35,22 @@ module Pact
       context "when the Content-Type is nil" do
 
         before do
-          allow(Pact.configuration.error_stream).to receive(:puts)
+          allow(Pact::Support.configuration.error_stream).to receive(:puts)
         end
 
-        subject { Pact.configuration.body_differ_for_content_type nil }
+        subject { Pact::Support.configuration.body_differ_for_content_type nil }
 
         it "returns the TextDiffer" do
           expect(subject).to eq Pact::TextDiffer
         end
 
         it "logs a warning to log file" do
-          expect(Pact.configuration.logger).to receive(:warn).with(/No content type found/)
+          expect(Pact::Support.configuration.logger).to receive(:warn).with(/No content type found/)
           subject
         end
 
         it "logs a warning to the error stream" do
-          expect(Pact.configuration.error_stream).to receive(:puts).with(/WARN: No content type found/)
+          expect(Pact::Support.configuration.error_stream).to receive(:puts).with(/WARN: No content type found/)
           subject
         end
 

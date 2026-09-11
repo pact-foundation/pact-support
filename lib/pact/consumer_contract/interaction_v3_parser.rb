@@ -17,7 +17,7 @@ module Pact
       provider_states = parse_provider_states(hash['providerStates'])
       provider_state = provider_states.any? ? provider_states.first.name : nil
       if provider_states && provider_states.size > 1
-        Pact.configuration.error_stream.puts("WARN: Currently only 1 provider state is supported. Ignoring ")
+        Pact::Support.configuration.error_stream.puts("WARN: Currently only 1 provider state is supported. Ignoring ")
       end
       metadata = parse_metadata(hash['metadata'])
       Interaction.new(symbolize_keys(hash).merge(request: request,

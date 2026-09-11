@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pact/matchers'
+require 'pact/support/matchers'
 require 'pact/consumer_contract/headers'
 
 module Pact::Matchers

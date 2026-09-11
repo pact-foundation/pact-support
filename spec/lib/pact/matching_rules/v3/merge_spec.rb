@@ -398,15 +398,15 @@ describe Pact::MatchingRules::V3::Merge do
       it "doesn't warn about the min size being ignored" do
         subject
 
-        expect(Pact.configuration.error_stream).to have_received(:puts).once
+        expect(Pact::Support.configuration.error_stream).to have_received(:puts).once
       end
 
       it "warns that the other items will be ignored" do
-        allow(Pact.configuration.error_stream).to receive(:puts)
+        allow(Pact::Support.configuration.error_stream).to receive(:puts)
 
         subject
 
-        expect(Pact.configuration.error_stream).to have_received(:puts)
+        expect(Pact::Support.configuration.error_stream).to have_received(:puts)
           .with(/WARN: Only the first item/)
       end
     end
@@ -482,18 +482,18 @@ describe Pact::MatchingRules::V3::Merge do
       end
 
       it "logs the ignored rule" do
-        allow(Pact.configuration.error_stream).to receive(:puts)
+        allow(Pact::Support.configuration.error_stream).to receive(:puts)
 
         subject
 
-        expect(Pact.configuration.error_stream).to have_received(:puts)
+        expect(Pact::Support.configuration.error_stream).to have_received(:puts)
           .with("WARN: Ignoring unsupported combine AND for path $['foo']")
       end
     end
 
     context "when the top level object is a string" do
       before do
-        allow(Pact.configuration.error_stream).to receive(:puts)
+        allow(Pact::Support.configuration.error_stream).to receive(:puts)
       end
 
       let(:expected) do

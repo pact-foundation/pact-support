@@ -1,4 +1,4 @@
-require 'pact/matchers'
+require 'pact/support/matchers'
 
 module Pact
   describe Matchers do

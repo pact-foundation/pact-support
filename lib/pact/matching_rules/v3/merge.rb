@@ -76,7 +76,7 @@ module Pact
 
         def warn_when_not_one_example_item array, path
           unless array.size == 1
-            Pact.configuration.error_stream.puts "WARN: Only the first item will be used to match the items in the array at #{path}"
+            Pact::Support.configuration.error_stream.puts "WARN: Only the first item will be used to match the items in the array at #{path}"
           end
         end
 

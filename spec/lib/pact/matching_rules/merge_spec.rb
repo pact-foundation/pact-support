@@ -295,7 +295,7 @@ module Pact
 
       describe "with an example array with more than one item" do
         before do
-          allow(Pact.configuration.error_stream).to receive(:puts)
+          allow(Pact::Support.configuration.error_stream).to receive(:puts)
         end
 
         let(:expected) do
@@ -317,7 +317,7 @@ module Pact
         end
 
         it "warns that the other items will be ignored" do
-          expect(Pact.configuration.error_stream).to receive(:puts).with(/WARN: Only the first item/)
+          expect(Pact::Support.configuration.error_stream).to receive(:puts).with(/WARN: Only the first item/)
           subject
         end
       end

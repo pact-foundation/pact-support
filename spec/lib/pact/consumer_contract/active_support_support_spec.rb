@@ -1,5 +1,5 @@
 require 'pact/shared/active_support_support'
-require 'pact/configuration'
+require 'pact/support/configuration'
 
 module Pact
 
@@ -41,7 +41,7 @@ module Pact
 
       context "with Pact class that have Regexp instance variables" do
         before do
-          allow(Pact).to receive_message_chain(:configuration, :error_stream).and_return(error_stream)
+          allow(Pact::Support).to receive_message_chain(:configuration, :error_stream).and_return(error_stream)
         end
 
         let(:error_stream) { double('stream', puts: nil) }

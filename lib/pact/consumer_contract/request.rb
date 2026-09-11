@@ -31,14 +31,14 @@ module Pact
       end
 
       def matches_route? actual_request
-        require 'pact/matchers' # avoid recusive loop between pact/reification, pact/matchers and this file
+        require 'pact/support/matchers' # avoid recusive loop between pact/reification, pact/matchers and this file
         route = {:method => method.upcase, :path => path}
         other_route = {:method => actual_request.method.upcase, :path => actual_request.path}
         Pact::Matchers.diff(route, other_route).empty?
       end
 
       def difference(actual_request)
-        require 'pact/matchers' # avoid recusive loop between pact/reification, pact/matchers and this file
+        require 'pact/support/matchers' # avoid recusive loop between pact/reification, pact/matchers and this file
         request_diff = Pact::Matchers.diff(to_hash_without_body_or_query, actual_request.to_hash_without_body_or_query)
         request_diff.merge!(query_diff(actual_request.query))
         request_diff.merge!(body_diff(actual_request.body))
@@ -78,7 +78,7 @@ module Pact
       end
 
       def body_differ
-        Pact.configuration.body_differ_for_content_type content_type
+        Pact::Support.configuration.body_differ_for_content_type content_type
       end
     end
   end

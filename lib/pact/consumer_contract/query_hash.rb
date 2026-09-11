@@ -43,7 +43,7 @@ module Pact
     # other will always be a QueryString, not a QueryHash, as it will have ben created
     # from the actual query string.
     def difference(other)
-      require 'pact/matchers' # avoid recursive loop between this file, pact/reification and pact/matchers
+      require 'pact/support/matchers' # avoid recursive loop between this file, pact/reification and pact/matchers
 
       if any_key_contains_square_brackets?
         other_query_hash_non_nested = Query.parse_string_as_non_nested_query(other.query)

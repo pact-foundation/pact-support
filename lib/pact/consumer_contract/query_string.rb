@@ -26,7 +26,7 @@ module Pact
     end
 
     def difference(other)
-      require 'pact/matchers' # avoid recursive loop between this file and pact/matchers
+      require 'pact/support/matchers' # avoid recursive loop between this file and pact/matchers
       Pact::Matchers.diff(query, other.query)
     end
 

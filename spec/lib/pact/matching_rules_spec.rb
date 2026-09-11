@@ -6,7 +6,7 @@ module Pact
       before do
         allow(V3::Merge).to receive(:call)
         allow(Merge).to receive(:call)
-        allow(Pact.configuration.error_stream).to receive(:puts)
+        allow(Pact::Support.configuration.error_stream).to receive(:puts)
       end
 
       let(:object) { double('object') }
