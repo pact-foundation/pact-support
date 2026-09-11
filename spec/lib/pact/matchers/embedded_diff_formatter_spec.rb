@@ -65,17 +65,17 @@ module Pact
         context "when no options are specified" do
           subject { EmbeddedDiffFormatter.call(diff) }
 
-          context "when Pact.configuration.color_enabled is true" do
+          context "when Pact::Support.configuration.color_enabled is true" do
             it "returns a string displaying the diff in colour" do
-              expect(Pact.configuration).to receive(:color_enabled).and_return(true)
+              expect(Pact::Support.configuration).to receive(:color_enabled).and_return(true)
               expect(subject).to include expected_coloured
               expect(subject).to include actual_coloured
             end
           end
 
-          context "when Pact.configuration.color_enabled is false" do
+          context "when Pact::Support.configuration.color_enabled is false" do
             it "returns a string displaying the diff without colour" do
-              expect(Pact.configuration).to receive(:color_enabled).and_return(false)
+              expect(Pact::Support.configuration).to receive(:color_enabled).and_return(false)
               expect(subject).to_not include expected_coloured
               expect(subject).to_not include actual_coloured
             end

@@ -18,7 +18,7 @@ module Pact
         @colour = options.fetch(:colour, false)
       end
 
-      def self.call diff, options = {colour: Pact.configuration.color_enabled}
+      def self.call diff, options = {colour: Pact::Support.configuration.color_enabled}
         new(diff, options).call
       end
 

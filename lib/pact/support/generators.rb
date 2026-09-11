@@ -13,6 +13,7 @@ require 'jsonpath'
 require 'pact/matching_rules/v3/extract'
 
 module Pact
+  module Support
     class Generators
       def self.add_generator(generator)
         generators.unshift(generator)
@@ -60,4 +61,5 @@ module Pact
       add_generator(Generator::Time.new)
       add_generator(Generator::Uuid.new)
     end
+  end
 end

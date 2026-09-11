@@ -1,10 +1,10 @@
 require 'pact/support/version'
 require 'pact/consumer_contract'
-require 'pact/matchers'
+require 'pact/support/matchers'
 require 'pact/logging'
 require 'pact/term'
 require 'pact/helpers'
-require 'pact/configuration'
+require 'pact/support/configuration'
 require 'pact/reification'
 
 module Pact

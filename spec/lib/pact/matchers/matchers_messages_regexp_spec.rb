@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'pact/matchers'
+require 'pact/support/matchers'
 require 'pact/consumer_contract/headers'
 require 'support/ruby_version_helpers'
 

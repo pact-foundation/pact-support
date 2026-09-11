@@ -4,7 +4,7 @@ module Pact
   class FormDiffer
 
     def self.call expected, actual, options = {}
-      require 'pact/matchers' # avoid recursive loop between this file and pact/matchers
+      require 'pact/support/matchers' # avoid recursive loop between this file and pact/matchers
       ::Pact::Matchers.diff to_hash(expected), to_hash(actual), options
     end
 

@@ -1,5 +1,5 @@
 require 'logger'
-require 'pact/configuration'
+require 'pact/support/configuration'
 
 module Pact
   module Logging
@@ -8,7 +8,7 @@ module Pact
     end
 
     def logger
-      Pact.configuration.logger
+      Pact::Support.configuration.logger
     end
   end
 end

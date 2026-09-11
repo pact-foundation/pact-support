@@ -21,9 +21,9 @@ module Pact
       end
 
       def self.call diff, options = {}
-        # require stops circular dependency from pact/configuration <-> pact/matchers/unix_diff_formatter
-        require 'pact/configuration'
-        default_options = {colour: Pact.configuration.color_enabled}
+        # require stops circular dependency from pact/support/configuration <-> pact/matchers/unix_diff_formatter
+        require 'pact/support/configuration'
+        default_options = {colour: Pact::Support.configuration.color_enabled}
         new(diff, default_options.merge(options)).call
       end
 

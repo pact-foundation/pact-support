@@ -42,7 +42,7 @@ module Pact
     # Oh ActiveSupport, why....
     def fix_json_formatting json
       if json =~ /\{".*?":"/
-        json = JSON.pretty_generate(JSON.parse(json, create_additions: false))
+        json = JSON.pretty_generate(JSON.parse(json))
       else
         json
       end
@@ -57,8 +57,8 @@ module Pact
       thing.instance_variables.each do | iv_name |
         iv = thing.instance_variable_get(iv_name)
         if iv.is_a?(Regexp)
-          require 'pact/configuration'
-          Pact.configuration.error_stream.puts("WARN: Instance variable #{iv_name} for class #{thing.class.name} is a Regexp and isn't been serialized properly. Please raise an issue at https://github.com/pact-foundation/pact-support/issues/new.")
+          require 'pact/support/configuration'
+          Pact::Support.configuration.error_stream.puts("WARN: Instance variable #{iv_name} for class #{thing.class.name} is a Regexp and isn't been serialized properly. Please raise an issue at https://github.com/pact-foundation/pact-support/issues/new.")
         end
       end
     end

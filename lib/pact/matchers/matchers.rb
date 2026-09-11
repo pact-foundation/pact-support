@@ -1,4 +1,4 @@
-require 'pact/configuration'
+require 'pact/support/configuration'
 require 'pact/term'
 require 'pact/something_like'
 require 'pact/array_like'
@@ -42,7 +42,7 @@ module Pact
     private
 
     def configurable_options
-      { treat_all_number_classes_as_equivalent: Pact.configuration.treat_all_number_classes_as_equivalent }
+      { treat_all_number_classes_as_equivalent: Pact::Support.configuration.treat_all_number_classes_as_equivalent }
     end
 
     def calculate_diff expected, actual, opts = {}
