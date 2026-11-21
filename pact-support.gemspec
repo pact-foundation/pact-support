@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "rainbow", "~> 3.1.1"
   spec.add_runtime_dependency "amazing_print", "~> 3.0"
-  spec.add_runtime_dependency "diff-lcs", "~> 1.6"
+  spec.add_runtime_dependency "diff-lcs", "~> 2.0"
   spec.add_runtime_dependency "expgen", "~> 0.1"
   spec.add_runtime_dependency 'string_pattern', '~> 2.0'
   spec.add_runtime_dependency 'json', '>= 2.19.9', "< 3.0"
