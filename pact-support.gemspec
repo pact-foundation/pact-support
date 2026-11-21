@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_development_dependency "fakefs", "~> 3.2.0"
   spec.add_development_dependency "fiddle"
-  spec.add_development_dependency "hashie", "~> 5.0"
+  spec.add_development_dependency "hashie", "~> 6.0"
   spec.add_development_dependency "activesupport"
   spec.add_development_dependency "appraisal"
   spec.add_development_dependency "conventional-changelog", "~> 1.3"
