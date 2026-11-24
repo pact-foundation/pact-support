@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "rspec", ">= 2.14", "< 4.0"
   spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "webmock", "~> 3.38.0"
+  spec.add_development_dependency "webmock", "~> 3.40.0"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "fakefs", "~> 3.2.0"
   spec.add_development_dependency "fiddle"
